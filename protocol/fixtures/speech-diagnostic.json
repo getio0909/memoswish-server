@@ -1,0 +1,9 @@
+{
+  "configured": true,
+  "engine": "espeak-ng",
+  "state": "available",
+  "voices": [
+    "cmn",
+    "en-us"
+  ]
+}

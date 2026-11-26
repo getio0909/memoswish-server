@@ -1,0 +1,6 @@
+{
+  "app_state": "app-state",
+  "code_challenge": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "native_client_id": null,
+  "return_uri": "dev.learntok.app:/auth/callback"
+}

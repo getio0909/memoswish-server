@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewHistoryEntry",
+  "type": "object",
+  "properties": {
+    "archived": {
+      "type": "boolean"
+    },
+    "card_id": {
+      "type": "string"
+    },
+    "disposition": {
+      "type": "string"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "rating": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "event_id",
+    "card_id",
+    "received_at",
+    "disposition",
+    "archived"
+  ]
+}

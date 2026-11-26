@@ -1,0 +1,99 @@
+[package]
+build = "../../../brand/build.rs"
+name = "memoswishd"
+description = "Memoswish daemon: HTTP API for the apps, embedded MCP server for AI agents, and admin CLI."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "memoswishd"
+path = "src/main.rs"
+
+[features]
+default = ["self-hosted", "sqlite", "postgres", "mcp-oauth", "oidc"]
+# 开源自托管（默认）：无限配额，SQLite / PostgreSQL 均可。
+self-hosted = ["memoswish-auth/self-hosted"]
+# 默认编译认证能力，运行配置仍须显式启用；付费策略独立选择。
+mcp-oauth = ["memoswish-auth/mcp-oauth", "memoswish-mcp/mcp-oauth", "dep:base64"]
+oidc = ["memoswish-auth/oidc"]
+commercial-quota = ["memoswish-auth/commercial-quota"]
+# 已弃用的兼容别名；保留原有认证、套餐策略、PostgreSQL 与 S3。
+commercial-saas = ["mcp-oauth", "oidc", "commercial-quota", "memoswish-auth/commercial-saas", "memoswish-mcp/commercial-saas", "postgres", "s3"]
+redis = ["memoswish-storage/redis"]
+s3 = ["memoswish-storage/s3"]
+sqlite = ["memoswish-storage/sqlite", "sqlx/sqlite"]
+postgres = ["memoswish-storage/postgres", "sqlx/postgres"]
+
+[dependencies]
+prometheus.workspace = true
+http-range-header = "=0.4.2"
+hyper = { version = "=1.12.0", features = ["server", "http1"] }
+hyper-util = { version = "=0.1.21", features = ["service", "tokio"] }
+lettre = { version = "=0.11.24", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls", "aws-lc-rs", "webpki-roots"] }
+config = { version = "=0.15.27", default-features = false }
+serde_ignored = "=0.1.14"
+reqwest.workspace = true
+fs4 = { version = "=1.1.0", default-features = false, features = ["sync"] }
+memoswish-application.workspace = true
+async-trait.workspace = true
+base64 = { workspace = true, optional = true }
+url.workspace = true
+percent-encoding.workspace = true
+memoswish-protocol.workspace = true
+memoswish-core.workspace = true
+memoswish-storage.workspace = true
+memoswish-auth.workspace = true
+memoswish-content.workspace = true
+memoswish-media.workspace = true
+memoswish-feed.workspace = true
+memoswish-mcp.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+chrono.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_path_to_error.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+hex.workspace = true
+tokio.workspace = true
+toml.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "=1.1.6", features = ["fs", "process"] }
+
+[build-dependencies]
+serde_json.workspace = true
+
+[dev-dependencies]
+memoswish-auth = { workspace = true, features = ["test-support"] }
+
+futures.workspace = true
+memoswish-storage = { workspace = true, features = ["test-support"] }
+base64.workspace = true
+quote = "1"
+syn = { version = "2", features = ["full", "visit"] }
+tokio = { workspace = true, features = ["test-util"] }
+rsa = "0.9"
+p256 = { version = "0.14", features = ["pem"] }
+rand = "0.8"
+jsonwebtoken.workspace = true
+sqlx = { workspace = true, features = ["sqlite"] }
+zip.workspace = true
+tower.workspace = true
+http-body-util.workspace = true
+
+[lints]
+workspace = true

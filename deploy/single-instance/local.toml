@@ -1,0 +1,17 @@
+# 私有本机所有者安装，业务和完整指标均限制到回环。
+profile = "embedded"
+role = "all_in_one"
+mode = "single_user"
+bind = "127.0.0.1:8787"
+health_bind = "127.0.0.1:8788"
+data_dir = "data"
+seed_demo = false
+registration_open = false
+password_profile = "disabled"
+
+[tts]
+# 语音安装按任务指南显式开启，本配置只提供阅读。
+auto_detect_espeak = false
+
+[object_store]
+put_shutdown_timeout_secs = 65

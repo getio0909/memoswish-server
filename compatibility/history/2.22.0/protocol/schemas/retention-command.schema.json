@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RetentionCommand",
+  "type": "object",
+  "properties": {
+    "desired_retention": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "format": "int64"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "expected_revision"
+  ]
+}

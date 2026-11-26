@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReportCreate",
+  "type": "object",
+  "properties": {
+    "observed_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "sources": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "observed_revision",
+    "text"
+  ]
+}

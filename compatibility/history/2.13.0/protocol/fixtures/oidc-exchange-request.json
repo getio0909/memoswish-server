@@ -1,0 +1,6 @@
+{
+  "attempt_id": "attempt",
+  "code_verifier": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "id_token": "provider-id-token",
+  "nonce": "nonce"
+}

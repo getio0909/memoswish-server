@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PortableMedia",
+  "description": "包内标识仅参与内容映射，不能提供存储授权。",
+  "type": "object",
+  "properties": {
+    "bytes": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    },
+    "data_base64": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "mime": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "mime",
+    "bytes",
+    "sha256",
+    "data_base64"
+  ]
+}

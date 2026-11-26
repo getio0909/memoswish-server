@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TtsSubmission",
+  "type": "object",
+  "properties": {
+    "complete": {
+      "description": "仅当每项都有已提交终态回执时为 true；不表示每项都成功。",
+      "type": "boolean"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TtsSubmissionItem"
+      }
+    },
+    "request_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "complete",
+    "items"
+  ],
+  "$defs": {
+    "TtsAttachmentReceipt": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "disposition": {
+          "$ref": "#/$defs/TtsDisposition"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "resulting_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "item_id",
+        "card_id",
+        "expected_revision",
+        "disposition"
+      ]
+    },
+    "TtsDisposition": {
+      "type": "string",
+      "enum": [
+        "attached",
+        "conflict",
+        "not_found",
+        "requester_revoked",
+        "failed",
+        "unknown"
+      ]
+    },
+    "TtsSubmissionItem": {
+      "type": "object",
+      "properties": {
+        "card_id": {
+          "type": "string"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "receipt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TtsAttachmentReceipt"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "item_id",
+        "card_id",
+        "expected_revision"
+      ]
+    }
+  }
+}

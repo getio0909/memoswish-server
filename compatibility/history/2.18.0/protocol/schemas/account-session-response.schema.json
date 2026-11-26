@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AccountSessionResponse",
+  "description": "独立账户会话，不得用于工作区 API。",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "type": "string"
+    },
+    "account": {
+      "$ref": "#/$defs/AccountProfile"
+    },
+    "expires_in": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    },
+    "token_type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "access_token",
+    "token_type",
+    "expires_in",
+    "account"
+  ],
+  "$defs": {
+    "AccountProfile": {
+      "description": "全局账户概要，不含工作区授权。",
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "email",
+        "display_name"
+      ]
+    }
+  }
+}

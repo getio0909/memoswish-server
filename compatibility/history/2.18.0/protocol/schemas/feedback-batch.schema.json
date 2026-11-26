@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeedbackBatch",
+  "description": "`POST /v1/feedback` 请求体。",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "description": "客户端安装实例 ID。",
+      "type": "string"
+    },
+    "events": {
+      "description": "单批最多 200 条。",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ImplicitFeedback"
+      }
+    },
+    "sent_at": {
+      "description": "客户端发送时间，用于时钟偏移校正。",
+      "type": "string",
+      "format": "date-time"
+    },
+    "session_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id",
+    "client_id",
+    "sent_at",
+    "events"
+  ],
+  "$defs": {
+    "ImplicitFeedback": {
+      "description": "单张卡片一次曝光的微交互指标。",
+      "type": "object",
+      "properties": {
+        "card_id": {
+          "type": "string"
+        },
+        "delivery_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "double_tapped": {
+          "description": "是否双击（点赞 / 加入重点记忆库）。",
+          "type": "boolean",
+          "default": false
+        },
+        "dwell_time_ms": {
+          "description": "停留时长（毫秒）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "event_id": {
+          "description": "客户端生成的 UUID，用于幂等去重。",
+          "type": "string"
+        },
+        "flipped": {
+          "description": "是否翻转查看背面。",
+          "type": "boolean",
+          "default": false
+        },
+        "long_pressed": {
+          "description": "是否长按呼出 AI 解析抽屉。",
+          "type": "boolean",
+          "default": false
+        },
+        "loop_count": {
+          "description": "TTS 完整播放（含自动循环）次数。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "muted": {
+          "description": "曝光时客户端是否处于静音状态（静音时 loop_count 不可信）。",
+          "type": "boolean",
+          "default": false
+        },
+        "shown_at": {
+          "description": "卡片完全进入视口的时间。",
+          "type": "string",
+          "format": "date-time"
+        },
+        "slot": {
+          "description": "对应 `FeedItem.slot`。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "swipe_direction": {
+          "$ref": "#/$defs/SwipeDirection",
+          "default": "next"
+        },
+        "swipe_velocity": {
+          "description": "离开时的划走速度（视口高度 / 秒，非负）。",
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "required": [
+        "event_id",
+        "card_id",
+        "slot",
+        "shown_at",
+        "dwell_time_ms",
+        "loop_count",
+        "swipe_velocity"
+      ]
+    },
+    "SwipeDirection": {
+      "description": "离开卡片时的滑动方向。",
+      "oneOf": [
+        {
+          "description": "上滑到下一张。",
+          "type": "string",
+          "const": "next"
+        },
+        {
+          "description": "下滑回到上一张。",
+          "type": "string",
+          "const": "previous"
+        },
+        {
+          "description": "未滑动离开（App 切后台、会话结束等）。",
+          "type": "string",
+          "const": "none"
+        }
+      ]
+    }
+  }
+}

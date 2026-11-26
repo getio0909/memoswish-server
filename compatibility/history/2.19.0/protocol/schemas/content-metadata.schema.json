@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContentMetadata",
+  "description": "未知状态保留原文；只有精确 published 可进入学习。",
+  "type": "object",
+  "properties": {
+    "observed_generation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "$ref": "#/$defs/ContentProvenance",
+      "default": {
+        "attribution": "",
+        "method": "",
+        "rights": "",
+        "sources": []
+      }
+    },
+    "publication": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "publication"
+  ],
+  "$defs": {
+    "ContentProvenance": {
+      "description": "来源字段均为调用方声明，不表示服务端核实。",
+      "type": "object",
+      "properties": {
+        "attribution": {
+          "type": "string",
+          "default": ""
+        },
+        "method": {
+          "type": "string",
+          "default": ""
+        },
+        "provider_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights": {
+          "type": "string",
+          "default": ""
+        },
+        "source_generation_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id_is_digest": {
+          "description": "true 表示 source_id 为原始 UTF-8 身份的 sha256:hex 摘要；缺省为原文。",
+          "type": "boolean"
+        },
+        "source_publication_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

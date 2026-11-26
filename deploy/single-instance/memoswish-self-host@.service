@@ -1,0 +1,19 @@
+[Unit]
+Description=Memoswish single-instance %i
+After=network.target
+
+[Service]
+Type=exec
+WorkingDirectory=%h/.local/share/memoswish/%i
+# 显式环境避免服务管理器中的旧配置覆盖本安装。
+ExecStart=/usr/bin/env -i HOME=%h PATH=/usr/bin:/bin RUST_LOG=info,sqlx=warn %h/.local/share/memoswish/%i/memoswishd --config %h/.local/share/memoswish/%i/memoswishd.toml serve
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=75
+KillSignal=SIGTERM
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

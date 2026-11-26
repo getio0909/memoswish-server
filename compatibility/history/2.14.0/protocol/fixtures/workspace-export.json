@@ -1,0 +1,27 @@
+{
+  "assets": [
+    {
+      "data": "6869",
+      "encoding": "hex",
+      "key": "tenants/workspace/example",
+      "mime": "text/plain"
+    }
+  ],
+  "data": {
+    "tts_submission_items": [
+      {
+        "item_id": "item-1",
+        "receipt": {
+          "asset_id": "asset-1",
+          "card_id": "card-1",
+          "disposition": "attached",
+          "expected_revision": 1,
+          "item_id": "item-1",
+          "resulting_revision": 2
+        }
+      }
+    ]
+  },
+  "exported_at": "2026-11-07T00:00:00+00:00",
+  "tenant_id": "workspace"
+}

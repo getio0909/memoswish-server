@@ -1,0 +1,8 @@
+{
+  "account": {
+    "display_name": "Learner",
+    "email": "learner@example.com",
+    "user_id": "account"
+  },
+  "identities": []
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LinkedIdentity",
+  "description": "已关联身份的公开摘要，不包含上游凭据或内部认证状态。",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issuer": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "provider",
+    "issuer",
+    "subject"
+  ]
+}

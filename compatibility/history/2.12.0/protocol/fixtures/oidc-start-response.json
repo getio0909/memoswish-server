@@ -1,0 +1,5 @@
+{
+  "attempt_id": "attempt",
+  "expires_in": 300,
+  "launch_url": "https://learn.example/v1/auth/oidc/google/start?attempt=attempt&launch=handle"
+}

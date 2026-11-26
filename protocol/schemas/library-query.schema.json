@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LibraryQuery",
+  "type": "object",
+  "properties": {
+    "card_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limit": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint32",
+      "minimum": 0
+    },
+    "query": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "starred": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    }
+  }
+}

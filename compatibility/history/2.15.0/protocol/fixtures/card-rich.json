@@ -1,0 +1,107 @@
+{
+  "attributes": {
+    "difficulty": 2,
+    "field": "physics",
+    "year": 1905
+  },
+  "back": {
+    "blocks": [
+      {
+        "text": "**E** 是能量，**m** 是质量，**c** 是光速。",
+        "type": "text"
+      },
+      {
+        "items": [
+          "核裂变",
+          "核聚变",
+          "正负电子湮灭"
+        ],
+        "ordered": false,
+        "type": "list"
+      },
+      {
+        "header": [
+          "符号",
+          "单位"
+        ],
+        "rows": [
+          [
+            "E",
+            "J"
+          ],
+          [
+            "m",
+            "kg"
+          ],
+          [
+            "c",
+            "m/s"
+          ]
+        ],
+        "type": "table"
+      },
+      {
+        "highlight_lines": [
+          2
+        ],
+        "language": "python",
+        "source": "c = 299_792_458\nE = 0.001 * c ** 2  # 1 克质量\nprint(f\"{E:.3e} J\")",
+        "type": "code"
+      },
+      {
+        "alt": "Einstein at the blackboard",
+        "asset": {
+          "bytes": 20480,
+          "key": "tenants/local/images/5e1a.png",
+          "mime": "image/png",
+          "sha256": "5e1a7c0d2b3f4e5a69788796a5b4c3d2e1f00112233445566778899aabbccdd0",
+          "url": "/assets/tenants/local/images/5e1a.png"
+        },
+        "type": "image"
+      },
+      {
+        "source": "Albert Einstein",
+        "text": "Imagination is more important than knowledge.",
+        "type": "quote"
+      },
+      {
+        "title": "Wikipedia",
+        "type": "link",
+        "url": "https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence"
+      }
+    ],
+    "title": "质量与能量可以相互转化"
+  },
+  "created_at": "2026-09-21T14:13:30Z",
+  "deck_id": "0192f3a0-0000-7000-8000-0000000000d2",
+  "ducking": {
+    "attack_ms": 150,
+    "curve": "ease_out",
+    "duck_ratio": 0.25,
+    "hold_ms": 120,
+    "release_ms": 400
+  },
+  "front": {
+    "blocks": [
+      {
+        "display": true,
+        "latex": "E = mc^2",
+        "type": "math"
+      }
+    ],
+    "subtitle": "Albert Einstein · 1905",
+    "title": "质能方程说了什么？"
+  },
+  "id": "0192f3a0-0000-7000-8000-000000000002",
+  "language": "zh-CN",
+  "revision": 1,
+  "tags": [
+    "physics"
+  ],
+  "template": "formula",
+  "updated_at": "2026-09-21T14:13:30Z",
+  "visual": {
+    "accent": "#25F4EE",
+    "background": "#0B1021"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HiddenCardsPage",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LearnerCardControl"
+      }
+    },
+    "next_after": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "$defs": {
+    "LearnerCardControl": {
+      "type": "object",
+      "properties": {
+        "buried_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "suspended": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "card_id",
+        "revision",
+        "suspended"
+      ]
+    }
+  }
+}

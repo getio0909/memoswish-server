@@ -1,0 +1,13 @@
+{
+  "attribution": "Author",
+  "method": "manual",
+  "provider_claim": "caller claim, unverified",
+  "rights": "Apache-2.0",
+  "source_generation_claim": "source-server-claim",
+  "source_id": "source-card",
+  "source_publication_claim": "draft",
+  "source_revision": 2,
+  "sources": [
+    "https://example.org/reference"
+  ]
+}

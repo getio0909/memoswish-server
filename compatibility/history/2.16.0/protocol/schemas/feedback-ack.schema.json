@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeedbackAck",
+  "description": "`POST /v1/feedback` 响应体。",
+  "type": "object",
+  "properties": {
+    "accepted": {
+      "description": "新接收并已更新记忆模型的事件数。",
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "duplicates": {
+      "description": "因重复 `event_id` 被忽略的事件数（客户端可视为成功）。",
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "rejected": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RejectedEvent"
+      }
+    }
+  },
+  "required": [
+    "accepted",
+    "duplicates"
+  ],
+  "$defs": {
+    "RejectedEvent": {
+      "description": "被拒绝的单条事件。",
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "reason"
+      ]
+    }
+  }
+}

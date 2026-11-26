@@ -1,0 +1,11 @@
+**
+!server/
+!server/**
+!brand/
+!brand/**
+server/target
+server/data
+**/*.db
+**/*.db-*
+**/.env
+**/.env.*

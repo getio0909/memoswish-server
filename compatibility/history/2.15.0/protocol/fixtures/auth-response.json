@@ -1,0 +1,11 @@
+{
+  "access_token": "eyJhbGciOiJIUzI1NiJ9.e30.sig",
+  "expires_in": 86400,
+  "token_type": "Bearer",
+  "user": {
+    "display_name": "Local Owner",
+    "role": "owner",
+    "tenant_id": "local",
+    "user_id": "usr_local"
+  }
+}

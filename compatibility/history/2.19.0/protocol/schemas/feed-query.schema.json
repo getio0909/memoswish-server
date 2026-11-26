@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeedQuery",
+  "description": "`GET /v1/feed` 查询参数。",
+  "type": "object",
+  "properties": {
+    "cursor": {
+      "description": "上一页返回的 `next_cursor`。",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deck_id": {
+      "description": "仅从指定卡组取卡。",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limit": {
+      "description": "每页数量，默认 10，最大 50。",
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint32",
+      "minimum": 0
+    },
+    "mode": {
+      "description": "preview 返回不可学习的预览页，缺省为普通学习页。",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request_id": {
+      "description": "首次请求的客户端身份；重试保持原值，与 session_id/cursor 互斥。",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "session_id": {
+      "description": "客户端会话 ID；为空时服务端新建会话。",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

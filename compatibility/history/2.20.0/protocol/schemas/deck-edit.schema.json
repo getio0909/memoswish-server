@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeckEdit",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "language": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "expected_revision",
+    "title",
+    "description",
+    "language"
+  ]
+}

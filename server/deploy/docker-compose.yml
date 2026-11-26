@@ -1,0 +1,50 @@
+# 本机体验使用回环地址。先设置并保存 POSTGRES_PASSWORD，建议使用 openssl rand -hex 32。
+# 需要 Docker Engine 28.0.0 或更高版本；旧版可能允许同一网段的主机访问回环发布端口。
+# rootless Podman 也应保留 127.0.0.1 端口映射。
+# 全新安装在仓库根目录运行：
+#   docker compose -f server/deploy/docker-compose.yml up --build
+# 升级已有 pgdata 时保留原项目名和卷。若 memoswishd 仍在运行，先停止它。
+# 保留旧 POSTGRES_PASSWORD 供 Compose 插值，在仓库根只启动 PostgreSQL：
+#   docker compose -f server/deploy/docker-compose.yml up -d postgres
+# 等到下列命令报告 accepting connections，再备份数据库（pg_dump -Fc）、assets 卷和配置：
+#   docker compose -f server/deploy/docker-compose.yml exec -T postgres pg_isready -h 127.0.0.1 -U memoswish -d memoswish
+# 就地轮换角色密码，按提示输入同一个可用于 URL 的随机新密码两次：
+#   docker compose -f server/deploy/docker-compose.yml exec postgres psql -U memoswish -d memoswish -c '\password memoswish'
+# 将 POSTGRES_PASSWORD 更新为新密码，沿用同一 -f 参数执行 up -d --build，再读取一条旧记录。
+# 本机地址为 http://127.0.0.1:8787。局域网或远程访问请使用 deploy/single-instance 的认证 HTTPS 部署。
+# 将 single_user 暴露到回环以外会让任何可达者获得所有者权限。
+name: memoswish
+
+services:
+  postgres:
+    image: docker.io/library/postgres:17-alpine
+    environment:
+      POSTGRES_USER: memoswish
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD to a URL-safe random password}"
+      POSTGRES_DB: memoswish
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memoswish"]
+      interval: 5s
+      retries: 10
+
+  memoswishd:
+    build:
+      context: ../..
+      dockerfile: server/deploy/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      MEMOSWISH_DATABASE_URL: "postgres://memoswish:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD to a URL-safe random password}@postgres:5432/memoswish"
+      MEMOSWISH_MODE: single_user
+      MEMOSWISH_TTS_ENGINE: espeak-ng
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - assets:/var/lib/memoswish
+
+volumes:
+  pgdata:
+  assets:

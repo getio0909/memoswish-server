@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LearnerPreferences",
+  "type": "object",
+  "properties": {
+    "desired_retention": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double"
+    },
+    "effective_retention": {
+      "type": "number",
+      "format": "double"
+    },
+    "revision": {
+      "type": "integer",
+      "format": "int64"
+    }
+  },
+  "required": [
+    "revision",
+    "effective_retention"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RegisterRequest",
+  "description": "`POST /v1/auth/register` 请求体。",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "tenant_name": {
+      "description": "新建租户名称；为空时使用 display_name。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "email",
+    "password",
+    "display_name"
+  ]
+}

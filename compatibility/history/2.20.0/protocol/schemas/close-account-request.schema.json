@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CloseAccountRequest",
+  "description": "确认账户及恰好所有独占工作区；不自动扩大删除范围。",
+  "type": "object",
+  "properties": {
+    "confirmed_exclusive_workspaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confirmed_user_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "confirmed_user_id",
+    "confirmed_exclusive_workspaces"
+  ]
+}

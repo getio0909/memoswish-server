@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FavoriteState",
+  "type": "object",
+  "properties": {
+    "card_id": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "starred": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "card_id",
+    "starred",
+    "revision"
+  ]
+}

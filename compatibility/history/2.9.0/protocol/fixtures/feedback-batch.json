@@ -1,0 +1,35 @@
+{
+  "client_id": "client_7d1e",
+  "events": [
+    {
+      "card_id": "0192f3a0-0000-7000-8000-000000000001",
+      "double_tapped": true,
+      "dwell_time_ms": 5400,
+      "event_id": "6f1c1d2e-0000-4000-8000-000000000001",
+      "flipped": true,
+      "long_pressed": false,
+      "loop_count": 2,
+      "muted": false,
+      "shown_at": "2026-09-21T16:13:30Z",
+      "slot": 0,
+      "swipe_direction": "next",
+      "swipe_velocity": 0.800000011920929
+    },
+    {
+      "card_id": "0192f3a0-0000-7000-8000-000000000002",
+      "double_tapped": false,
+      "dwell_time_ms": 900,
+      "event_id": "6f1c1d2e-0000-4000-8000-000000000002",
+      "flipped": false,
+      "long_pressed": false,
+      "loop_count": 0,
+      "muted": false,
+      "shown_at": "2026-09-21T16:13:36Z",
+      "slot": 1,
+      "swipe_direction": "next",
+      "swipe_velocity": 3.200000047683716
+    }
+  ],
+  "sent_at": "2026-09-21T16:15:00Z",
+  "session_id": "sess_0192f3a0"
+}

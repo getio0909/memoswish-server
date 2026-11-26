@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrivacyPolicy",
+  "type": "object",
+  "properties": {
+    "allowed_regions": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "hosted": {
+      "type": "boolean",
+      "default": false
+    },
+    "notice_version": {
+      "type": "string",
+      "default": ""
+    },
+    "privacy_url": {
+      "type": "string",
+      "default": ""
+    },
+    "purpose_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {}
+    },
+    "terms_url": {
+      "type": "string",
+      "default": ""
+    },
+    "terms_version": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

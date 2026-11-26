@@ -1,0 +1,3 @@
+[env]
+# 同一测试进程共用维护任务的保护状态，libtest 按顺序执行。
+RUST_TEST_THREADS = "1"

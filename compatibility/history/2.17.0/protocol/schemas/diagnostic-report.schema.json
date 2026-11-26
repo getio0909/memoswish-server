@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DiagnosticReport",
+  "type": "object",
+  "properties": {
+    "build": {
+      "type": "string"
+    },
+    "captured_at_ms": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "category": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "platform": {
+      "type": "string"
+    },
+    "privacy_revision": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "purpose_version": {
+      "type": "string"
+    },
+    "report_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "privacy_revision",
+    "captured_at_ms",
+    "purpose_version",
+    "build",
+    "platform",
+    "category",
+    "code",
+    "frames"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "display_name": "Learner",
+  "email": "learner@example.com",
+  "password": "fixture-password",
+  "tenant_name": "Workspace"
+}

@@ -1,0 +1,36 @@
+[package]
+name = "memoswish-media"
+description = "Audio-visual engine for Memoswish: TTS with word-level timestamps, BGM library and matching."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "=1.1.6", features = ["process"] }
+
+[dependencies]
+hound = "=3.5.1"
+memoswish-core.workspace = true
+memoswish-protocol.workspace = true
+memoswish-content.workspace = true
+memoswish-auth.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+reqwest.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+sqlx = { workspace = true, features = ["sqlite"] }
+tokio = { workspace = true, features = ["test-util"] }
+memoswish-storage = { workspace = true, features = ["sqlite", "test-support"] }
+
+[lints]
+workspace = true

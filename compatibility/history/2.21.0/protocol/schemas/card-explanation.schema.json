@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CardExplanation",
+  "description": "卡片 AI 深度解析响应（长按抽屉展示）。",
+  "type": "object",
+  "properties": {
+    "analogy": {
+      "description": "帮助记忆的生活化类比 / 助记法。",
+      "type": "string"
+    },
+    "card_id": {
+      "description": "关联卡片 ID。",
+      "type": "string"
+    },
+    "follow_up_questions": {
+      "description": "推荐追问问题。",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "description": "生成时间（UTC）。",
+      "type": "string",
+      "format": "date-time"
+    },
+    "key_points": {
+      "description": "结构化拆解要点。",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operation": {
+      "description": "可选持久处置，不包含内部预算和提供者证据。",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExplainOperation"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "provider": {
+      "description": "解析来源（如 `\"builtin-heuristic\"` 或 `\"openai:gpt-4o-mini\"`）。",
+      "type": "string"
+    },
+    "summary": {
+      "description": "一句话核心直觉总结。",
+      "type": "string"
+    }
+  },
+  "required": [
+    "card_id",
+    "summary",
+    "key_points",
+    "analogy",
+    "provider",
+    "generated_at"
+  ],
+  "$defs": {
+    "ExplainAccounting": {
+      "description": "请求、token 和整数金额保持独立维度，不披露提供者凭据或原文。",
+      "type": "object",
+      "properties": {
+        "attempts": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "committed_microcurrency": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "held_microcurrency": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "input_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64"
+        },
+        "output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64"
+        },
+        "period": {
+          "type": "string"
+        },
+        "requests": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "requests",
+        "attempts",
+        "period",
+        "currency",
+        "held_microcurrency",
+        "committed_microcurrency"
+      ]
+    },
+    "ExplainDisposition": {
+      "description": "调用处置与财务不确定性独立于返回的本地回退文本。",
+      "type": "string",
+      "enum": [
+        "local",
+        "pending",
+        "unresolved",
+        "settled",
+        "suppressed",
+        "expired",
+        "cancelled"
+      ]
+    },
+    "ExplainOperation": {
+      "description": "解释操作的最小回执；文本过期不会再次支付。",
+      "type": "object",
+      "properties": {
+        "accounting": {
+          "description": "原账期账本投影；未决费用体现在 held 中。",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExplainAccounting"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disposition": {
+          "$ref": "#/$defs/ExplainDisposition"
+        },
+        "request_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "disposition"
+      ]
+    }
+  }
+}

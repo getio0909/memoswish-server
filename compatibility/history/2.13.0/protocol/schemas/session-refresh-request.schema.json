@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SessionRefreshRequest",
+  "description": "严格单次刷新请求，不接受 access/API/MCP/上游凭据替代。",
+  "type": "object",
+  "properties": {
+    "refresh_token": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "refresh_token"
+  ]
+}

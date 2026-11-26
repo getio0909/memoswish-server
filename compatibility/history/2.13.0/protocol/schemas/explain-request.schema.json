@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplainRequest",
+  "description": "`POST /v1/cards/{card_id}/explain` 请求参数。",
+  "type": "object",
+  "properties": {
+    "locale": {
+      "description": "期望输出语言（BCP-47，如 `zh-CN` 或 `en-US`）；缺省跟随卡片或客户端。",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "question": {
+      "description": "用户追问的问题；为空时生成该卡片的默认深度解析与类比。",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

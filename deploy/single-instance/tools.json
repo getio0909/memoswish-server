@@ -1,0 +1,26 @@
+{
+  "platform": "linux-x64",
+  "tools": [
+    {
+      "name": "caddy",
+      "version": "2.11.9",
+      "license": "Apache-2.0",
+      "url": "https://github.com/caddyserver/caddy/releases/download/v2.11.9/caddy_2.11.9_linux_amd64.tar.gz",
+      "sha256": "5b8cb7faf8726a2028ad96a66e54e6e81e8f361bc6175e5d22bbd997cc5177fb",
+      "members": {"caddy": "caddy"},
+      "binary_sha256": {"caddy": "a563843e11cbce39c557bd429ebb787d56f49d51d9bbb3292cd9b36b37a60cdf"}
+    },
+    {
+      "name": "prometheus",
+      "version": "3.16.0",
+      "license": "Apache-2.0",
+      "url": "https://github.com/prometheus/prometheus/releases/download/v3.16.0/prometheus-3.16.0.linux-amd64.tar.gz",
+      "sha256": "68727009472a2c02e1ff7f062fd5b3e637285bffc8fc2d340c76fb449d6e0f34",
+      "members": {"prometheus": "prometheus-3.16.0.linux-amd64/prometheus", "promtool": "prometheus-3.16.0.linux-amd64/promtool"},
+      "binary_sha256": {
+        "prometheus": "fe1fc9a01dbe3c6bd8abda3f050fc9fc85483cbea2b36c8603eef34cbbd36ff9",
+        "promtool": "a3c953f444da51b0f1198a11e136715a522bbe003c288b7c27e5007be3780267"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "auth_time": 1900000000,
+  "current": true,
+  "expires_at": 2000000000,
+  "id": "session-a",
+  "kind": "sessions",
+  "label": "Example device",
+  "scopes": [
+    "feed:read"
+  ],
+  "scopes_limited": false,
+  "status": "active",
+  "tenant_id": "workspace"
+}

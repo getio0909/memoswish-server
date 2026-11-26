@@ -1,0 +1,516 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CardSave",
+  "description": "更新必须携带 card.expected_revision；新建不接受已有 ID。",
+  "type": "object",
+  "properties": {
+    "card": {
+      "$ref": "#/$defs/CardDraft"
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ContentProvenance"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "publish": {
+      "type": "boolean",
+      "default": false
+    },
+    "report_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "card"
+  ],
+  "$defs": {
+    "AssetRef": {
+      "description": "二进制资产引用（音频、图片等）。`sha256` 同时作为客户端磁盘缓存键。",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "description": "字节数。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "key": {
+          "description": "对象存储内部键，例如 `tenants/<tid>/tts/<sha>.wav`。",
+          "type": "string"
+        },
+        "mime": {
+          "description": "MIME 类型，例如 `audio/wav`。",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "内容 SHA-256（小写十六进制）。",
+          "type": "string"
+        },
+        "url": {
+          "description": "可直接下载的 URL；以 `/` 开头时表示相对于服务端 base URL。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "url",
+        "mime",
+        "bytes",
+        "sha256"
+      ]
+    },
+    "CardDraft": {
+      "description": "卡片草稿：AI Agent / 导入工具提交的结构化卡片。`id` 为空表示新建，否则更新。",
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "description": "领域自由扩展键值。",
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        },
+        "back": {
+          "$ref": "#/$defs/CardFace",
+          "default": {
+            "blocks": [],
+            "title": ""
+          }
+        },
+        "deck_id": {
+          "type": "string"
+        },
+        "ducking": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DuckingParams"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_revision": {
+          "description": "更新时可选的前置版本；缺省保留 2.x 的最后写入语义。",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "front": {
+          "$ref": "#/$defs/CardFace"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "description": "缺省时继承卡组语言。",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        },
+        "template": {
+          "description": "开放模板标识（如 `\"basic\"`、`\"term\"`、`\"code\"`、`\"formula\"`、`\"qa\"`），缺省时使用 `\"basic\"`。",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visual": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CardVisual"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "deck_id",
+        "front"
+      ]
+    },
+    "CardFace": {
+      "description": "卡片的某一面。",
+      "type": "object",
+      "properties": {
+        "blocks": {
+          "description": "内容块，按顺序渲染。",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ContentBlock"
+          }
+        },
+        "subtitle": {
+          "description": "副标题：发音 / 拼音 / 年代 / 化学式 / 作者等任意短注释。",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "description": "主标题（正面通常是要记住的对象或问题；背面可为空）。",
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "CardVisual": {
+      "description": "卡片视觉主题。",
+      "type": "object",
+      "properties": {
+        "accent": {
+          "description": "强调色（卡拉 OK 高亮色）`#RRGGBB`。",
+          "type": "string"
+        },
+        "background": {
+          "description": "背景色 `#RRGGBB`。",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssetRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "background",
+        "accent"
+      ]
+    },
+    "ContentBlock": {
+      "description": "卡面内容块。以 `type` 字段区分；客户端必须容忍未知的 `type`（跳过或降级为纯文本）。",
+      "oneOf": [
+        {
+          "description": "文本，支持轻量 Markdown（粗体、斜体、行内代码、链接）。",
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "text"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ]
+        },
+        {
+          "description": "代码片段。",
+          "type": "object",
+          "properties": {
+            "highlight_lines": {
+              "description": "需要高亮的行号（从 1 开始）。",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0
+              }
+            },
+            "language": {
+              "description": "语言标识，例如 `rust`、`python`、`sql`。",
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "code"
+            }
+          },
+          "required": [
+            "type",
+            "language",
+            "source"
+          ]
+        },
+        {
+          "description": "数学 / 化学公式（LaTeX）。",
+          "type": "object",
+          "properties": {
+            "display": {
+              "description": "是否独立成行展示。",
+              "type": "boolean",
+              "default": false
+            },
+            "latex": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "math"
+            }
+          },
+          "required": [
+            "type",
+            "latex"
+          ]
+        },
+        {
+          "description": "图片。",
+          "type": "object",
+          "properties": {
+            "alt": {
+              "description": "替代文本（无障碍 + 图片加载失败时显示）。",
+              "type": "string",
+              "default": ""
+            },
+            "asset": {
+              "$ref": "#/$defs/AssetRef"
+            },
+            "type": {
+              "type": "string",
+              "const": "image"
+            }
+          },
+          "required": [
+            "type",
+            "asset"
+          ]
+        },
+        {
+          "description": "引用 / 名言。",
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "text": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "quote"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ]
+        },
+        {
+          "description": "列表。",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ordered": {
+              "type": "boolean",
+              "default": false
+            },
+            "type": {
+              "type": "string",
+              "const": "list"
+            }
+          },
+          "required": [
+            "type",
+            "items"
+          ]
+        },
+        {
+          "description": "表格。",
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "type": "string"
+              }
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "type": {
+              "type": "string",
+              "const": "table"
+            }
+          },
+          "required": [
+            "type",
+            "rows"
+          ]
+        },
+        {
+          "description": "外部链接。",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "type": "string",
+              "const": "link"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        }
+      ]
+    },
+    "ContentProvenance": {
+      "description": "来源字段均为调用方声明，不表示服务端核实。",
+      "type": "object",
+      "properties": {
+        "attribution": {
+          "type": "string",
+          "default": ""
+        },
+        "method": {
+          "type": "string",
+          "default": ""
+        },
+        "provider_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights": {
+          "type": "string",
+          "default": ""
+        },
+        "source_generation_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id_is_digest": {
+          "description": "true 表示 source_id 为原始 UTF-8 身份的 sha256:hex 摘要；缺省为原文。",
+          "type": "boolean"
+        },
+        "source_publication_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DuckCurve": {
+      "description": "闪避包络曲线形状。",
+      "type": "string",
+      "enum": [
+        "linear",
+        "ease_out",
+        "exponential"
+      ]
+    },
+    "DuckingParams": {
+      "description": "音频闪避（Audio Ducking）参数：TTS 发声时压低 BGM。",
+      "type": "object",
+      "properties": {
+        "attack_ms": {
+          "description": "压低所用时间（毫秒），规范要求 <= 150。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "curve": {
+          "$ref": "#/$defs/DuckCurve",
+          "default": "ease_out"
+        },
+        "duck_ratio": {
+          "description": "闪避后 BGM 音量占基础音量的比例，推荐 0.2 ~ 0.3。",
+          "type": "number",
+          "format": "float"
+        },
+        "hold_ms": {
+          "description": "TTS 结束后保持压低的时间（毫秒），避免词间呼吸导致音量抖动。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "release_ms": {
+          "description": "恢复所用时间（毫秒）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "duck_ratio",
+        "attack_ms",
+        "hold_ms",
+        "release_ms"
+      ]
+    }
+  }
+}

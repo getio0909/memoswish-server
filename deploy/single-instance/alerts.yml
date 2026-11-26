@@ -1,0 +1,30 @@
+groups:
+  - name: memoswish-single-instance
+    rules:
+      - alert: MemoswishTargetUnavailable
+        expr: up{job="memoswish"} == 0 or absent(up{job="memoswish"})
+        for: 1m
+        labels:
+          severity: critical
+      - alert: MemoswishDependencyUnavailable
+        expr: sum by (job, instance) (increase(memoswish_operation_duration_seconds_count{job="memoswish",operation=~"db_.*",outcome=~"error|pool_timeout|busy|closed|timeout"}[5m])) > 0
+        labels:
+          severity: warning
+      - alert: MemoswishProviderFailed
+        expr: sum by (job, instance) (increase(memoswish_operation_duration_seconds_count{job="memoswish",operation=~"tts_http|tts_command|explanation_http",outcome=~"timeout|transport_error|http_error|invalid_response|command_failure|error"}[5m])) > 0
+        labels:
+          severity: warning
+      - alert: MemoswishSampleUnhealthy
+        expr: memoswish_operational_sample_success{job="memoswish"} == 0 or time() - memoswish_operational_sample_timestamp_seconds{job="memoswish"} > 180 or memoswish_operational_sample_timestamp_seconds{job="memoswish"} > time() or absent(memoswish_operational_sample_success{job="memoswish"}) or absent(memoswish_operational_sample_timestamp_seconds{job="memoswish"})
+        for: 1m
+        labels:
+          severity: warning
+      - alert: MemoswishPendingTimestampInvalid
+        expr: memoswish_pending_timestamp_unknown{job="memoswish"} > 0 or memoswish_pending_timestamp_future{job="memoswish"} > 0
+        labels:
+          severity: warning
+      - alert: MemoswishCleanupStalled
+        expr: (memoswish_cleanup_lag_seconds{job="memoswish"} > 900) and on (job, instance) (memoswish_operational_sample_success{job="memoswish"} == 1) and on (job, instance) (time() - memoswish_operational_sample_timestamp_seconds{job="memoswish"} <= 180) and on (job, instance) (memoswish_operational_sample_timestamp_seconds{job="memoswish"} <= time())
+        for: 5m
+        labels:
+          severity: warning

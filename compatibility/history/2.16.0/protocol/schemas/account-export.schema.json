@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AccountExport",
+  "description": "无成员账户的有界导出，身份摘要不包含上游凭据。",
+  "type": "object",
+  "properties": {
+    "account": {
+      "$ref": "#/$defs/AccountProfile"
+    },
+    "identities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LinkedIdentity"
+      }
+    }
+  },
+  "required": [
+    "account",
+    "identities"
+  ],
+  "$defs": {
+    "AccountProfile": {
+      "description": "全局账户概要，不含工作区授权。",
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "email",
+        "display_name"
+      ]
+    },
+    "LinkedIdentity": {
+      "description": "已关联身份的公开摘要，不包含上游凭据或内部认证状态。",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "issuer",
+        "subject"
+      ]
+    }
+  }
+}

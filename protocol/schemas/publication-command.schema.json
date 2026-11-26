@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PublicationCommand",
+  "type": "object",
+  "properties": {
+    "expected_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "publish": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "expected_revision",
+    "publish"
+  ]
+}

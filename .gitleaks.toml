@@ -1,0 +1,25 @@
+[extend]
+useDefault = true
+
+# 合成 JWT 示例含空负载及无效签名，仅允许在指定契约输入及其生成器中使用。
+[[allowlists]]
+description = "Protocol example with an empty payload and dummy signature"
+condition = "AND"
+regexTarget = "secret"
+paths = ['(?:^|/)protocol/fixtures/auth-response\.json$', '(?:^|/)compatibility/roundtrip-baseline-2\.16\.json$', '(?:^|/)memoswish-protocol/src/examples\.rs$']
+regexes = ['^eyJhbGciOiJIUzI1NiJ9\.e30\.sig$']
+
+# 这些固定文字只用于临时测试安装，覆盖签名密钥保存及恢复。
+[[allowlists]]
+description = "Synthetic signing strings for isolated persistence tests"
+condition = "AND"
+regexTarget = "secret"
+paths = ['(?:^|/)scripts/backup-embedded\.test\.mjs$', '(?:^|/)memoswishd/src/(?:privacy_tests|snapshot)\.rs$']
+regexes = ['^(?:synthetic-environment-secret-at-least-32-bytes|privacy-fixture-signing-key-32-bytes|synthetic-existing-key-with-at-least-32-bytes)$']
+
+[[allowlists]]
+description = "Synthetic retained verification key in the snapshot roundtrip test"
+condition = "AND"
+regexTarget = "secret"
+paths = ['^server/crates/memoswishd/src/snapshot\.rs$']
+regexes = ['^synthetic-retained-key-with-at-least-32-bytes$']

@@ -1,0 +1,32 @@
+# 先在私有回环完成受控账户注册，再使用此关闭注册的配置。
+profile = "embedded"
+role = "all_in_one"
+mode = "multi_tenant"
+bind = "127.0.0.1:8787"
+health_bind = "127.0.0.1:8788"
+data_dir = "data"
+seed_demo = false
+registration_open = false
+# legacy 保留密码登录；邮件找回需按密码生命周期指南配置 enabled 和 SMTP。
+password_profile = "legacy"
+cors_origins = ["https://learn.example.com"]
+
+[proxy_trust]
+trusted_peers = ["127.0.0.1"]
+normalized_header = "x-real-ip"
+
+[mcp]
+allowed_hosts = ["learn.example.com"]
+allowed_origins = ["https://learn.example.com"]
+
+[oauth]
+enabled = true
+issuer = "https://learn.example.com"
+public_base_url = "https://learn.example.com"
+mcp_resource = "https://learn.example.com/mcp"
+
+[tts]
+auto_detect_espeak = false
+
+[object_store]
+put_shutdown_timeout_secs = 65

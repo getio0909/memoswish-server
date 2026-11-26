@@ -1,0 +1,32 @@
+# 仅为配置模板；替换共享凭据和地址后，使用 postgres,s3,redis 构建。
+# 先以直连管理凭据运行 migrate，再以运行凭据分别启动各角色。
+profile = "horizontal"
+# 每租户未完成导入上限（1–100）；也可用 MEMOSWISH_IMPORT_STAGING_LIMIT。
+import_staging_limit = 2
+role = "api"
+mode = "multi_tenant"
+bind = "127.0.0.1:8787"
+database_url = "postgres://user@db.example.invalid/memoswish"
+db_max_connections = 10
+# 通过 MEMOSWISH_JWT_SECRET 注入各副本共享的随机密钥（至少 32 字节）。
+seed_demo = false
+default_plan = "self_hosted"
+registration_open = false
+
+[tts]
+default_engine = "unconfigured"
+auto_detect_espeak = false
+
+[admission]
+backend = "redis"
+redis_url = "redis://redis-admission.example.invalid:6380"
+namespace = "memoswish-example"
+
+[object_store]
+backend = "s3"
+
+[object_store.s3]
+endpoint = "https://s3.example.invalid"
+bucket = "learntok"
+region = "us-east-1"
+# 通过 MEMOSWISH_S3_ACCESS_KEY_ID 和 MEMOSWISH_S3_SECRET_ACCESS_KEY 注入实际凭据。

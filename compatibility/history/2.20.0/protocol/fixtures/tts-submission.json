@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "items": [
+    {
+      "card_id": "card-1",
+      "expected_revision": 1,
+      "item_id": "item-1",
+      "receipt": {
+        "asset_id": "asset-1",
+        "card_id": "card-1",
+        "disposition": "attached",
+        "expected_revision": 1,
+        "item_id": "item-1",
+        "resulting_revision": 2
+      }
+    }
+  ],
+  "request_id": "request-1"
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OidcStartRequest",
+  "description": "发起浏览器或原生事务；关联身份使用独立的已认证端点。",
+  "type": "object",
+  "properties": {
+    "app_state": {
+      "type": "string"
+    },
+    "code_challenge": {
+      "type": "string"
+    },
+    "native_client_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
+    "return_uri": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "return_uri",
+    "app_state",
+    "code_challenge"
+  ]
+}

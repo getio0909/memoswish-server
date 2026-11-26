@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OidcStartResponse",
+  "type": "object",
+  "properties": {
+    "attempt_id": {
+      "type": "string"
+    },
+    "expires_in": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    },
+    "launch_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nonce": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "attempt_id",
+    "expires_in"
+  ]
+}

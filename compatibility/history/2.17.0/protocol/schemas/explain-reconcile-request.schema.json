@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplainReconcileRequest",
+  "description": "管理员核账只能提供一类已核验的数字或未收费证明摘要。",
+  "type": "object",
+  "properties": {
+    "input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64"
+    },
+    "not_charged_reference_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "output_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64"
+    }
+  }
+}

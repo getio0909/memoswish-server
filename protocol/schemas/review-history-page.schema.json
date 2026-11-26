@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewHistoryPage",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ReviewHistoryEntry"
+      }
+    },
+    "next_cursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "$defs": {
+    "LearnerCardControl": {
+      "type": "object",
+      "properties": {
+        "buried_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "suspended": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "card_id",
+        "revision",
+        "suspended"
+      ]
+    },
+    "ReviewHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "archived": {
+          "type": "boolean"
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "control": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LearnerCardControl"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disposition": {
+          "type": "string"
+        },
+        "event_id": {
+          "type": "string"
+        },
+        "rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint8",
+          "maximum": 255,
+          "minimum": 0
+        },
+        "received_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "event_id",
+        "card_id",
+        "received_at",
+        "disposition",
+        "archived"
+      ]
+    }
+  }
+}

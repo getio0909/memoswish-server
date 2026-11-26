@@ -1,0 +1,23 @@
+[package]
+name = "memoswish-protocol"
+description = "Wire-level data contracts shared by memoswishd, the MCP gateway and the Memoswish apps."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+chrono.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+# 仅用于离线递归契约验证，关闭网络及文件解析默认特性。
+jsonschema = { version = "=0.60.2", default-features = false }

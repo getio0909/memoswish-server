@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SpeechDiagnostic",
+  "description": "公共诊断只返回已分类状态，不包含程序、模型路径、URL 或原始输出。",
+  "type": "object",
+  "properties": {
+    "configured": {
+      "type": "boolean"
+    },
+    "engine": {
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/SpeechDiagnosticState"
+    },
+    "voices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "engine",
+    "configured",
+    "state",
+    "voices"
+  ],
+  "$defs": {
+    "SpeechDiagnosticState": {
+      "type": "string",
+      "enum": [
+        "unconfigured",
+        "unchecked",
+        "available",
+        "unavailable",
+        "demo",
+        "unknown"
+      ]
+    }
+  }
+}

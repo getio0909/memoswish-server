@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# 目录本身是锁对象，避免可删除锁文件造成不同 inode 的并发窗口。
+if [[ $# -lt 1 || $1 == --help ]]; then
+  echo 'Usage: scripts/backup-embedded DATA_DIR NEW_BACKUP_DIR --memoswishd BINARY [--config TOML] [--database-url POSTGRES_URL]'
+  exit 2
+fi
+if [[ ! -d $1 || -L $1 ]]; then
+  echo 'Backup source must be an existing directory without a symbolic link.' >&2
+  exit 2
+fi
+exec flock --exclusive --nonblock -- "$1" node "$(dirname "$0")/backup-embedded.mjs" backup "$@"

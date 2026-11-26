@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AuthResponse",
+  "description": "登录 / 注册成功响应。",
+  "type": "object",
+  "properties": {
+    "access_token": {
+      "type": "string"
+    },
+    "expires_in": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    },
+    "token_type": {
+      "type": "string"
+    },
+    "user": {
+      "$ref": "#/$defs/UserProfile"
+    }
+  },
+  "required": [
+    "access_token",
+    "token_type",
+    "expires_in",
+    "user"
+  ],
+  "$defs": {
+    "UserProfile": {
+      "description": "当前用户概要。",
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "role": {
+          "description": "`owner` | `admin` | `editor` | `learner`。",
+          "type": "string"
+        },
+        "tenant_id": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "tenant_id",
+        "display_name",
+        "role"
+      ]
+    }
+  }
+}

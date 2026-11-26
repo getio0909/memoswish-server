@@ -1,0 +1,25 @@
+[package]
+name = "memoswish-feed"
+description = "Addictive learning feed engine for Memoswish: implicit-signal interpretation, FSRS scheduling and variable-reward feed generation."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+memoswish-core.workspace = true
+memoswish-protocol.workspace = true
+chrono.workspace = true
+fsrs.workspace = true
+serde.workspace = true
+sha2.workspace = true
+tokio.workspace = true
+
+[dev-dependencies]
+memoswish-storage = { workspace = true, features = ["sqlite", "test-support"] }
+
+[lints]
+workspace = true

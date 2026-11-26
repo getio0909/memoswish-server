@@ -1,0 +1,31 @@
+[test-groups]
+# PG 夹具同时持有所有者连接和业务池；跨用例串行，保留用例内部的真实锁竞态。
+postgres-capacity = { max-threads = 1 }
+
+[profile.default]
+retries = 0
+flaky-result = "fail"
+test-threads = 4
+slow-timeout = { period = "5s", terminate-after = 6, grace-period = "2s" }
+global-timeout = "5m"
+status-level = "all"
+final-status-level = "slow"
+
+[profile.fast-default.junit]
+path = "junit.xml"
+report-skipped = "all"
+
+[profile.fast-all.junit]
+path = "junit.xml"
+report-skipped = "all"
+
+[profile.integration]
+slow-timeout = { period = "10s", terminate-after = 6, grace-period = "2s" }
+
+[[profile.integration.overrides]]
+filter = 'test(postgres) | test(pg_test_support) | test(=runtime::deployment_tests::horizontal_bootstrap_and_role_isolation)'
+test-group = 'postgres-capacity'
+
+[profile.integration.junit]
+path = "junit.xml"
+report-skipped = "all"

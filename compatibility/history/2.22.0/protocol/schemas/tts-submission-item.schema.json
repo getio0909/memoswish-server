@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TtsSubmissionItem",
+  "type": "object",
+  "properties": {
+    "card_id": {
+      "type": "string"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "item_id": {
+      "type": "string"
+    },
+    "receipt": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TtsAttachmentReceipt"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "item_id",
+    "card_id",
+    "expected_revision"
+  ],
+  "$defs": {
+    "TtsAttachmentReceipt": {
+      "type": "object",
+      "properties": {
+        "asset_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "disposition": {
+          "$ref": "#/$defs/TtsDisposition"
+        },
+        "expected_revision": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "resulting_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "item_id",
+        "card_id",
+        "expected_revision",
+        "disposition"
+      ]
+    },
+    "TtsDisposition": {
+      "type": "string",
+      "enum": [
+        "attached",
+        "conflict",
+        "not_found",
+        "requester_revoked",
+        "failed",
+        "unknown"
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkspaceConfirmation",
+  "description": "离开及删除工作区都必须明确确认当前目标。",
+  "type": "object",
+  "properties": {
+    "confirmed_tenant_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "confirmed_tenant_id"
+  ]
+}

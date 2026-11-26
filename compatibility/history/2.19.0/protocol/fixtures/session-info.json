@@ -1,0 +1,8 @@
+{
+  "auth_time": 100,
+  "current": true,
+  "expires_at": 1000,
+  "provenance": "password",
+  "revoked": false,
+  "session_id": "session"
+}

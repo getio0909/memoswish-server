@@ -1,0 +1,41 @@
+# 由 make licenses-generate 结合 JSON 策略与结构化台账生成，禁止手改。
+[graph]
+all-features = true
+
+[advisories]
+version = 2
+yanked = "deny"
+unmaintained = "workspace"
+ignore = [
+  { id = "RUSTSEC-2023-0071", reason = "RustSec fixes private-key timing leakage in rsa 0.10.0, which supports Rust 1.87. Locked openidconnect 4.1.0 and sqlx-mysql 0.8.6 require rsa 0.9; there is no compatible openidconnect release that uses the fixed backend. The served OIDC path verifies with public keys. Private RSA operations are confined to local development tests." },
+  { id = "RUSTSEC-2026-0459", reason = "SQLx 0.8.6 constrains libsqlite3-sys to 0.30.x, below the 0.39.0 SQLite fix. SQLx 0.9.1 permits the fix and requires Rust 1.94. Untrusted APKG collections reject sidecar entries and WAL headers and are deserialized into private read-only immutable memory. Operator-managed databases and backup restores are trusted file inputs." },
+  { id = "RUSTSEC-2026-0543", reason = "RustSec classifies this advisory as informational (unmaintained) for all Chrono versions and identifies no vulnerable API. Keep the exact locked dependency graph pending review of UTC wire timestamps, both SQLx backends and upstream dependencies before replacing Chrono." },
+]
+
+[licenses]
+version = 2
+confidence-threshold = 0.93
+allow = ["Apache-2.0", "Apache-2.0 WITH LLVM-exception", "MIT", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "Unicode-3.0", "CDLA-Permissive-2.0", "MPL-2.0", "0BSD"]
+unused-allowed-license = "warn"
+
+[[licenses.exceptions]]
+name = "xxhash-rust"
+version = "=0.8.19"
+allow = ["BSL-1.0"]
+
+[[licenses.exceptions]]
+name = "libfuzzer-sys"
+version = "=0.4.13"
+allow = ["NCSA"]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "allow"
+highlight = "all"
+deny = [{ name = "openssl" }, { name = "openssl-sys" }]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

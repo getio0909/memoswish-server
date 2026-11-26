@@ -1,0 +1,907 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LibraryEntry",
+  "type": "object",
+  "properties": {
+    "card": {
+      "$ref": "#/$defs/Card"
+    },
+    "favorite": {
+      "$ref": "#/$defs/FavoriteState"
+    }
+  },
+  "required": [
+    "card",
+    "favorite"
+  ],
+  "$defs": {
+    "AlignmentQuality": {
+      "description": "native 仅说明边界由提供者返回，不构成精度认证。",
+      "type": "string",
+      "enum": [
+        "native",
+        "estimated",
+        "unknown"
+      ]
+    },
+    "AssetRef": {
+      "description": "二进制资产引用（音频、图片等）。`sha256` 同时作为客户端磁盘缓存键。",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "description": "字节数。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "key": {
+          "description": "对象存储内部键，例如 `tenants/<tid>/tts/<sha>.wav`。",
+          "type": "string"
+        },
+        "mime": {
+          "description": "MIME 类型，例如 `audio/wav`。",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "内容 SHA-256（小写十六进制）。",
+          "type": "string"
+        },
+        "url": {
+          "description": "可直接下载的 URL；以 `/` 开头时表示相对于服务端 base URL。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "url",
+        "mime",
+        "bytes",
+        "sha256"
+      ]
+    },
+    "AudioKind": {
+      "type": "string",
+      "enum": [
+        "speech",
+        "demo",
+        "unknown"
+      ]
+    },
+    "BgmBinding": {
+      "description": "卡片上挂载的 BGM。",
+      "type": "object",
+      "properties": {
+        "base_volume": {
+          "description": "BGM 基础音量 0.0 ~ 1.0（闪避前）。",
+          "type": "number",
+          "format": "float"
+        },
+        "policy": {
+          "$ref": "#/$defs/BgmPolicy",
+          "default": "continue"
+        },
+        "theme_key": {
+          "description": "主题键：相同主题键的连续卡片共享同一条 BGM 而不重启。",
+          "type": "string"
+        },
+        "track": {
+          "$ref": "#/$defs/BgmTrack"
+        }
+      },
+      "required": [
+        "track",
+        "theme_key",
+        "base_volume"
+      ]
+    },
+    "BgmPolicy": {
+      "description": "卡片切换时 BGM 的处理策略。",
+      "oneOf": [
+        {
+          "description": "与上一张卡相同主题时连续播放，不重新开始。",
+          "type": "string",
+          "const": "continue"
+        },
+        {
+          "description": "主题（`theme_key`）变化时交叉淡入淡出切换曲目。",
+          "type": "string",
+          "const": "switch_on_theme"
+        },
+        {
+          "description": "本卡静音 BGM。",
+          "type": "string",
+          "const": "silence"
+        }
+      ]
+    },
+    "BgmTrack": {
+      "description": "背景音乐曲目。",
+      "type": "object",
+      "properties": {
+        "artist": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "asset": {
+          "$ref": "#/$defs/AssetRef"
+        },
+        "bpm": {
+          "description": "每分钟节拍数。",
+          "type": "integer",
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "duration_ms": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "energy": {
+          "description": "能量值 0.0 ~ 1.0。",
+          "type": "number",
+          "format": "float"
+        },
+        "id": {
+          "type": "string"
+        },
+        "license": {
+          "description": "授权说明，例如 `CC0`、`generated`。",
+          "type": "string"
+        },
+        "loop_end_ms": {
+          "description": "无缝循环终点（毫秒，0 表示曲目结尾）。",
+          "type": "integer",
+          "format": "uint32",
+          "default": 0,
+          "minimum": 0
+        },
+        "loop_start_ms": {
+          "description": "无缝循环起点（毫秒）。",
+          "type": "integer",
+          "format": "uint32",
+          "default": 0,
+          "minimum": 0
+        },
+        "moods": {
+          "description": "情绪标签，例如 `calm`、`focus`、`upbeat`、`epic`。",
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        },
+        "pcm": {
+          "description": "输出完整循环及源范围；所有帧坐标均为半开区间。",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PcmLoop"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provenance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContentProvenance"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "description": "曲库版本；历史 JSON 缺省为 1，嵌入卡片的曲目保留其挂载时快照。",
+          "type": "integer",
+          "format": "uint32",
+          "default": 1,
+          "minimum": 0
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "asset",
+        "duration_ms",
+        "bpm",
+        "energy",
+        "license"
+      ]
+    },
+    "Card": {
+      "description": "学习微卡片。",
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "description": "领域特有的结构化元数据（任意 JSON 对象）。客户端可渲染为键值标签。",
+          "type": "object",
+          "additionalProperties": true
+        },
+        "back": {
+          "$ref": "#/$defs/CardFace"
+        },
+        "bgm": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BgmBinding"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContentMetadata"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deck_id": {
+          "type": "string"
+        },
+        "ducking": {
+          "$ref": "#/$defs/DuckingParams",
+          "default": {
+            "attack_ms": 150,
+            "curve": "ease_out",
+            "duck_ratio": 0.25,
+            "hold_ms": 120,
+            "release_ms": 400
+          }
+        },
+        "front": {
+          "$ref": "#/$defs/CardFace"
+        },
+        "id": {
+          "type": "string"
+        },
+        "language": {
+          "description": "卡片主语言（BCP-47），决定 TTS 发音语言。",
+          "type": "string"
+        },
+        "revision": {
+          "description": "每次内容变化递增，客户端据此失效缓存。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "tags": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        },
+        "template": {
+          "description": "渲染模板提示（自由字符串），例如 `basic`、`term`、`qa`、`cloze`、`code`、`formula`、`timeline`。\n客户端不认识的模板必须回退到通用布局。",
+          "type": "string",
+          "default": "basic"
+        },
+        "tts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TtsTrack"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "visual": {
+          "$ref": "#/$defs/CardVisual",
+          "default": {
+            "accent": "#FE2C55",
+            "background": "#101018"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "deck_id",
+        "language",
+        "front",
+        "back",
+        "revision",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    "CardFace": {
+      "description": "卡片的某一面。",
+      "type": "object",
+      "properties": {
+        "blocks": {
+          "description": "内容块，按顺序渲染。",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ContentBlock"
+          }
+        },
+        "subtitle": {
+          "description": "副标题：发音 / 拼音 / 年代 / 化学式 / 作者等任意短注释。",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "description": "主标题（正面通常是要记住的对象或问题；背面可为空）。",
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "CardVisual": {
+      "description": "卡片视觉主题。",
+      "type": "object",
+      "properties": {
+        "accent": {
+          "description": "强调色（卡拉 OK 高亮色）`#RRGGBB`。",
+          "type": "string"
+        },
+        "background": {
+          "description": "背景色 `#RRGGBB`。",
+          "type": "string"
+        },
+        "image": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssetRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "background",
+        "accent"
+      ]
+    },
+    "ContentBlock": {
+      "description": "卡面内容块。以 `type` 字段区分；客户端必须容忍未知的 `type`（跳过或降级为纯文本）。",
+      "oneOf": [
+        {
+          "description": "文本，支持轻量 Markdown（粗体、斜体、行内代码、链接）。",
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "text"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ]
+        },
+        {
+          "description": "代码片段。",
+          "type": "object",
+          "properties": {
+            "highlight_lines": {
+              "description": "需要高亮的行号（从 1 开始）。",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "uint32",
+                "minimum": 0
+              }
+            },
+            "language": {
+              "description": "语言标识，例如 `rust`、`python`、`sql`。",
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "code"
+            }
+          },
+          "required": [
+            "type",
+            "language",
+            "source"
+          ]
+        },
+        {
+          "description": "数学 / 化学公式（LaTeX）。",
+          "type": "object",
+          "properties": {
+            "display": {
+              "description": "是否独立成行展示。",
+              "type": "boolean",
+              "default": false
+            },
+            "latex": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "math"
+            }
+          },
+          "required": [
+            "type",
+            "latex"
+          ]
+        },
+        {
+          "description": "图片。",
+          "type": "object",
+          "properties": {
+            "alt": {
+              "description": "替代文本（无障碍 + 图片加载失败时显示）。",
+              "type": "string",
+              "default": ""
+            },
+            "asset": {
+              "$ref": "#/$defs/AssetRef"
+            },
+            "type": {
+              "type": "string",
+              "const": "image"
+            }
+          },
+          "required": [
+            "type",
+            "asset"
+          ]
+        },
+        {
+          "description": "引用 / 名言。",
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "text": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "const": "quote"
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ]
+        },
+        {
+          "description": "列表。",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ordered": {
+              "type": "boolean",
+              "default": false
+            },
+            "type": {
+              "type": "string",
+              "const": "list"
+            }
+          },
+          "required": [
+            "type",
+            "items"
+          ]
+        },
+        {
+          "description": "表格。",
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "type": "string"
+              }
+            },
+            "rows": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "type": {
+              "type": "string",
+              "const": "table"
+            }
+          },
+          "required": [
+            "type",
+            "rows"
+          ]
+        },
+        {
+          "description": "外部链接。",
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "type": {
+              "type": "string",
+              "const": "link"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        }
+      ]
+    },
+    "ContentMetadata": {
+      "description": "未知状态保留原文；只有精确 published 可进入学习。",
+      "type": "object",
+      "properties": {
+        "observed_generation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/ContentProvenance",
+          "default": {
+            "attribution": "",
+            "method": "",
+            "rights": "",
+            "sources": []
+          }
+        },
+        "publication": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "publication"
+      ]
+    },
+    "ContentProvenance": {
+      "description": "来源字段均为调用方声明，不表示服务端核实。",
+      "type": "object",
+      "properties": {
+        "attribution": {
+          "type": "string",
+          "default": ""
+        },
+        "method": {
+          "type": "string",
+          "default": ""
+        },
+        "provider_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights": {
+          "type": "string",
+          "default": ""
+        },
+        "source_generation_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id_is_digest": {
+          "description": "true 表示 source_id 为原始 UTF-8 身份的 sha256:hex 摘要；缺省为原文。",
+          "type": "boolean"
+        },
+        "source_publication_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DuckCurve": {
+      "description": "闪避包络曲线形状。",
+      "type": "string",
+      "enum": [
+        "linear",
+        "ease_out",
+        "exponential"
+      ]
+    },
+    "DuckingParams": {
+      "description": "音频闪避（Audio Ducking）参数：TTS 发声时压低 BGM。",
+      "type": "object",
+      "properties": {
+        "attack_ms": {
+          "description": "压低所用时间（毫秒），规范要求 <= 150。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "curve": {
+          "$ref": "#/$defs/DuckCurve",
+          "default": "ease_out"
+        },
+        "duck_ratio": {
+          "description": "闪避后 BGM 音量占基础音量的比例，推荐 0.2 ~ 0.3。",
+          "type": "number",
+          "format": "float"
+        },
+        "hold_ms": {
+          "description": "TTS 结束后保持压低的时间（毫秒），避免词间呼吸导致音量抖动。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "release_ms": {
+          "description": "恢复所用时间（毫秒）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "duck_ratio",
+        "attack_ms",
+        "hold_ms",
+        "release_ms"
+      ]
+    },
+    "FavoriteState": {
+      "type": "object",
+      "properties": {
+        "card_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "starred": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "card_id",
+        "starred",
+        "revision"
+      ]
+    },
+    "PcmLoop": {
+      "type": "object",
+      "properties": {
+        "bits_per_sample": {
+          "type": "integer",
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "channels": {
+          "type": "integer",
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "frames": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sample_rate": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "source_end_frame": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "source_start_frame": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "sample_rate",
+        "channels",
+        "bits_per_sample",
+        "frames",
+        "source_sha256",
+        "source_start_frame",
+        "source_end_frame"
+      ]
+    },
+    "TtsTrack": {
+      "description": "TTS 发音音轨。",
+      "type": "object",
+      "properties": {
+        "alignment_quality": {
+          "description": "缺省表示未知，不从引擎或时间戳推断质量。",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AlignmentQuality"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "audio": {
+          "description": "音频资产。",
+          "$ref": "#/$defs/AssetRef"
+        },
+        "audio_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AudioKind"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "duration_ms": {
+          "description": "音频总时长（毫秒）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "engine": {
+          "description": "生成该音轨的引擎标识，例如 `placeholder`、`espeak-ng`。",
+          "type": "string"
+        },
+        "language": {
+          "description": "BCP-47 语言标签，例如 `en-US`、`zh-CN`。",
+          "type": "string"
+        },
+        "provenance": {
+          "description": "沿用内容来源词汇；仅为来源声明，不表示权利核验。",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContentProvenance"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "text": {
+          "description": "被朗读的原文。",
+          "type": "string"
+        },
+        "voice": {
+          "description": "音色 / 发音人标识。",
+          "type": "string"
+        },
+        "words": {
+          "description": "逐词时间戳，按 `start_ms` 升序且互不重叠。",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WordTimestamp"
+          }
+        }
+      },
+      "required": [
+        "audio",
+        "text",
+        "language",
+        "voice",
+        "engine",
+        "duration_ms",
+        "words"
+      ]
+    },
+    "WordTimestamp": {
+      "description": "逐字（逐词）时间戳，驱动卡拉 OK 高亮。",
+      "type": "object",
+      "properties": {
+        "char_end": {
+          "description": "在 `TtsTrack.text` 中的结束位置（Unicode 标量下标，不含）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "char_start": {
+          "description": "在 `TtsTrack.text` 中的起始位置（Unicode 标量下标，含）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "end_ms": {
+          "description": "结束时间（毫秒，`end_ms >= start_ms`）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "start_ms": {
+          "description": "起始时间（毫秒，相对音频起点）。",
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "text": {
+          "description": "该词的展示文本。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "start_ms",
+        "end_ms",
+        "char_start",
+        "char_end"
+      ]
+    }
+  }
+}

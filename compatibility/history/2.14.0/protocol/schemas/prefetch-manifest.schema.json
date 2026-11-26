@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrefetchManifest",
+  "description": "预加载清单（Pre-fetch Manifest）。",
+  "type": "object",
+  "properties": {
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PrefetchEntry"
+      }
+    },
+    "expires_at": {
+      "description": "资产 URL 的有效期（签名 URL 场景）；本地存储时为空。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "window_after": {
+      "description": "建议提前加载的“当前卡之后”的卡片数。",
+      "type": "integer",
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0
+    },
+    "window_before": {
+      "description": "建议在内存中保留的“当前卡之前”的卡片数。",
+      "type": "integer",
+      "format": "uint8",
+      "maximum": 255,
+      "minimum": 0
+    }
+  },
+  "required": [
+    "window_before",
+    "window_after",
+    "entries"
+  ],
+  "$defs": {
+    "AssetRef": {
+      "description": "二进制资产引用（音频、图片等）。`sha256` 同时作为客户端磁盘缓存键。",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "description": "字节数。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "key": {
+          "description": "对象存储内部键，例如 `tenants/<tid>/tts/<sha>.wav`。",
+          "type": "string"
+        },
+        "mime": {
+          "description": "MIME 类型，例如 `audio/wav`。",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "内容 SHA-256（小写十六进制）。",
+          "type": "string"
+        },
+        "url": {
+          "description": "可直接下载的 URL；以 `/` 开头时表示相对于服务端 base URL。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "url",
+        "mime",
+        "bytes",
+        "sha256"
+      ]
+    },
+    "PrefetchEntry": {
+      "description": "预加载条目：客户端应提前下载并解码的资产。",
+      "type": "object",
+      "properties": {
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssetRef"
+          }
+        },
+        "card_id": {
+          "type": "string"
+        },
+        "priority": {
+          "description": "0 为最高优先级（紧邻当前卡）。",
+          "type": "integer",
+          "format": "uint8",
+          "maximum": 255,
+          "minimum": 0
+        },
+        "slot": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "slot",
+        "card_id",
+        "priority",
+        "assets"
+      ]
+    }
+  }
+}

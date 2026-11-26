@@ -1,0 +1,16 @@
+{
+  "content_lifecycle": true,
+  "features": [
+    "self-hosted"
+  ],
+  "mode": "single_user",
+  "name": "learntokd",
+  "oidc_providers": [],
+  "opaque_sessions": true,
+  "protocol_version": "2.22.0",
+  "registration_open": false,
+  "tts_engines": [
+    "placeholder"
+  ],
+  "version": "0.1.0"
+}

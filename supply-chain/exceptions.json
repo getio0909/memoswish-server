@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "owners": {
+    "E4": "open"
+  },
+  "exceptions": [
+    {
+      "id": "RUSTSEC-2023-0071",
+      "kind": "advisory",
+      "ecosystem": "cargo",
+      "component": {
+        "name": "rsa",
+        "version": "0.9.10",
+        "source": "registry+https://github.com/rust-lang/crates.io-index"
+      },
+      "profiles": [
+        "repository-all-features-all-targets"
+      ],
+      "parents": [
+        "memoswishd",
+        "openidconnect",
+        "sqlx-mysql"
+      ],
+      "aliases": [
+        "CVE-2023-49092",
+        "GHSA-c38w-74pg-36hr",
+        "GHSA-4grx-2x9w-596c"
+      ],
+      "owner": "E4",
+      "reason": "RustSec fixes private-key timing leakage in rsa 0.10.0, which supports Rust 1.87. Locked openidconnect 4.1.0 and sqlx-mysql 0.8.6 require rsa 0.9; there is no compatible openidconnect release that uses the fixed backend. The served OIDC path verifies with public keys. Private RSA operations are confined to local development tests.",
+      "created_at": "2026-11-07T00:00:00Z",
+      "review_by": "2026-12-26",
+      "expires_at": "2026-12-26T00:00:00Z",
+      "review": {
+        "at": "2026-11-25T00:00:00Z",
+        "by": "DEP1 fix-round implementer",
+        "evidence": "RustSec 2026-11-25 lists >=0.10.0; crates.io manifests still restrict the locked OIDC and MySQL parents to 0.9. Reviewed private-key call sites, all locked direct parents and the open E4 plan row."
+      },
+      "upstream": "https://rustsec.org/advisories/RUSTSEC-2023-0071.html",
+      "removal": "Adopt a verified Rust 1.88-compatible OIDC and SQLx graph without affected rsa 0.9, and update the daemon test dependency.",
+      "exposure": "memoswish-auth uses openidconnect for public-key RS256 verification. The locked sqlx-mysql driver uses only public-key encryption for password exchange, and the daemon accepts SQLite and PostgreSQL database URLs. Direct daemon RSA private-key generation and token signing are local OIDC test code.",
+      "mitigation": "Retain bounded OIDC public-key verification. Production JWT signing uses the configured non-RSA signing path; no production handler exposes RSA private-key operations."
+    },
+    {
+      "id": "RUSTSEC-2026-0459",
+      "kind": "advisory",
+      "ecosystem": "cargo",
+      "component": {
+        "name": "libsqlite3-sys",
+        "version": "0.30.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index"
+      },
+      "profiles": [
+        "repository-all-features-all-targets"
+      ],
+      "parents": [
+        "sqlx-sqlite"
+      ],
+      "aliases": [
+        "CVE-2026-119375",
+        "GHSA-72w2-rjgg-q729"
+      ],
+      "owner": "E4",
+      "reason": "SQLx 0.8.6 constrains libsqlite3-sys to 0.30.x, below the 0.39.0 SQLite fix. SQLx 0.9.1 permits the fix and requires Rust 1.94. Untrusted APKG collections reject sidecar entries and WAL headers and are deserialized into private read-only immutable memory. Operator-managed databases and backup restores are trusted file inputs.",
+      "created_at": "2026-11-11T00:00:00Z",
+      "review_by": "2026-12-26",
+      "expires_at": "2026-12-26T00:00:00Z",
+      "review": {
+        "at": "2026-11-25T00:00:00Z",
+        "by": "DEP1 fix-round implementer",
+        "evidence": "RustSec 2026-11-25 lists >=0.39.0. Crates.io lists SQLx SQLite 0.9.1 with the fixed range and Rust 1.94; 0.9.0-alpha.1 supports Rust 1.86 and excludes the fix. Reviewed the locked parent, APKG sidecar and WAL regressions, and the open E4 plan row."
+      },
+      "upstream": "https://rustsec.org/advisories/RUSTSEC-2026-0459.html",
+      "removal": "Adopt a verified Rust 1.88-compatible SQLx graph using patched bundled libsqlite3-sys >=0.39.0.",
+      "exposure": "Bundled SQLite 3.46.0 is reached through sqlx-sqlite. The disclosed condition needs a database file and a mismatched sibling WAL; APKG input reaches private in-memory deserialization without a sibling file. DeckPack and mobile do not open uploaded SQLite collections.",
+      "mitigation": "Existing APKG immutable private read-only in-memory deserialization; reject sidecars and WAL headers. DeckPack/mobile do not open imported SQLite. Operator restore inputs remain trusted."
+    },
+    {
+      "id": "RUSTSEC-2026-0543",
+      "kind": "advisory",
+      "ecosystem": "cargo",
+      "component": {
+        "name": "chrono",
+        "version": "0.4.45",
+        "source": "registry+https://github.com/rust-lang/crates.io-index"
+      },
+      "profiles": [
+        "repository-all-features-all-targets"
+      ],
+      "parents": [
+        "memoswish-auth",
+        "memoswish-content",
+        "memoswish-core",
+        "memoswish-feed",
+        "memoswish-protocol",
+        "memoswish-storage",
+        "memoswishd",
+        "oauth2",
+        "openidconnect",
+        "rmcp",
+        "schemars",
+        "serde_with",
+        "sqlx-core",
+        "sqlx-mysql",
+        "sqlx-postgres",
+        "sqlx-sqlite"
+      ],
+      "aliases": [],
+      "owner": "E4",
+      "reason": "RustSec classifies this advisory as informational (unmaintained) for all Chrono versions and identifies no vulnerable API. Keep the exact locked dependency graph pending review of UTC wire timestamps, both SQLx backends and upstream dependencies before replacing Chrono.",
+      "created_at": "2026-11-25T00:00:00Z",
+      "review_by": "2026-12-26",
+      "expires_at": "2026-12-26T00:00:00Z",
+      "review": {
+        "at": "2026-11-25T00:00:00Z",
+        "by": "DEP1 fix-round implementer",
+        "evidence": "RustSec 2026-11-25 still marks all versions unmaintained without a patched version or affected API. Checked Rust UTC, SQLx, OAuth/OIDC, MCP and schema usage, the sixteen locked direct parents and the open E4 plan row."
+      },
+      "upstream": "https://rustsec.org/advisories/RUSTSEC-2026-0543.html",
+      "removal": "Remove Chrono from the all-features/all-targets graph after preserving timestamp contracts and storage compatibility, or remove the exception if RustSec withdraws the advisory.",
+      "exposure": "Reachable UTC timestamp construction, arithmetic and serialization; direct SQLx, OAuth/OIDC, MCP and schema dependency paths. RustSec identifies no affected function or vulnerability.",
+      "mitigation": "Require the exact crates.io version and direct-parent set; retain normal advisory checking for all other advisory IDs. E4 must review a replacement or the scope and evidence before the exclusive expiry."
+    },
+    {
+      "id": "license-xxhash-rust-0.8.19",
+      "kind": "license",
+      "ecosystem": "cargo",
+      "component": {
+        "name": "xxhash-rust",
+        "version": "0.8.19",
+        "source": "registry+https://github.com/rust-lang/crates.io-index"
+      },
+      "profiles": [
+        "repository-all-features-all-targets"
+      ],
+      "parents": [
+        "redis"
+      ],
+      "allow": [
+        "BSL-1.0"
+      ],
+      "owner": "E4",
+      "reason": "Redis 1.8.1 uses the 0.8 release line of xxhash-rust. The exact locked 0.8.19 and newer releases 0.8.20 and 0.8.21 retain BSL-1.0. Reviewed Boost text is included in the exact inventory; version changes require review.",
+      "created_at": "2026-11-11T00:00:00Z",
+      "review_by": "2026-12-26",
+      "expires_at": "2026-12-26T00:00:00Z",
+      "review": {
+        "at": "2026-11-25T00:00:00Z",
+        "by": "DEP1 fix-round implementer",
+        "evidence": "Checked released Redis 1.8.1 and 1.8.3 manifests, BSL-1.0 in xxhash-rust 0.8.19 through 0.8.21, locked graph, Redis API usage, exact retained license and open E4 plan row."
+      },
+      "upstream": "https://github.com/DoumanAsh/xxhash-rust",
+      "removal": "Remove dependency or approve license globally after review",
+      "exposure": "The Redis adapter links redis with the xxh3 dependency. The crate uses it for data value digests; the repository uses Redis Lua scripts for rate limiting and does not call the value digest API.",
+      "mitigation": "Retain exact BSL-1.0 license and copyright text; exception is limited to version 0.8.19 and reviewed on drift."
+    },
+    {
+      "id": "license-libfuzzer-sys-0.4.13",
+      "kind": "license",
+      "ecosystem": "cargo",
+      "component": {
+        "name": "libfuzzer-sys",
+        "version": "0.4.13",
+        "source": "registry+https://github.com/rust-lang/crates.io-index"
+      },
+      "profiles": [
+        "repository-all-features-all-targets"
+      ],
+      "parents": [
+        "memoswish-fuzz"
+      ],
+      "allow": [
+        "NCSA"
+      ],
+      "owner": "E4",
+      "reason": "Development-only cargo-fuzz runtime. Exact upstream package declares NCSA in addition to MIT OR Apache-2.0; LLVM source headers additionally retain Apache-2.0 WITH LLVM-exception.",
+      "created_at": "2026-11-11T00:00:00Z",
+      "review_by": "2026-12-26",
+      "expires_at": "2026-12-26T00:00:00Z",
+      "review": {
+        "at": "2026-11-25T00:00:00Z",
+        "by": "DEP1 fix-round implementer",
+        "evidence": "Checked crates.io 0.4.13 as the latest release with NCSA still required, its exact Rust and LLVM notices, the locked fuzz-only graph and the open E4 plan row."
+      },
+      "upstream": "https://github.com/rust-fuzz/libfuzzer/tree/719e4efb9b8857ebaa782ae59376c8cbb78fed0f",
+      "removal": "Re-review exact runtime/tool graph with E4 before expiry or version change",
+      "exposure": "The locked memoswish-fuzz harnesses invoke the development-only libFuzzer runtime; it is absent from the daemon runtime dependency closure.",
+      "mitigation": "Retain Rust MIT/Apache and full LLVM Apache-with-exception and legacy NCSA texts, attribution, binary redistribution conditions and disclaimers. Restrict exception to libfuzzer-sys =0.4.13; other NCSA packages remain denied."
+    }
+  ]
+}

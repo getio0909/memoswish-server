@@ -1,0 +1,96 @@
+[workspace]
+resolver = "3"
+members = [
+    "fuzz",
+    "crates/memoswish-protocol",
+    "crates/memoswish-core",
+    "crates/memoswish-storage",
+    "crates/memoswish-auth",
+    "crates/memoswish-content",
+    "crates/memoswish-media",
+    "crates/memoswish-feed",
+    "crates/memoswish-application",
+    "crates/memoswish-mcp",
+    "crates/memoswishd",
+]
+default-members = ["crates/memoswishd"]
+
+[workspace.package]
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.88"
+license = "Apache-2.0"
+repository = "https://github.com/getio0909/memoswish-server"
+homepage = "https://getio0909.github.io/memoswish-website/"
+authors = ["Memoswish contributors"]
+
+[workspace.dependencies]
+# internal crates
+memoswish-protocol = { path = "crates/memoswish-protocol" }
+memoswish-core = { path = "crates/memoswish-core" }
+memoswish-storage = { path = "crates/memoswish-storage", default-features = false }
+memoswish-auth = { path = "crates/memoswish-auth", default-features = false }
+memoswish-content = { path = "crates/memoswish-content" }
+memoswish-media = { path = "crates/memoswish-media" }
+memoswish-feed = { path = "crates/memoswish-feed" }
+memoswish-application = { path = "crates/memoswish-application" }
+memoswish-mcp = { path = "crates/memoswish-mcp" }
+
+# external crates
+prometheus = { version = "=0.14.0", default-features = false }
+rmcp = { version = "=3.9.0", default-features = false, features = ["server", "transport-io", "transport-streamable-http-server"] }
+futures = "0.3"
+tokio-util = { version = "0.7", features = ["codec"] }
+governor = { version = "=0.10.4", default-features = false, features = ["std"] }
+redis = { version = "=1.8.1", default-features = false, features = ["tokio-comp", "connection-manager", "script"] }
+aes-gcm = "0.10"
+quick-xml = { version = "0.41", features = ["serialize"] }
+getrandom = "0.4"
+url = "2.5.9"
+subtle = "2"
+zip = { version = "9.0", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+scraper = { version = "0.24", default-features = false }
+prost = "0.13"
+percent-encoding = "2"
+anyhow = "1"
+fsrs = "6.6"
+argon2 = { version = "0.5", features = ["std"] }
+async-trait = "0.1"
+axum = { version = "0.8", features = ["macros"] }
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde", "std"] }
+clap = { version = "4", features = ["derive", "env"] }
+hex = "0.4"
+hmac = "0.12"
+jsonwebtoken = { version = "10", default-features = false, features = ["aws_lc_rs"] }
+openidconnect = { version = "=4.1.0", default-features = false, features = ["accept-string-booleans"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+schemars = { version = "1", features = ["chrono04"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_path_to_error = "0.1"
+sha2 = "0.10"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "migrate", "macros", "chrono", "json"] }
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+toml = "0.8"
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "fs"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+uuid = { version = "1", features = ["v4", "v7", "serde"] }
+http-body-util = "0.1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+# 由 core 与 engine/domain 模块显式启用注入规则，其他层可使用系统时间。
+disallowed_methods = "allow"
+dbg_macro = "warn"
+todo = "warn"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

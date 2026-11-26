@@ -1,0 +1,13 @@
+{
+  "allowed_regions": [
+    "example-region"
+  ],
+  "hosted": true,
+  "notice_version": "notice-v1",
+  "privacy_url": "https://operator.example/privacy",
+  "purpose_versions": {
+    "external_ai": "provider-policy-v1"
+  },
+  "terms_url": "https://operator.example/terms",
+  "terms_version": "terms-v1"
+}

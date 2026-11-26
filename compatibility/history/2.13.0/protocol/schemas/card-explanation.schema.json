@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CardExplanation",
+  "description": "卡片 AI 深度解析响应（长按抽屉展示）。",
+  "type": "object",
+  "properties": {
+    "analogy": {
+      "description": "帮助记忆的生活化类比 / 助记法。",
+      "type": "string"
+    },
+    "card_id": {
+      "description": "关联卡片 ID。",
+      "type": "string"
+    },
+    "follow_up_questions": {
+      "description": "推荐追问问题。",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "description": "生成时间（UTC）。",
+      "type": "string",
+      "format": "date-time"
+    },
+    "key_points": {
+      "description": "结构化拆解要点。",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provider": {
+      "description": "解析来源（如 `\"builtin-heuristic\"` 或 `\"openai:gpt-4o-mini\"`）。",
+      "type": "string"
+    },
+    "summary": {
+      "description": "一句话核心直觉总结。",
+      "type": "string"
+    }
+  },
+  "required": [
+    "card_id",
+    "summary",
+    "key_points",
+    "analogy",
+    "provider",
+    "generated_at"
+  ]
+}

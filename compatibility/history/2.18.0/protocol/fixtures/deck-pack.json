@@ -1,0 +1,137 @@
+{
+  "cards": [
+    {
+      "back": {
+        "blocks": [
+          {
+            "text": "It was pure serendipity that we met.",
+            "type": "quote"
+          },
+          {
+            "text": "我们相遇纯属机缘巧合。",
+            "type": "text"
+          }
+        ],
+        "title": "意外发现美好事物的运气"
+      },
+      "bgm": {
+        "base_volume": 0.6000000238418579,
+        "policy": "continue",
+        "theme_key": "vocab-calm",
+        "track": {
+          "artist": "LearnTok Synth",
+          "asset": {
+            "bytes": 1323044,
+            "key": "shared/bgm/focus_pad.wav",
+            "mime": "audio/wav",
+            "sha256": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9",
+            "url": "/assets/shared/bgm/focus_pad.wav"
+          },
+          "bpm": 90,
+          "duration_ms": 30000,
+          "energy": 0.3499999940395355,
+          "id": "bgm_focus_pad",
+          "license": "generated",
+          "loop_end_ms": 30000,
+          "loop_start_ms": 0,
+          "moods": [
+            "focus",
+            "calm"
+          ],
+          "revision": 1,
+          "title": "Focus Pad"
+        }
+      },
+      "created_at": "2026-09-21T14:13:20Z",
+      "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+      "ducking": {
+        "attack_ms": 150,
+        "curve": "ease_out",
+        "duck_ratio": 0.25,
+        "hold_ms": 120,
+        "release_ms": 400
+      },
+      "front": {
+        "blocks": [
+          {
+            "text": "Finding something good without looking for it.",
+            "type": "text"
+          }
+        ],
+        "subtitle": "/ˌserənˈdɪpəti/",
+        "title": "serendipity"
+      },
+      "id": "0192f3a0-0000-7000-8000-000000000001",
+      "language": "en-US",
+      "revision": 3,
+      "tags": [
+        "english",
+        "b2"
+      ],
+      "template": "term",
+      "tts": {
+        "audio": {
+          "bytes": 52964,
+          "key": "tenants/local/tts/9f2c1e.wav",
+          "mime": "audio/wav",
+          "sha256": "9f2c1e8a4b7d6f00112233445566778899aabbccddeeff001122334455667780",
+          "url": "/assets/tenants/local/tts/9f2c1e.wav"
+        },
+        "duration_ms": 2400,
+        "engine": "placeholder",
+        "language": "en-US",
+        "text": "serendipity, finding something good",
+        "voice": "default",
+        "words": [
+          {
+            "char_end": 12,
+            "char_start": 0,
+            "end_ms": 900,
+            "start_ms": 0,
+            "text": "serendipity,"
+          },
+          {
+            "char_end": 20,
+            "char_start": 13,
+            "end_ms": 1450,
+            "start_ms": 1000,
+            "text": "finding"
+          },
+          {
+            "char_end": 30,
+            "char_start": 21,
+            "end_ms": 1950,
+            "start_ms": 1500,
+            "text": "something"
+          },
+          {
+            "char_end": 35,
+            "char_start": 31,
+            "end_ms": 2400,
+            "start_ms": 2000,
+            "text": "good"
+          }
+        ]
+      },
+      "updated_at": "2026-09-21T15:13:20Z",
+      "visual": {
+        "accent": "#FE2C55",
+        "background": "#101018"
+      }
+    }
+  ],
+  "deck": {
+    "card_count": 1,
+    "created_at": "2026-09-21T14:13:20Z",
+    "description": "High-frequency B2 words.",
+    "id": "0192f3a0-0000-7000-8000-0000000000d1",
+    "language": "en-US",
+    "revision": 1,
+    "tags": [
+      "english"
+    ],
+    "title": "English Vocabulary Starter"
+  },
+  "exported_at": "2026-09-21T16:18:20Z",
+  "version": "1.0"
+}

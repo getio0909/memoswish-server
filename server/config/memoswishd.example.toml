@@ -1,0 +1,231 @@
+# memoswishd 配置示例。复制为 memoswishd.toml 后按需修改：
+#   memoswishd --config config/memoswishd.toml serve
+# 所有字段均可省略（使用默认值），也可用环境变量覆盖：
+#   MEMOSWISH_BIND / MEMOSWISH_MODE / MEMOSWISH_DATA_DIR / MEMOSWISH_DATABASE_URL (或 DATABASE_URL)
+#   MEMOSWISH_JWT_SECRET / MEMOSWISH_REGISTRATION_OPEN / MEMOSWISH_SEED_DEMO / MEMOSWISH_TTS_ENGINE
+
+# 默认仅监听回环，局域网或远程设备使用 deploy/single-instance 的认证 HTTPS 部署。
+profile = "embedded"
+# 每租户未完成导入上限（1–100）；也可用 MEMOSWISH_IMPORT_STAGING_LIMIT。
+import_staging_limit = 2
+role = "all_in_one"
+bind = "127.0.0.1:8787"
+
+# single_user：个人自托管，免登录；multi_tenant：App API 需 JWT / API Token。
+# 商业 OAuth 启用时，/mcp 额外接受 lto_at_ 访问令牌。
+mode = "single_user"
+
+# 数据目录（SQLite 数据库、音频资产、自动生成的 JWT 密钥）。
+data_dir = "data"
+
+# 数据库。缺省为 sqlite://<data_dir>/learntok.db。PostgreSQL 示例：
+# database_url = "postgres://127.0.0.1:5432/memoswish"
+# 本机 Unix Socket（peer 认证）示例：
+# database_url = "postgres://YOUR_USER@%2Fvar%2Frun%2Fpostgresql/memoswish_dev"
+# 正整数连接上限。省略时：SQLite 文件库 8、内存库 1，PostgreSQL 10。
+# 显式值覆盖后端默认；内存库通常保持 1，避免私有缓存的连接间状态分离。
+# db_max_connections = 8
+
+# JWT 密钥（≥ 32 字节）。缺省时自动生成并保存到 <data_dir>/jwt_secret。
+# 密钥轮换：rotate-keys --id <new-id> --output <new-config.toml> 保留旧 key。
+# jwt_key_id = "rotation-20261107"
+# jwt_legacy_key_until = 1800000000
+# [jwt_keys.rotation-20261107]
+# 为此密钥的 secret 填入独立生成的随机值。
+# 保留 key 可设 verify_until；active key 不设退役时间。
+# 自行管理签名密钥时，通过 MEMOSWISH_JWT_SECRET 注入随机值。
+jwt_ttl_secs = 604800
+
+# 多租户模式下是否开放自助注册，以及新租户默认套餐。
+registration_open = false
+default_plan = "self_hosted"
+
+# 首次启动且没有任何卡组时写入演示内容。
+seed_demo = true
+
+# 允许跨域访问的 Origin。原生 App 不需要 CORS；仅 Flutter Web / 浏览器后台需要。
+# 默认为空：单用户模式免登录，开放 "*" 会让任意网页读取本机学习数据（仅限开发时使用）。
+cors_origins = []
+
+[tts]
+# 默认不合成语音；安装 espeak-ng 后显式设为 "espeak-ng"。
+# "placeholder" 仅用于主动选择的演示或测试。
+default_engine = "unconfigured"
+auto_detect_espeak = false
+
+# 自定义命令行 TTS（stdout 输出 WAV）。占位符：{text} {voice} {language} {wpm}
+# [[tts.commands]]
+# 仅经确认的离线命令显式声明 false；默认 true，须有 external_tts 用途授权。
+# external_transfer = false
+# id = "piper"
+# program = "piper"
+# args = ["--model", "/opt/piper/en_US-lessac-medium.onnx", "--output_file", "/dev/stdout"]
+# text_via_stdin = true
+# default_voice = "en_US-lessac-medium"
+# timeout_secs = 30
+
+[mcp]
+# 在 HTTP 服务上挂载 /mcp（Streamable HTTP）。
+http_enabled = true
+# 允许的浏览器 Origin（本机 Origin 始终允许）。
+allowed_origins = []
+# 公网部署填写可信域名，Host/Forwarded 不参与生成配置。
+allowed_hosts = ["localhost", "127.0.0.1", "::1"]
+# 每租户限流：突发容量与每秒补充量。
+rate_limit_burst = 120
+rate_limit_per_sec = 4.0
+
+[feed]
+# FSRS-6 目标记忆保留率（0.70 ~ 0.97），默认 0.90。
+desired_retention = 0.90
+# 自定义 FSRS-6 权重（17/19/21 维）；留空使用 open-spaced-repetition 官方默认参数。
+fsrs_parameters = []
+# 每次下发默认张数与预取窗口。
+default_page = 10
+max_page = 50
+window_before = 3
+window_after = 5
+recent_window = 20
+# 每个槽位先尝试惊喜桶的概率，其余按到期 / 新卡 / 强化权重选择。
+surprise_rate = 0.12
+due_weight = 0.55
+new_weight = 0.35
+reinforce_weight = 0.10
+scan_limit = 5000
+
+[ai]
+# 卡片 AI 深度解析（长按抽屉与 MCP `card_explain`）。
+# 留空时默认使用零外部依赖的确定性内置启发式引擎（builtin-heuristic）。
+# base_url = "https://api.openai.com/v1"
+# 通过 MEMOSWISH_AI_API_KEY 注入提供者签发的密钥。
+model = "gpt-4o-mini"
+
+# MCP OAuth 仅在 mcp-oauth 编译（默认已包含）、多租户模式、MCP HTTP 启用时可开启。
+# 必须通过 HTTPS 根路径部署；不使用 Host / Forwarded 头推导公共地址。
+[oauth]
+enabled = false
+issuer = "https://learn.example.com"
+public_base_url = "https://learn.example.com"
+mcp_resource = "https://learn.example.com/mcp"
+dynamic_registration = true
+authorization_code_ttl_secs = 120
+access_token_ttl_secs = 600
+refresh_token_ttl_secs = 2592000
+# 可选预注册公开客户端（DCR 关闭时仍可使用）。ID 与元数据不可原地更改。
+# [[oauth.pre_registered_clients]]
+# client_id = "desktop-client"
+# client_name = "Trusted Desktop"
+# redirect_uris = ["http://127.0.0.1:45321/callback"]
+# scope = "content:read content:write media:read media:write tts:generate feed:read"
+
+# OIDC 与 MCP OAuth 独立；必须 oidc（默认已包含）+ multi_tenant。
+# 提供者参数可用 MEMOSWISH_OIDC_PROVIDERS_JSON 覆盖；不要把真实密钥提交到配置仓库。
+[oidc]
+enabled = false
+public_base_url = "https://learn.example.com"
+# 必填：OS 随机 32 字节的无填充 base64url；所有副本一致。建议只设环境变量。
+# MEMOSWISH_OIDC_ENCRYPTION_KEY；备份并保留到全部 Apple 撤销任务完成。
+# 严格匹配，不接受请求动态提供的回调；生产优先 Universal/App Links。
+return_uris = ["com.memoswish.app:/auth/callback"]
+
+# [[oidc.providers]]
+# id = "google"
+# name = "Google"
+# kind = "google"
+# issuer = "https://accounts.google.com"
+# discovery_url = "https://accounts.google.com/.well-known/openid-configuration"
+# client_id = "YOUR_WEB_CLIENT_ID"
+# client_secret = ""
+# token_auth_method = "client_secret_post"
+# native_client_ids = ["YOUR_IOS_CLIENT_ID", "YOUR_ANDROID_CLIENT_ID"]
+# allowed_hosts = ["accounts.google.com", "oauth2.googleapis.com", "www.googleapis.com"]
+# algorithms = ["RS256"]
+# allow_private_network = false
+
+# [[oidc.providers]]
+# id = "apple"
+# name = "Apple"
+# kind = "apple"
+# issuer = "https://appleid.apple.com"
+# discovery_url = "https://appleid.apple.com/.well-known/openid-configuration"
+# client_id = "YOUR_SERVICES_ID"
+# native_client_ids = ["YOUR_APP_ID"]
+# allowed_hosts = ["appleid.apple.com"]
+# algorithms = ["RS256"]
+# token_auth_method = "client_secret_post"
+# apple_team_id = "YOUR_TEAM_ID"
+# apple_key_id = "YOUR_KEY_ID"
+# apple_private_key = ""
+# 私钥为完整 PKCS8 P-256 PEM，通过秘密配置注入。client_secret 由服务器 ES256 生成。
+# Apple Return URL: https://learn.example.com/v1/auth/oidc/apple/callback
+# Apple 通知地址: https://learn.example.com/v1/auth/oidc/apple/events
+
+# [[oidc.providers]]
+# id = "company"
+# name = "Company SSO"
+# kind = "generic"
+# issuer = "https://sso.example.com"
+# discovery_url = "https://sso.example.com/.well-known/openid-configuration"
+# client_id = "memoswish"
+# client_secret = ""
+# token_auth_method = "client_secret_basic"
+# allowed_hosts = ["sso.example.com"]
+# algorithms = ["RS256", "ES256"]
+# allow_private_network = false
+
+# 对象存储：默认 local，文件在 <data_dir>/assets。
+# s3 需要 --features s3 或 commercial-saas；不支持时启动失败，不静默回退。
+[object_store]
+# 后台 PUT 的共享上限，包含补偿阶段；创建任务前最多等待 250 毫秒，饱和返回 503。
+max_concurrent_puts = 32
+put_admission_timeout_ms = 250
+# 关闭时最多再等待 65 秒让 PUT 及补偿收尾，超时由启动/定期墓碑扫描恢复。
+put_shutdown_timeout_secs = 65
+backend = "local"
+
+# 启用 S3 时将 backend 改为 s3，凭据建议仅通过环境变量注入。
+[object_store.s3]
+endpoint = "http://127.0.0.1:9000"
+bucket = "learntok"
+region = "us-east-1"
+# MEMOSWISH_S3_ACCESS_KEY_ID / MEMOSWISH_S3_SECRET_ACCESS_KEY
+presign_ttl_secs = 3600
+# 可选 CDN / 公开桶基地址；未配置时返回签名 URL。
+# public_base_url = "https://cdn.example.com"
+# 环境覆盖：MEMOSWISH_OBJECT_STORE / MEMOSWISH_S3_ENDPOINT / MEMOSWISH_S3_BUCKET /
+# MEMOSWISH_S3_REGION / MEMOSWISH_S3_PUBLIC_BASE_URL / MEMOSWISH_S3_PRESIGN_TTL_SECS
+
+# 默认保持进程内准入；多副本显式启用 redis 编译特性并共享前缀和配额。
+# URL 可通过 MEMOSWISH_REDIS_URL 注入，backend 可通过 MEMOSWISH_ADMISSION_BACKEND 覆盖。
+[admission]
+backend = "memory"
+namespace = "learntok"
+timeout_ms = 500
+max_keys = 10000
+# redis_url = "redis://127.0.0.1:6390/0"
+# 仅基础设施不可用按路由类别开放或关闭；额度拒绝始终返回 429。
+work_failure = "closed"
+auth_failure = "closed"
+oauth_failure = "closed"
+oidc_failure = "closed"
+
+# 第一方 opaque 会话（S22 采用前旧 JWT 入口保持兼容）。
+[sessions]
+access_ttl_secs = 900
+family_ttl_secs = 2592000
+# S22 切换时写入固定 UTC Unix 秒；默认策略切换后 14 天，禁止每次重启重算。
+# legacy_verify_until = 1800000000
+
+# 密码计算每进程共享预算；内存计算上限为 workers × 19456 KiB。
+# workers 2..16，queue 0..64，max_bytes 32..1024；来源最多一个在途任务。
+[password_work]
+workers = 2
+queue = 8
+max_bytes = 1024
+
+# 默认只使用 socket IP，忽略所有客户端转发头。
+# 代理必须覆盖并输出单个规范 IP；仅允许 x-real-ip 或 x-learntok-client-ip。
+[proxy_trust]
+trusted_peers = []
+# normalized_header = "x-real-ip"
+# trusted_peers = ["127.0.0.1"]

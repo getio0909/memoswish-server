@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExportAsset",
+  "description": "工作区资产保留旧版十六进制格式。",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "string"
+    },
+    "encoding": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "mime": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "key",
+    "mime",
+    "encoding",
+    "data"
+  ]
+}

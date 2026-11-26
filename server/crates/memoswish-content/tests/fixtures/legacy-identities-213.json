@@ -1,0 +1,691 @@
+{
+  "baseline": "bae52d24295975cee128bef91ab80a33efdef9ce",
+  "cases": [
+    {
+      "fingerprint": "3f994d65ba71041067be7a36b53ffe9029224cf6edca5b7cdea70a8a6e06792d",
+      "fingerprint_auto_tts": "df5db5d326fff0306820c25dbd61da4f6e486b6b77b4267755e17849e1088d4b",
+      "format": "deckpack",
+      "input": {
+        "cards": [
+          {
+            "back": {
+              "blocks": [
+                {
+                  "text": "It was pure serendipity that we met.",
+                  "type": "quote"
+                },
+                {
+                  "text": "我们相遇纯属机缘巧合。",
+                  "type": "text"
+                }
+              ],
+              "title": "意外发现美好事物的运气"
+            },
+            "bgm": {
+              "base_volume": 0.6000000238418579,
+              "policy": "continue",
+              "theme_key": "vocab-calm",
+              "track": {
+                "artist": "LearnTok Synth",
+                "asset": {
+                  "bytes": 1323044,
+                  "key": "shared/bgm/focus_pad.wav",
+                  "mime": "audio/wav",
+                  "sha256": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9",
+                  "url": "/assets/shared/bgm/focus_pad.wav"
+                },
+                "bpm": 90,
+                "duration_ms": 30000,
+                "energy": 0.3499999940395355,
+                "id": "bgm_focus_pad",
+                "license": "generated",
+                "loop_end_ms": 30000,
+                "loop_start_ms": 0,
+                "moods": [
+                  "focus",
+                  "calm"
+                ],
+                "revision": 1,
+                "title": "Focus Pad"
+              }
+            },
+            "created_at": "2026-09-21T14:13:20Z",
+            "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "ducking": {
+              "attack_ms": 150,
+              "curve": "ease_out",
+              "duck_ratio": 0.25,
+              "hold_ms": 120,
+              "release_ms": 400
+            },
+            "front": {
+              "blocks": [
+                {
+                  "text": "Finding something good without looking for it.",
+                  "type": "text"
+                }
+              ],
+              "subtitle": "/ˌserənˈdɪpəti/",
+              "title": "serendipity"
+            },
+            "id": "0192f3a0-0000-7000-8000-000000000001",
+            "language": "en-US",
+            "revision": 3,
+            "tags": [
+              "english",
+              "b2"
+            ],
+            "template": "term",
+            "tts": {
+              "audio": {
+                "bytes": 52964,
+                "key": "tenants/local/tts/9f2c1e.wav",
+                "mime": "audio/wav",
+                "sha256": "9f2c1e8a4b7d6f00112233445566778899aabbccddeeff001122334455667780",
+                "url": "/assets/tenants/local/tts/9f2c1e.wav"
+              },
+              "duration_ms": 2400,
+              "engine": "placeholder",
+              "language": "en-US",
+              "text": "serendipity, finding something good",
+              "voice": "default",
+              "words": [
+                {
+                  "char_end": 12,
+                  "char_start": 0,
+                  "end_ms": 900,
+                  "start_ms": 0,
+                  "text": "serendipity,"
+                },
+                {
+                  "char_end": 20,
+                  "char_start": 13,
+                  "end_ms": 1450,
+                  "start_ms": 1000,
+                  "text": "finding"
+                },
+                {
+                  "char_end": 30,
+                  "char_start": 21,
+                  "end_ms": 1950,
+                  "start_ms": 1500,
+                  "text": "something"
+                },
+                {
+                  "char_end": 35,
+                  "char_start": 31,
+                  "end_ms": 2400,
+                  "start_ms": 2000,
+                  "text": "good"
+                }
+              ]
+            },
+            "updated_at": "2026-09-21T15:13:20Z",
+            "visual": {
+              "accent": "#FE2C55",
+              "background": "#101018"
+            }
+          }
+        ],
+        "deck": {
+          "card_count": 1,
+          "created_at": "2026-09-21T14:13:20Z",
+          "description": "High-frequency B2 words.",
+          "id": "0192f3a0-0000-7000-8000-0000000000d1",
+          "language": "en-US",
+          "tags": [
+            "english"
+          ],
+          "title": "English Vocabulary Starter"
+        },
+        "exported_at": "2026-09-21T16:18:20Z",
+        "version": "1.0"
+      },
+      "name": "deck-pack-fixture",
+      "serialized": "{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000001\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"term\",\"language\":\"en-US\",\"front\":{\"title\":\"serendipity\",\"subtitle\":\"/ˌserənˈdɪpəti/\",\"blocks\":[{\"type\":\"text\",\"text\":\"Finding something good without looking for it.\"}]},\"back\":{\"title\":\"意外发现美好事物的运气\",\"blocks\":[{\"type\":\"quote\",\"text\":\"It was pure serendipity that we met.\"},{\"type\":\"text\",\"text\":\"我们相遇纯属机缘巧合。\"}]},\"tags\":[\"english\",\"b2\"],\"tts\":{\"audio\":{\"key\":\"tenants/local/tts/9f2c1e.wav\",\"url\":\"/assets/tenants/local/tts/9f2c1e.wav\",\"mime\":\"audio/wav\",\"bytes\":52964,\"sha256\":\"9f2c1e8a4b7d6f00112233445566778899aabbccddeeff001122334455667780\"},\"text\":\"serendipity, finding something good\",\"language\":\"en-US\",\"voice\":\"default\",\"engine\":\"placeholder\",\"duration_ms\":2400,\"words\":[{\"text\":\"serendipity,\",\"start_ms\":0,\"end_ms\":900,\"char_start\":0,\"char_end\":12},{\"text\":\"finding\",\"start_ms\":1000,\"end_ms\":1450,\"char_start\":13,\"char_end\":20},{\"text\":\"something\",\"start_ms\":1500,\"end_ms\":1950,\"char_start\":21,\"char_end\":30},{\"text\":\"good\",\"start_ms\":2000,\"end_ms\":2400,\"char_start\":31,\"char_end\":35}]},\"bgm\":{\"track\":{\"id\":\"bgm_focus_pad\",\"revision\":1,\"title\":\"Focus Pad\",\"artist\":\"LearnTok Synth\",\"asset\":{\"key\":\"shared/bgm/focus_pad.wav\",\"url\":\"/assets/shared/bgm/focus_pad.wav\",\"mime\":\"audio/wav\",\"bytes\":1323044,\"sha256\":\"0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9\"},\"duration_ms\":30000,\"bpm\":90,\"moods\":[\"focus\",\"calm\"],\"energy\":0.35,\"loop_start_ms\":0,\"loop_end_ms\":30000,\"license\":\"generated\"},\"policy\":\"continue\",\"theme_key\":\"vocab-calm\",\"base_volume\":0.6},\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#101018\",\"accent\":\"#FE2C55\"},\"revision\":3,\"created_at\":\"2026-09-21T14:13:20Z\",\"updated_at\":\"2026-09-21T15:13:20Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"}"
+    },
+    {
+      "fingerprint": "27398019aa82ff2e51fb8573aab150038924d4c7612ec32bce57df345d3b33ba",
+      "fingerprint_auto_tts": "8d7a9fb97d85ca0cb99c0b980a7ae0617911b6fb347f552b713b57ce9ffbaea3",
+      "format": "deckpack",
+      "input": {
+        "cards": [
+          {
+            "back": {
+              "blocks": [],
+              "title": "Legacy answer"
+            },
+            "created_at": "2026-09-21T14:13:20Z",
+            "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "ducking": {
+              "attack_ms": 150,
+              "curve": "ease_out",
+              "duck_ratio": 0.25,
+              "hold_ms": 120,
+              "release_ms": 400
+            },
+            "front": {
+              "blocks": [
+                {
+                  "text": "Legacy body",
+                  "type": "text"
+                }
+              ],
+              "title": "Legacy question"
+            },
+            "id": "0192f3a0-0000-7000-8000-000000000001",
+            "language": "en-US",
+            "revision": 3,
+            "tags": [
+              "english",
+              "b2"
+            ],
+            "template": "term",
+            "updated_at": "2026-09-21T15:13:20Z",
+            "visual": {
+              "accent": "#FE2C55",
+              "background": "#101018"
+            }
+          }
+        ],
+        "deck": {
+          "card_count": 1,
+          "created_at": "2026-09-21T14:13:20Z",
+          "description": "High-frequency B2 words.",
+          "id": "0192f3a0-0000-7000-8000-0000000000d1",
+          "language": "en-US",
+          "tags": [
+            "english"
+          ],
+          "title": "English Vocabulary Starter"
+        },
+        "exported_at": "2026-09-21T16:18:20Z",
+        "version": "1.0"
+      },
+      "name": "deck-pack-text",
+      "serialized": "{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000001\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"term\",\"language\":\"en-US\",\"front\":{\"title\":\"Legacy question\",\"blocks\":[{\"type\":\"text\",\"text\":\"Legacy body\"}]},\"back\":{\"title\":\"Legacy answer\",\"blocks\":[]},\"tags\":[\"english\",\"b2\"],\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#101018\",\"accent\":\"#FE2C55\"},\"revision\":3,\"created_at\":\"2026-09-21T14:13:20Z\",\"updated_at\":\"2026-09-21T15:13:20Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"}"
+    },
+    {
+      "fingerprint": "60c5cc9a7163f3a9a61762918b2b3b1e16085eed820a1813fdfa2440c4a2cb25",
+      "fingerprint_auto_tts": "f0a7e4be56ee92f2ccd4c9ac375c8894193063b30690dc7eda91aa9a9f2aae21",
+      "format": "deckpack",
+      "input": {
+        "cards": [],
+        "deck": {
+          "card_count": 0,
+          "created_at": "2026-09-21T14:13:20Z",
+          "description": "High-frequency B2 words.",
+          "id": "0192f3a0-0000-7000-8000-0000000000d1",
+          "language": "en-US",
+          "tags": [
+            "english"
+          ],
+          "title": "English Vocabulary Starter"
+        },
+        "exported_at": "2026-09-21T16:18:20Z",
+        "version": "1.0"
+      },
+      "name": "deck-pack-empty",
+      "serialized": "{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":0,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[],\"exported_at\":\"2026-09-21T16:18:20Z\"}"
+    },
+    {
+      "fingerprint": "fdeeefe0d9d77ec7ca0db0dfc4ad296871e102200f6872f5643af41219159825",
+      "fingerprint_auto_tts": "34e0698607de5ddb737df356021826c0710bd00a98558ca09e06a30f6641f5c3",
+      "format": "deckpack",
+      "input": {
+        "cards": [
+          {
+            "back": {
+              "blocks": [],
+              "title": "Legacy answer"
+            },
+            "created_at": "2026-09-21T14:13:20Z",
+            "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "ducking": {
+              "attack_ms": 150,
+              "curve": "ease_out",
+              "duck_ratio": 0.25,
+              "hold_ms": 120,
+              "release_ms": 400
+            },
+            "front": {
+              "blocks": [
+                {
+                  "text": "Legacy body",
+                  "type": "text"
+                }
+              ],
+              "title": "Legacy question"
+            },
+            "id": "0192f3a0-0000-7000-8000-000000000001",
+            "language": "en-US",
+            "revision": 3,
+            "tags": [
+              "english",
+              "b2"
+            ],
+            "template": "term",
+            "updated_at": "2026-09-21T15:13:20Z",
+            "visual": {
+              "accent": "#FE2C55",
+              "background": "#101018"
+            }
+          }
+        ],
+        "deck": {
+          "card_count": 1,
+          "created_at": "2026-09-21T14:13:20Z",
+          "id": "0192f3a0-0000-7000-8000-0000000000d1",
+          "language": "en-US",
+          "title": "English Vocabulary Starter"
+        },
+        "exported_at": "2026-09-21T16:18:20Z",
+        "version": "1.0"
+      },
+      "name": "deck-pack-defaults",
+      "serialized": "{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"\",\"language\":\"en-US\",\"tags\":[],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000001\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"term\",\"language\":\"en-US\",\"front\":{\"title\":\"Legacy question\",\"blocks\":[{\"type\":\"text\",\"text\":\"Legacy body\"}]},\"back\":{\"title\":\"Legacy answer\",\"blocks\":[]},\"tags\":[\"english\",\"b2\"],\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#101018\",\"accent\":\"#FE2C55\"},\"revision\":3,\"created_at\":\"2026-09-21T14:13:20Z\",\"updated_at\":\"2026-09-21T15:13:20Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"}"
+    },
+    {
+      "fingerprint": "f1976c246b54f5d9f1f408cc7288b091158504c113f0e0ac23d91b3ac4e7b0eb",
+      "fingerprint_auto_tts": "c6583bd3950c4b79de122d471178c888da54b113a7107faf3d859cc2e9c66a75",
+      "format": "portable-deckpack",
+      "input": {
+        "content": {
+          "cards": [
+            {
+              "attributes": {
+                "difficulty": 2,
+                "field": "physics",
+                "year": 1905
+              },
+              "back": {
+                "blocks": [
+                  {
+                    "text": "**E** 是能量，**m** 是质量，**c** 是光速。",
+                    "type": "text"
+                  },
+                  {
+                    "items": [
+                      "核裂变",
+                      "核聚变",
+                      "正负电子湮灭"
+                    ],
+                    "ordered": false,
+                    "type": "list"
+                  },
+                  {
+                    "header": [
+                      "符号",
+                      "单位"
+                    ],
+                    "rows": [
+                      [
+                        "E",
+                        "J"
+                      ],
+                      [
+                        "m",
+                        "kg"
+                      ],
+                      [
+                        "c",
+                        "m/s"
+                      ]
+                    ],
+                    "type": "table"
+                  },
+                  {
+                    "highlight_lines": [
+                      2
+                    ],
+                    "language": "python",
+                    "source": "c = 299_792_458\nE = 0.001 * c ** 2  # 1 克质量\nprint(f\"{E:.3e} J\")",
+                    "type": "code"
+                  },
+                  {
+                    "alt": "Einstein at the blackboard",
+                    "asset": {
+                      "bytes": 68,
+                      "key": "m0",
+                      "mime": "image/png",
+                      "sha256": "6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec",
+                      "url": ""
+                    },
+                    "type": "image"
+                  },
+                  {
+                    "source": "Albert Einstein",
+                    "text": "Imagination is more important than knowledge.",
+                    "type": "quote"
+                  },
+                  {
+                    "title": "Wikipedia",
+                    "type": "link",
+                    "url": "https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence"
+                  }
+                ],
+                "title": "质量与能量可以相互转化"
+              },
+              "bgm": {
+                "base_volume": 0.6000000238418579,
+                "policy": "continue",
+                "theme_key": "vocab-calm",
+                "track": {
+                  "artist": "LearnTok Synth",
+                  "asset": {
+                    "bytes": 204,
+                    "key": "m1",
+                    "mime": "audio/wav",
+                    "sha256": "60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068",
+                    "url": ""
+                  },
+                  "bpm": 90,
+                  "duration_ms": 30000,
+                  "energy": 0.3499999940395355,
+                  "id": "bgm_focus_pad",
+                  "license": "generated",
+                  "loop_end_ms": 30000,
+                  "loop_start_ms": 0,
+                  "moods": [
+                    "focus",
+                    "calm"
+                  ],
+                  "revision": 1,
+                  "title": "Focus Pad"
+                }
+              },
+              "created_at": "2026-09-21T14:13:30Z",
+              "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+              "ducking": {
+                "attack_ms": 150,
+                "curve": "ease_out",
+                "duck_ratio": 0.25,
+                "hold_ms": 120,
+                "release_ms": 400
+              },
+              "front": {
+                "blocks": [
+                  {
+                    "display": true,
+                    "latex": "E = mc^2",
+                    "type": "math"
+                  },
+                  {
+                    "alt": "正面",
+                    "asset": {
+                      "bytes": 68,
+                      "key": "m0",
+                      "mime": "image/png",
+                      "sha256": "6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec",
+                      "url": ""
+                    },
+                    "type": "image"
+                  }
+                ],
+                "subtitle": "Albert Einstein · 1905",
+                "title": "质能方程说了什么？"
+              },
+              "id": "0192f3a0-0000-7000-8000-000000000002",
+              "language": "zh-CN",
+              "revision": 1,
+              "tags": [
+                "physics"
+              ],
+              "template": "formula",
+              "tts": {
+                "audio": {
+                  "bytes": 204,
+                  "key": "m1",
+                  "mime": "audio/wav",
+                  "sha256": "60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068",
+                  "url": ""
+                },
+                "duration_ms": 2400,
+                "engine": "placeholder",
+                "language": "en-US",
+                "text": "serendipity, finding something good",
+                "voice": "default",
+                "words": [
+                  {
+                    "char_end": 12,
+                    "char_start": 0,
+                    "end_ms": 900,
+                    "start_ms": 0,
+                    "text": "serendipity,"
+                  },
+                  {
+                    "char_end": 20,
+                    "char_start": 13,
+                    "end_ms": 1450,
+                    "start_ms": 1000,
+                    "text": "finding"
+                  },
+                  {
+                    "char_end": 30,
+                    "char_start": 21,
+                    "end_ms": 1950,
+                    "start_ms": 1500,
+                    "text": "something"
+                  },
+                  {
+                    "char_end": 35,
+                    "char_start": 31,
+                    "end_ms": 2400,
+                    "start_ms": 2000,
+                    "text": "good"
+                  }
+                ]
+              },
+              "updated_at": "2026-09-21T14:13:30Z",
+              "visual": {
+                "accent": "#25F4EE",
+                "background": "#0B1021",
+                "image": {
+                  "bytes": 68,
+                  "key": "m0",
+                  "mime": "image/png",
+                  "sha256": "6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec",
+                  "url": ""
+                }
+              }
+            }
+          ],
+          "deck": {
+            "card_count": 1,
+            "created_at": "2026-09-21T14:13:20Z",
+            "description": "High-frequency B2 words.",
+            "id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "language": "en-US",
+            "tags": [
+              "english"
+            ],
+            "title": "English Vocabulary Starter"
+          },
+          "exported_at": "2026-09-21T16:18:20Z",
+          "version": "1.0"
+        },
+        "media": [
+          {
+            "bytes": 68,
+            "data_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+            "id": "m0",
+            "mime": "image/png",
+            "sha256": "6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec"
+          },
+          {
+            "bytes": 204,
+            "data_base64": "UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "id": "m1",
+            "mime": "audio/wav",
+            "sha256": "60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068"
+          }
+        ],
+        "version": "2.0"
+      },
+      "name": "portable-deck-pack-fixture",
+      "serialized": "{\"version\":\"2.0\",\"content\":{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000002\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"formula\",\"language\":\"zh-CN\",\"front\":{\"title\":\"质能方程说了什么？\",\"subtitle\":\"Albert Einstein · 1905\",\"blocks\":[{\"type\":\"math\",\"latex\":\"E = mc^2\",\"display\":true},{\"type\":\"image\",\"asset\":{\"key\":\"m0\",\"url\":\"\",\"mime\":\"image/png\",\"bytes\":68,\"sha256\":\"6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec\"},\"alt\":\"正面\"}]},\"back\":{\"title\":\"质量与能量可以相互转化\",\"blocks\":[{\"type\":\"text\",\"text\":\"**E** 是能量，**m** 是质量，**c** 是光速。\"},{\"type\":\"list\",\"items\":[\"核裂变\",\"核聚变\",\"正负电子湮灭\"],\"ordered\":false},{\"type\":\"table\",\"header\":[\"符号\",\"单位\"],\"rows\":[[\"E\",\"J\"],[\"m\",\"kg\"],[\"c\",\"m/s\"]]},{\"type\":\"code\",\"language\":\"python\",\"source\":\"c = 299_792_458\\nE = 0.001 * c ** 2  # 1 克质量\\nprint(f\\\"{E:.3e} J\\\")\",\"highlight_lines\":[2]},{\"type\":\"image\",\"asset\":{\"key\":\"m0\",\"url\":\"\",\"mime\":\"image/png\",\"bytes\":68,\"sha256\":\"6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec\"},\"alt\":\"Einstein at the blackboard\"},{\"type\":\"quote\",\"text\":\"Imagination is more important than knowledge.\",\"source\":\"Albert Einstein\"},{\"type\":\"link\",\"url\":\"https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence\",\"title\":\"Wikipedia\"}]},\"tags\":[\"physics\"],\"attributes\":{\"difficulty\":2,\"field\":\"physics\",\"year\":1905},\"tts\":{\"audio\":{\"key\":\"m1\",\"url\":\"\",\"mime\":\"audio/wav\",\"bytes\":204,\"sha256\":\"60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068\"},\"text\":\"serendipity, finding something good\",\"language\":\"en-US\",\"voice\":\"default\",\"engine\":\"placeholder\",\"duration_ms\":2400,\"words\":[{\"text\":\"serendipity,\",\"start_ms\":0,\"end_ms\":900,\"char_start\":0,\"char_end\":12},{\"text\":\"finding\",\"start_ms\":1000,\"end_ms\":1450,\"char_start\":13,\"char_end\":20},{\"text\":\"something\",\"start_ms\":1500,\"end_ms\":1950,\"char_start\":21,\"char_end\":30},{\"text\":\"good\",\"start_ms\":2000,\"end_ms\":2400,\"char_start\":31,\"char_end\":35}]},\"bgm\":{\"track\":{\"id\":\"bgm_focus_pad\",\"revision\":1,\"title\":\"Focus Pad\",\"artist\":\"LearnTok Synth\",\"asset\":{\"key\":\"m1\",\"url\":\"\",\"mime\":\"audio/wav\",\"bytes\":204,\"sha256\":\"60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068\"},\"duration_ms\":30000,\"bpm\":90,\"moods\":[\"focus\",\"calm\"],\"energy\":0.35,\"loop_start_ms\":0,\"loop_end_ms\":30000,\"license\":\"generated\"},\"policy\":\"continue\",\"theme_key\":\"vocab-calm\",\"base_volume\":0.6},\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#0B1021\",\"accent\":\"#25F4EE\",\"image\":{\"key\":\"m0\",\"url\":\"\",\"mime\":\"image/png\",\"bytes\":68,\"sha256\":\"6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec\"}},\"revision\":1,\"created_at\":\"2026-09-21T14:13:30Z\",\"updated_at\":\"2026-09-21T14:13:30Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"},\"media\":[{\"id\":\"m0\",\"mime\":\"image/png\",\"bytes\":68,\"sha256\":\"6b1048f8a6d40bac0b2954c18fefa40c4ea7a96120fc2e54b7317c0e43c2bbec\",\"data_base64\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=\"},{\"id\":\"m1\",\"mime\":\"audio/wav\",\"bytes\":204,\"sha256\":\"60c0b6c740c791f5d9c1b7d688aa4e6719b93c8f4e7c4b7919ab86ad78b74068\",\"data_base64\":\"UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}]}"
+    },
+    {
+      "fingerprint": "e25e10e92edf5e805721239a222321f0db39c22681b0247667d3f749959db34f",
+      "fingerprint_auto_tts": "0dfa2dafc433048439c10d60d3ea3ce267c9997db5851f5f0449b635ea5792b1",
+      "format": "portable-deckpack",
+      "input": {
+        "content": {
+          "cards": [
+            {
+              "attributes": {
+                "difficulty": 2,
+                "field": "physics",
+                "year": 1905
+              },
+              "back": {
+                "blocks": [],
+                "title": "Legacy answer"
+              },
+              "created_at": "2026-09-21T14:13:30Z",
+              "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+              "ducking": {
+                "attack_ms": 150,
+                "curve": "ease_out",
+                "duck_ratio": 0.25,
+                "hold_ms": 120,
+                "release_ms": 400
+              },
+              "front": {
+                "blocks": [
+                  {
+                    "text": "Legacy body",
+                    "type": "text"
+                  }
+                ],
+                "title": "Legacy question"
+              },
+              "id": "0192f3a0-0000-7000-8000-000000000002",
+              "language": "zh-CN",
+              "revision": 1,
+              "tags": [
+                "physics"
+              ],
+              "template": "formula",
+              "updated_at": "2026-09-21T14:13:30Z",
+              "visual": {
+                "accent": "#25F4EE",
+                "background": "#0B1021"
+              }
+            }
+          ],
+          "deck": {
+            "card_count": 1,
+            "created_at": "2026-09-21T14:13:20Z",
+            "description": "High-frequency B2 words.",
+            "id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "language": "en-US",
+            "tags": [
+              "english"
+            ],
+            "title": "English Vocabulary Starter"
+          },
+          "exported_at": "2026-09-21T16:18:20Z",
+          "version": "1.0"
+        },
+        "media": [],
+        "version": "2.0"
+      },
+      "name": "portable-deck-pack-text",
+      "serialized": "{\"version\":\"2.0\",\"content\":{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000002\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"formula\",\"language\":\"zh-CN\",\"front\":{\"title\":\"Legacy question\",\"blocks\":[{\"type\":\"text\",\"text\":\"Legacy body\"}]},\"back\":{\"title\":\"Legacy answer\",\"blocks\":[]},\"tags\":[\"physics\"],\"attributes\":{\"difficulty\":2,\"field\":\"physics\",\"year\":1905},\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#0B1021\",\"accent\":\"#25F4EE\"},\"revision\":1,\"created_at\":\"2026-09-21T14:13:30Z\",\"updated_at\":\"2026-09-21T14:13:30Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"},\"media\":[]}"
+    },
+    {
+      "fingerprint": "56032f0a7c634a307df7a2cd85d5d9b858e3e60996ecbf9b504679842a042aef",
+      "fingerprint_auto_tts": "8a143d2a63ab6be7791cc0e48dcb6188495d87bb81b7a0b19d2b7f95b443307d",
+      "format": "portable-deckpack",
+      "input": {
+        "content": {
+          "cards": [],
+          "deck": {
+            "card_count": 0,
+            "created_at": "2026-09-21T14:13:20Z",
+            "description": "High-frequency B2 words.",
+            "id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "language": "en-US",
+            "tags": [
+              "english"
+            ],
+            "title": "English Vocabulary Starter"
+          },
+          "exported_at": "2026-09-21T16:18:20Z",
+          "version": "1.0"
+        },
+        "media": [],
+        "version": "2.0"
+      },
+      "name": "portable-deck-pack-empty",
+      "serialized": "{\"version\":\"2.0\",\"content\":{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"High-frequency B2 words.\",\"language\":\"en-US\",\"tags\":[\"english\"],\"card_count\":0,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[],\"exported_at\":\"2026-09-21T16:18:20Z\"},\"media\":[]}"
+    },
+    {
+      "fingerprint": "c86af1e9e83209c48acbfdc5d131716abf1ba958c3bd01c72a20a45e6d141873",
+      "fingerprint_auto_tts": "927d016bda8fd5a545926bb04a52ef5db1e8bc4b989defa7f387a78672b30590",
+      "format": "portable-deckpack",
+      "input": {
+        "content": {
+          "cards": [
+            {
+              "attributes": {
+                "difficulty": 2,
+                "field": "physics",
+                "year": 1905
+              },
+              "back": {
+                "blocks": [],
+                "title": "Legacy answer"
+              },
+              "created_at": "2026-09-21T14:13:30Z",
+              "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+              "ducking": {
+                "attack_ms": 150,
+                "curve": "ease_out",
+                "duck_ratio": 0.25,
+                "hold_ms": 120,
+                "release_ms": 400
+              },
+              "front": {
+                "blocks": [
+                  {
+                    "text": "Legacy body",
+                    "type": "text"
+                  }
+                ],
+                "title": "Legacy question"
+              },
+              "id": "0192f3a0-0000-7000-8000-000000000002",
+              "language": "zh-CN",
+              "revision": 1,
+              "tags": [
+                "physics"
+              ],
+              "template": "formula",
+              "updated_at": "2026-09-21T14:13:30Z",
+              "visual": {
+                "accent": "#25F4EE",
+                "background": "#0B1021"
+              }
+            }
+          ],
+          "deck": {
+            "card_count": 1,
+            "created_at": "2026-09-21T14:13:20Z",
+            "id": "0192f3a0-0000-7000-8000-0000000000d1",
+            "language": "en-US",
+            "title": "English Vocabulary Starter"
+          },
+          "exported_at": "2026-09-21T16:18:20Z",
+          "version": "1.0"
+        },
+        "media": [],
+        "version": "2.0"
+      },
+      "name": "portable-deck-pack-defaults",
+      "serialized": "{\"version\":\"2.0\",\"content\":{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"\",\"language\":\"en-US\",\"tags\":[],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000002\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"formula\",\"language\":\"zh-CN\",\"front\":{\"title\":\"Legacy question\",\"blocks\":[{\"type\":\"text\",\"text\":\"Legacy body\"}]},\"back\":{\"title\":\"Legacy answer\",\"blocks\":[]},\"tags\":[\"physics\"],\"attributes\":{\"difficulty\":2,\"field\":\"physics\",\"year\":1905},\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#0B1021\",\"accent\":\"#25F4EE\"},\"revision\":1,\"created_at\":\"2026-09-21T14:13:30Z\",\"updated_at\":\"2026-09-21T14:13:30Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"},\"media\":[]}"
+    }
+  ],
+  "protocol": "2.13.0"
+}

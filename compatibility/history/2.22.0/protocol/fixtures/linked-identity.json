@@ -1,0 +1,6 @@
+{
+  "email": null,
+  "issuer": "https://accounts.google.com",
+  "provider": "google",
+  "subject": "provider-subject"
+}

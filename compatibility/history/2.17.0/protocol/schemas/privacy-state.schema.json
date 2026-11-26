@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PrivacyState",
+  "type": "object",
+  "properties": {
+    "account_records": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PrivacyRecord"
+      }
+    },
+    "purpose_records": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PrivacyRecord"
+      }
+    },
+    "revision": {
+      "type": "integer",
+      "format": "int64",
+      "default": 0
+    }
+  },
+  "$defs": {
+    "PrivacyRecord": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "boolean"
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "recorded_at": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "value": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "version",
+        "decision",
+        "value",
+        "recorded_at",
+        "evidence"
+      ]
+    }
+  }
+}

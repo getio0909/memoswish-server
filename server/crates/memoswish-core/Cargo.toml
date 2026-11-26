@@ -1,0 +1,25 @@
+[package]
+name = "memoswish-core"
+description = "Domain primitives, error model, RBAC and storage/TTS trait abstractions for Memoswish."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+memoswish-protocol.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+anyhow.workspace = true
+
+[lints]
+workspace = true

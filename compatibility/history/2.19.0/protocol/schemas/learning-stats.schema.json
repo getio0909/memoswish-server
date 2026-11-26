@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LearningStats",
+  "description": "学习统计（`GET /v1/stats` 与 MCP `learning_stats`）。",
+  "type": "object",
+  "properties": {
+    "average_retrievability": {
+      "description": "已学卡片的平均当前可提取率（0~1）。",
+      "type": "number",
+      "format": "float"
+    },
+    "due_cards": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "seen_cards": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "starred_cards": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "total_cards": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "total_exposures": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "total_cards",
+    "seen_cards",
+    "due_cards",
+    "starred_cards",
+    "average_retrievability",
+    "total_exposures"
+  ]
+}

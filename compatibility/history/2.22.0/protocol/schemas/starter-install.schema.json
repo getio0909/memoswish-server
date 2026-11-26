@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StarterInstall",
+  "type": "object",
+  "properties": {
+    "idempotency_key": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "idempotency_key"
+  ]
+}

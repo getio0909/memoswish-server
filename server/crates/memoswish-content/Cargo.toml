@@ -1,0 +1,42 @@
+[package]
+build = "../../../brand/build.rs"
+name = "memoswish-content"
+description = "Micro-learning content library for Memoswish: decks, cards, validation and material slicing."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[features]
+fuzzing = []
+
+[dependencies]
+memoswish-core.workspace = true
+memoswish-protocol.workspace = true
+base64.workspace = true
+chrono.workspace = true
+reqwest.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tokio.workspace = true
+sqlx = { workspace = true, features = ["sqlite"] }
+zip.workspace = true
+scraper.workspace = true
+prost.workspace = true
+percent-encoding.workspace = true
+
+[build-dependencies]
+serde_json.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+async-trait.workspace = true
+memoswish-storage = { workspace = true, features = ["sqlite"] }
+
+[lints]
+workspace = true

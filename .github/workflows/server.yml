@@ -1,0 +1,45 @@
+name: server
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: server
+      - run: make server-check
+      - run: cargo build --locked --manifest-path server/Cargo.toml -p memoswishd
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/supply-chain-policy.mjs --ledger-only
+        working-directory: .
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo install cargo-deny --version 0.20.2 --locked
+      - run: cargo deny --all-features --locked --config ../deny.toml check advisories bans licenses sources

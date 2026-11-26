@@ -1,0 +1,16 @@
+{
+  "card": {
+    "attributes": {},
+    "back": {
+      "blocks": [],
+      "title": ""
+    },
+    "deck_id": "deck-example",
+    "front": {
+      "blocks": [],
+      "title": "Question"
+    },
+    "tags": []
+  },
+  "publish": false
+}

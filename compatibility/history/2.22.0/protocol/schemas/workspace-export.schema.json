@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkspaceExport",
+  "description": "工作区导出仅含共享可读材料及允许公开的工作区元数据。",
+  "type": "object",
+  "properties": {
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExportAsset"
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": true
+      }
+    },
+    "exported_at": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "data",
+    "assets",
+    "exported_at"
+  ],
+  "$defs": {
+    "ExportAsset": {
+      "description": "工作区资产保留旧版十六进制格式。",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "mime": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "mime",
+        "encoding",
+        "data"
+      ]
+    }
+  }
+}

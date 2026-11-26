@@ -1,0 +1,10 @@
+{
+  "attempts": 1,
+  "committed_microcurrency": 2,
+  "currency": "USD",
+  "held_microcurrency": 0,
+  "input_tokens": 10,
+  "output_tokens": 2,
+  "period": "2026-11",
+  "requests": 1
+}

@@ -1,0 +1,10 @@
+{
+  "access_token": "account-jwt",
+  "account": {
+    "display_name": "Learner",
+    "email": "learner@example.com",
+    "user_id": "account"
+  },
+  "expires_in": 3600,
+  "token_type": "Bearer"
+}

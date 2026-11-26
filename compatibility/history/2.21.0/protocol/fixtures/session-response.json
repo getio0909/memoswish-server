@@ -1,0 +1,18 @@
+{
+  "access_token": "lts_at_synthetic",
+  "account": {
+    "display_name": "Learner",
+    "email": "learner@example.com",
+    "user_id": "account"
+  },
+  "expires_in": 900,
+  "refresh_token": "lts_rt_synthetic",
+  "session_id": "session",
+  "token_type": "Bearer",
+  "workspace": {
+    "display_name": "Local Owner",
+    "role": "owner",
+    "tenant_id": "local",
+    "user_id": "usr_local"
+  }
+}

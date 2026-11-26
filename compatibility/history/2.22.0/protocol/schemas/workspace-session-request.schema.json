@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkspaceSessionRequest",
+  "description": "从账户会话显式选择现存成员关系。",
+  "type": "object",
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id"
+  ]
+}

@@ -1,0 +1,49 @@
+[package]
+name = "memoswish-storage"
+description = "Storage backends for Memoswish: SQLite + local disk (self-hosted) and PostgreSQL + S3 (AWS SigV4 + presigned URLs) (commercial)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[features]
+default = ["sqlite", "postgres"]
+# 跨 crate 测试复用独有 PostgreSQL schema，生产构建不默认启用。
+test-support = ["postgres"]
+redis = ["dep:redis"]
+# 单机自托管默认数据库。
+sqlite = ["sqlx/sqlite"]
+# PostgreSQL：自托管可选，商业 SaaS 必选。
+postgres = ["sqlx/postgres", "sqlx/tls-rustls-ring-webpki"]
+# S3 兼容对象存储（AWS Signature V4 + 预签名 URL）。
+s3 = ["dep:base64", "dep:rusty-s3", "dep:jiff", "dep:reqwest", "dep:quick-xml"]
+
+[dependencies]
+cap-std = "=4.0.2"
+libc = "0.2"
+base64 = { workspace = true, optional = true }
+redis = { workspace = true, optional = true }
+quick-xml = { workspace = true, optional = true }
+memoswish-core.workspace = true
+memoswish-protocol.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+hex.workspace = true
+rusty-s3 = { version = "=0.10.2", default-features = false, features = ["rustcrypto"], optional = true }
+jiff = { version = "0.2", default-features = false, features = ["std"], optional = true }
+reqwest = { workspace = true, optional = true }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+hmac.workspace = true
+
+[lints]
+workspace = true

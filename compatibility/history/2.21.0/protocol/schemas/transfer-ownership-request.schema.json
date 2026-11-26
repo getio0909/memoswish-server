@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TransferOwnershipRequest",
+  "description": "接任者必须是工作区现有非 owner 成员。",
+  "type": "object",
+  "properties": {
+    "successor_user_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "successor_user_id"
+  ]
+}

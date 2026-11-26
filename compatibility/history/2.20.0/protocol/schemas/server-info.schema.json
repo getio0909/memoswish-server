@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ServerInfo",
+  "description": "`GET /v1/server-info` 响应：App 在“输入 Server URL”后首先调用。",
+  "type": "object",
+  "properties": {
+    "content_lifecycle": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "features": {
+      "description": "编译期启用的特性，例如 `self-hosted`、`commercial-saas`。",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mode": {
+      "$ref": "#/$defs/DeploymentMode"
+    },
+    "name": {
+      "type": "string"
+    },
+    "oidc_providers": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/OidcProviderInfo"
+      }
+    },
+    "opaque_sessions": {
+      "description": "完整 S21b 服务端会话前置接口，旧服务端缺省为 false。",
+      "type": "boolean",
+      "default": false
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "registration_open": {
+      "description": "是否允许自助注册。",
+      "type": "boolean"
+    },
+    "tts_engines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "protocol_version",
+    "mode",
+    "features",
+    "registration_open",
+    "tts_engines"
+  ],
+  "$defs": {
+    "DeploymentMode": {
+      "description": "服务端部署模式。",
+      "oneOf": [
+        {
+          "description": "单用户自托管：无需登录，所有请求映射为本地所有者。",
+          "type": "string",
+          "const": "single_user"
+        },
+        {
+          "description": "多租户：必须携带 JWT 或 API Token。",
+          "type": "string",
+          "const": "multi_tenant"
+        }
+      ]
+    },
+    "OidcProviderInfo": {
+      "description": "已配置的第三方登录能力，旧客户端可忽略。",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "native": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "native"
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PersonalWorkspaceExport",
+  "description": "每个工作区只包含调用者个人学习历史及授权元数据。",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": true
+      }
+    },
+    "exclusive": {
+      "type": "boolean"
+    },
+    "role": {
+      "type": "string"
+    },
+    "tenant_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "role",
+    "exclusive",
+    "data"
+  ]
+}

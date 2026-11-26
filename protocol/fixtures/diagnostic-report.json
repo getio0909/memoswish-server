@@ -1,0 +1,13 @@
+{
+  "build": "1.0.0",
+  "captured_at_ms": 1794096000000,
+  "category": "flutter",
+  "code": "framework_error",
+  "frames": [
+    "presentation"
+  ],
+  "platform": "linux",
+  "privacy_revision": 4,
+  "purpose_version": "diagnostics-v1",
+  "report_id": "0123456789abcdef0123456789abcdef"
+}

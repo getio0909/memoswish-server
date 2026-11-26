@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FavoriteCommand",
+  "type": "object",
+  "properties": {
+    "desired_state": {
+      "type": "boolean"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "operation_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "operation_id",
+    "desired_state",
+    "expected_revision"
+  ]
+}

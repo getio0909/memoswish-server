@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# 与 memoswishd 写入入口锁住同一个 data 目录，拒绝从正在运行的安装恢复。
+if [[ $# -lt 1 || ! -d $1/data || -L $1 || -L $1/data ]]; then
+  echo 'Restore source must contain a regular data directory.' >&2
+  exit 2
+fi
+exec flock --exclusive --nonblock -- "$1/data" node "$(dirname "$0")/backup-embedded.mjs" restore "$@"

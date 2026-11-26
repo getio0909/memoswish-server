@@ -1,0 +1,26 @@
+# 验证、适配与启动均通过随部署包提供的 scripts/run-caddy 检查环境。
+{
+	# 禁用管理 HTTP；配置变更通过受控重启应用。
+	admin off
+	# HTTP 重定向由部署入口显式选择，夹具仅绑定随机 TLS 端口。
+	auto_https disable_redirects
+	servers {
+		strict_sni_host
+	}
+}
+
+https://{$MEMOSWISH_DOMAIN:learn.example.com} {
+	import {$MEMOSWISH_TLS_CONFIG:tls-acme.caddy}
+	# 仅转发注册的业务路径，未知路径和内部入口直接拒绝。
+	@business path /v1/* /assets/* /mcp /oauth/* /.well-known/oauth-authorization-server /.well-known/oauth-protected-resource /.well-known/oauth-protected-resource/mcp
+	handle @business {
+		reverse_proxy {$MEMOSWISH_UPSTREAM:127.0.0.1:8787} {
+			# ADR 0059 仅信任直接对端，覆盖客户端输入并清除转发链。
+			header_up X-Real-IP {http.request.remote.host}
+			header_up -X-Learntok-Client-IP
+			header_up -Forwarded
+			header_up -X-Forwarded-For
+		}
+	}
+	respond 404
+}

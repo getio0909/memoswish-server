@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+require('./legacy-environment.cjs');
+// 仅清理本工具明确标记且数据库连接已退出的过期测试 schema。
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
+
+const args = process.argv.slice(2);
+if (args.some(arg => arg !== '--apply') || args.length > 1) {
+  console.error('Usage: scripts/pg-fixture-janitor [--apply]');
+  process.exit(2);
+}
+const url = process.env.MEMOSWISH_TEST_POSTGRES_URL;
+const age = process.env.PG_FIXTURE_MIN_AGE_SECONDS ?? '3600';
+const schema = process.env.PG_FIXTURE_SCHEMA ?? '';
+if (schema && !/^learntok_test_[0-9a-f]{32}$/.test(schema)) {
+  console.error('PG_FIXTURE_SCHEMA must be an exact tooling schema name.');
+  process.exit(2);
+}
+if (!url || !/^\d+$/.test(age) || !Number.isSafeInteger(Number(age))) {
+  console.error('Require MEMOSWISH_TEST_POSTGRES_URL and a nonnegative integer PG_FIXTURE_MIN_AGE_SECONDS.');
+  process.exit(2);
+}
+const sql = path.join(__dirname, 'pg-fixture-janitor.sql');
+// 连接 URI 直接交给 libpq；设置值已经验证，所有参数不经 shell，失败诊断另行脱敏。
+// 使用命令及文件参数，避免连接失败提前退出时 stdin 写入 EPIPE 遮蔽真正的服务端错误。
+const result = spawnSync('psql', [
+  '--no-psqlrc', '--quiet', '--set=ON_ERROR_STOP=1', '--set=VERBOSITY=verbose', '--dbname', url,
+  '--command', `SET memoswish_fixture.min_age_seconds = '${age}'; SET memoswish_fixture.apply = '${args.includes('--apply')}'; SET memoswish_fixture.schema = '${schema}';`,
+  '--file', sql,
+], {
+  encoding: 'utf8',
+});
+if (result.error) {
+  const code = /^[A-Z0-9_]+$/.test(result.error.code ?? '') ? result.error.code : 'unavailable';
+  console.error(`Unable to execute psql for PostgreSQL fixture cleanup (OS error ${code}).`);
+  process.exit(1);
+}
+// libpq 连接错误可能包含 URL 或密码；失败时只输出分类及 SQLSTATE，不回显原文。
+if (result.status !== 0) {
+  const code = result.stderr.match(/(?:ERROR|FATAL):\s+([0-9A-Z]{5}):/)?.[1];
+  // libpq 的启动失败不受 psql VERBOSITY 控制，保留已知连接耗尽消息的窄匹配。
+  const exhausted = code === '53300' || (result.status === 2 && /FATAL:\s+(?:sorry, too many clients already|remaining connection slots are reserved|too many connections for (?:role|database))/.test(result.stderr));
+  if (exhausted) {
+    console.error('PostgreSQL fixture janitor failed: connection capacity exhausted (SQLSTATE 53300). Serialize integration runs sharing this server or provide sufficient connection capacity. No cleanup was retried.');
+  } else if (code) {
+    console.error(`PostgreSQL fixture janitor failed (SQLSTATE ${code}). Check database locks, permissions and SQL execution. No cleanup was retried.`);
+  } else {
+    console.error('PostgreSQL fixture janitor failed. Check database connectivity and permissions.');
+  }
+  process.exit(1);
+}
+process.stdout.write(result.stdout);
+process.stderr.write(result.stderr);

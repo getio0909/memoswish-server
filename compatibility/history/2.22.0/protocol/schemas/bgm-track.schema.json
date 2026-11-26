@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgmTrack",
+  "description": "背景音乐曲目。",
+  "type": "object",
+  "properties": {
+    "artist": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "asset": {
+      "$ref": "#/$defs/AssetRef"
+    },
+    "bpm": {
+      "description": "每分钟节拍数。",
+      "type": "integer",
+      "format": "uint16",
+      "maximum": 65535,
+      "minimum": 0
+    },
+    "duration_ms": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "energy": {
+      "description": "能量值 0.0 ~ 1.0。",
+      "type": "number",
+      "format": "float"
+    },
+    "id": {
+      "type": "string"
+    },
+    "license": {
+      "description": "授权说明，例如 `CC0`、`generated`。",
+      "type": "string"
+    },
+    "loop_end_ms": {
+      "description": "无缝循环终点（毫秒，0 表示曲目结尾）。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 0,
+      "minimum": 0
+    },
+    "loop_start_ms": {
+      "description": "无缝循环起点（毫秒）。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 0,
+      "minimum": 0
+    },
+    "moods": {
+      "description": "情绪标签，例如 `calm`、`focus`、`upbeat`、`epic`。",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "pcm": {
+      "description": "输出完整循环及源范围；所有帧坐标均为半开区间。",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PcmLoop"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "provenance": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ContentProvenance"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "revision": {
+      "description": "曲库版本；历史 JSON 缺省为 1，嵌入卡片的曲目保留其挂载时快照。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 1,
+      "minimum": 0
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "asset",
+    "duration_ms",
+    "bpm",
+    "energy",
+    "license"
+  ],
+  "$defs": {
+    "AssetRef": {
+      "description": "二进制资产引用（音频、图片等）。`sha256` 同时作为客户端磁盘缓存键。",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "description": "字节数。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "key": {
+          "description": "对象存储内部键，例如 `tenants/<tid>/tts/<sha>.wav`。",
+          "type": "string"
+        },
+        "mime": {
+          "description": "MIME 类型，例如 `audio/wav`。",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "内容 SHA-256（小写十六进制）。",
+          "type": "string"
+        },
+        "url": {
+          "description": "可直接下载的 URL；以 `/` 开头时表示相对于服务端 base URL。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "url",
+        "mime",
+        "bytes",
+        "sha256"
+      ]
+    },
+    "ContentProvenance": {
+      "description": "来源字段均为调用方声明，不表示服务端核实。",
+      "type": "object",
+      "properties": {
+        "attribution": {
+          "type": "string",
+          "default": ""
+        },
+        "method": {
+          "type": "string",
+          "default": ""
+        },
+        "provider_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rights": {
+          "type": "string",
+          "default": ""
+        },
+        "source_generation_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id_is_digest": {
+          "description": "true 表示 source_id 为原始 UTF-8 身份的 sha256:hex 摘要；缺省为原文。",
+          "type": "boolean"
+        },
+        "source_publication_claim": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "PcmLoop": {
+      "type": "object",
+      "properties": {
+        "bits_per_sample": {
+          "type": "integer",
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "channels": {
+          "type": "integer",
+          "format": "uint16",
+          "maximum": 65535,
+          "minimum": 0
+        },
+        "frames": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "sample_rate": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "source_end_frame": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "source_sha256": {
+          "type": "string"
+        },
+        "source_start_frame": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "sample_rate",
+        "channels",
+        "bits_per_sample",
+        "frames",
+        "source_sha256",
+        "source_start_frame",
+        "source_end_frame"
+      ]
+    }
+  }
+}

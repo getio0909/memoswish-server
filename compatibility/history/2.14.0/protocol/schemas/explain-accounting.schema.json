@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplainAccounting",
+  "description": "请求、token 和整数金额保持独立维度，不披露提供者凭据或原文。",
+  "type": "object",
+  "properties": {
+    "attempts": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "committed_microcurrency": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "held_microcurrency": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "input_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64"
+    },
+    "output_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64"
+    },
+    "period": {
+      "type": "string"
+    },
+    "requests": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "requests",
+    "attempts",
+    "period",
+    "currency",
+    "held_microcurrency",
+    "committed_microcurrency"
+  ]
+}

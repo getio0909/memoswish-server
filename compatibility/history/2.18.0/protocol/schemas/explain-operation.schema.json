@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplainOperation",
+  "description": "解释操作的最小回执；文本过期不会再次支付。",
+  "type": "object",
+  "properties": {
+    "accounting": {
+      "description": "原账期账本投影；未决费用体现在 held 中。",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExplainAccounting"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "disposition": {
+      "$ref": "#/$defs/ExplainDisposition"
+    },
+    "request_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "disposition"
+  ],
+  "$defs": {
+    "ExplainAccounting": {
+      "description": "请求、token 和整数金额保持独立维度，不披露提供者凭据或原文。",
+      "type": "object",
+      "properties": {
+        "attempts": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "committed_microcurrency": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "held_microcurrency": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "input_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64"
+        },
+        "output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "int64"
+        },
+        "period": {
+          "type": "string"
+        },
+        "requests": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "requests",
+        "attempts",
+        "period",
+        "currency",
+        "held_microcurrency",
+        "committed_microcurrency"
+      ]
+    },
+    "ExplainDisposition": {
+      "description": "调用处置与财务不确定性独立于返回的本地回退文本。",
+      "type": "string",
+      "enum": [
+        "local",
+        "pending",
+        "unresolved",
+        "settled",
+        "suppressed",
+        "expired",
+        "cancelled"
+      ]
+    }
+  }
+}

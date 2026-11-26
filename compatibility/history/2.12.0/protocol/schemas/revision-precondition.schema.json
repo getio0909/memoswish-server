@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RevisionPrecondition",
+  "description": "内容删除的可选版本前提，也用于 HTTP 查询参数。",
+  "type": "object",
+  "properties": {
+    "expected_revision": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint32",
+      "minimum": 0
+    }
+  }
+}

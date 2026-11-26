@@ -1,0 +1,730 @@
+{
+  "adapter_types": {
+    "server/crates/memoswish-auth/src/quota.rs::UsageMetricEntry": "{ # [doc = \" 指标标识（`tts_chars` / `mcp_calls` / `card_writes`）。\"] pub metric : String , # [doc = \" 当前计费周期内已使用额度。\"] pub used : u64 , # [doc = \" 当前尚未结算的预留，包含 uncertain。\"] # [serde (default)] pub held : u64 , # [doc = \" 已调用 provider、尚无可结算结果的预留。\"] # [serde (default)] pub uncertain : u64 , # [doc = \" 当前计费周期月度上限；`None` 表示不限额。\"] pub limit : Option < u64 > , }",
+    "server/crates/memoswish-auth/src/quota.rs::UsageSnapshot": "{ # [doc = \" 租户 ID。\"] pub tenant_id : String , # [doc = \" 当前生效套餐名称。\"] pub plan : String , # [doc = \" 计费周期（`YYYY-MM`）。\"] pub period : String , # [doc = \" 各项指标的已用额度与上限。\"] pub metrics : Vec < UsageMetricEntry > , }",
+    "server/crates/memoswish-content/src/apkg/mod.rs::ApkgOptions": "{ pub title : Option < String > , pub language : Option < String > , }",
+    "server/crates/memoswish-content/src/apkg/mod.rs::ApkgReport": "{ pub deck : Deck , pub notes_read : usize , pub cards_imported : usize , pub media_imported : usize , pub audio_omitted : usize , pub warnings : Vec < String > , pub warnings_truncated : bool , }",
+    "server/crates/memoswish-content/src/service.rs::NewDeck": "{ # [doc = \" 卡组标题。\"] pub title : String , # [doc = \" 描述。\"] # [serde (default)] pub description : String , # [doc = \" BCP-47 语言标签，例如 `en-US`。\"] pub language : String , # [serde (default)] pub tags : Vec < String > , }",
+    "server/crates/memoswishd/src/access.rs::PageQuery": "{ after : Option < String > , limit : Option < u32 > , tenant_id : Option < String > , }",
+    "server/crates/memoswishd/src/api.rs::AssetQuery": "{ # [doc = \" 只在 deprecated bridge 接受历史 query token。\"] access_token : Option < String > , delivery : Option < u8 > , surface : Option < String > , owner : Option < String > , }",
+    "server/crates/memoswishd/src/api.rs::DeckFilter": "{ deck_id : Option < String > , }",
+    "server/crates/memoswishd/src/api.rs::Page": "{ limit : Option < u32 > , offset : Option < u32 > , }",
+    "server/crates/memoswishd/src/learning_controls.rs::Page": "{ after : Option < String > , limit : Option < u32 > , }"
+  },
+  "protocol_types": {
+    "AccessPage": "server/crates/memoswish-protocol/src/access.rs",
+    "AccessSummary": "server/crates/memoswish-protocol/src/access.rs",
+    "AccountExport": "server/crates/memoswish-protocol/src/server.rs",
+    "AccountProfile": "server/crates/memoswish-protocol/src/server.rs",
+    "AccountSessionResponse": "server/crates/memoswish-protocol/src/server.rs",
+    "AlignmentQuality": "server/crates/memoswish-protocol/src/card.rs",
+    "ApiError": "server/crates/memoswish-protocol/src/error.rs",
+    "ApkgImportRequest": "server/crates/memoswish-protocol/src/imports.rs",
+    "AssetRef": "server/crates/memoswish-protocol/src/card.rs",
+    "AudioKind": "server/crates/memoswish-protocol/src/card.rs",
+    "AuthResponse": "server/crates/memoswish-protocol/src/server.rs",
+    "BgmBinding": "server/crates/memoswish-protocol/src/card.rs",
+    "BgmClip": "server/crates/memoswish-protocol/src/tts.rs",
+    "BgmPolicy": "server/crates/memoswish-protocol/src/card.rs",
+    "BgmTrack": "server/crates/memoswish-protocol/src/card.rs",
+    "Card": "server/crates/memoswish-protocol/src/card.rs",
+    "CardControlAction": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "CardControlCommand": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "CardDraft": "server/crates/memoswish-protocol/src/card.rs",
+    "CardExplanation": "server/crates/memoswish-protocol/src/card.rs",
+    "CardFace": "server/crates/memoswish-protocol/src/card.rs",
+    "CardRevision": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "CardSave": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "CardVisual": "server/crates/memoswish-protocol/src/card.rs",
+    "CloseAccountRequest": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "ContentApkgImport": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "ContentBlock": "server/crates/memoswish-protocol/src/card.rs",
+    "ContentImport": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "ContentMetadata": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "ContentProvenance": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "ContentReport": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "Deck": "server/crates/memoswish-protocol/src/card.rs",
+    "DeckEdit": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "DeckImportRequest": "server/crates/memoswish-protocol/src/imports.rs",
+    "DeckPack": "server/crates/memoswish-protocol/src/card.rs",
+    "DeploymentMode": "server/crates/memoswish-protocol/src/server.rs",
+    "DiagnosticReceipt": "server/crates/memoswish-protocol/src/diagnostics.rs",
+    "DiagnosticReport": "server/crates/memoswish-protocol/src/diagnostics.rs",
+    "DuckCurve": "server/crates/memoswish-protocol/src/card.rs",
+    "DuckingParams": "server/crates/memoswish-protocol/src/card.rs",
+    "ExplainAccounting": "server/crates/memoswish-protocol/src/card.rs",
+    "ExplainDisposition": "server/crates/memoswish-protocol/src/card.rs",
+    "ExplainOperation": "server/crates/memoswish-protocol/src/card.rs",
+    "ExplainReconcileRequest": "server/crates/memoswish-protocol/src/card.rs",
+    "ExplainRequest": "server/crates/memoswish-protocol/src/card.rs",
+    "ExportAsset": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "FavoriteCommand": "server/crates/memoswish-protocol/src/library.rs",
+    "FavoriteState": "server/crates/memoswish-protocol/src/library.rs",
+    "FeedItem": "server/crates/memoswish-protocol/src/feed.rs",
+    "FeedPage": "server/crates/memoswish-protocol/src/feed.rs",
+    "FeedQuery": "server/crates/memoswish-protocol/src/feed.rs",
+    "FeedReason": "server/crates/memoswish-protocol/src/feed.rs",
+    "FeedbackAck": "server/crates/memoswish-protocol/src/feedback.rs",
+    "FeedbackBatch": "server/crates/memoswish-protocol/src/feedback.rs",
+    "FeedbackReceipt": "server/crates/memoswish-protocol/src/library.rs",
+    "HiddenCardsPage": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "ImplicitFeedback": "server/crates/memoswish-protocol/src/feedback.rs",
+    "LearnerCardControl": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "LearnerPreferences": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "LearningStats": "server/crates/memoswish-protocol/src/feed.rs",
+    "LibraryEntry": "server/crates/memoswish-protocol/src/library.rs",
+    "LibraryPage": "server/crates/memoswish-protocol/src/library.rs",
+    "LibraryQuery": "server/crates/memoswish-protocol/src/library.rs",
+    "LinkedIdentity": "server/crates/memoswish-protocol/src/server.rs",
+    "LoginRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "MembershipSummary": "server/crates/memoswish-protocol/src/server.rs",
+    "OidcCompleteRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "OidcExchangeRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "OidcProviderInfo": "server/crates/memoswish-protocol/src/server.rs",
+    "OidcStartRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "OidcStartResponse": "server/crates/memoswish-protocol/src/server.rs",
+    "PasswordChallengeRequest": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordChangeRequest": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordEmailRequest": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordRequestAccepted": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordResetRequest": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordStatus": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PasswordVerificationRequest": "server/crates/memoswish-protocol/src/password_lifecycle.rs",
+    "PcmLoop": "server/crates/memoswish-protocol/src/card.rs",
+    "PersonalAccountExport": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "PersonalWorkspaceExport": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "PortableDeckPack": "server/crates/memoswish-protocol/src/imports.rs",
+    "PortableImportRequest": "server/crates/memoswish-protocol/src/imports.rs",
+    "PortableMedia": "server/crates/memoswish-protocol/src/imports.rs",
+    "PrefetchEntry": "server/crates/memoswish-protocol/src/feed.rs",
+    "PrefetchManifest": "server/crates/memoswish-protocol/src/feed.rs",
+    "PrivacyPolicy": "server/crates/memoswish-protocol/src/privacy.rs",
+    "PrivacyRecord": "server/crates/memoswish-protocol/src/privacy.rs",
+    "PrivacyState": "server/crates/memoswish-protocol/src/privacy.rs",
+    "PrivacyUpdate": "server/crates/memoswish-protocol/src/privacy.rs",
+    "PublicationCommand": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "RegisterRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "RejectedEvent": "server/crates/memoswish-protocol/src/feedback.rs",
+    "ReportCreate": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "RetentionCommand": "server/crates/memoswish-protocol/src/learning_controls.rs",
+    "ReviewHistoryEntry": "server/crates/memoswish-protocol/src/library.rs",
+    "ReviewHistoryPage": "server/crates/memoswish-protocol/src/library.rs",
+    "RevisionPrecondition": "server/crates/memoswish-protocol/src/card.rs",
+    "ServerInfo": "server/crates/memoswish-protocol/src/server.rs",
+    "SessionInfo": "server/crates/memoswish-protocol/src/server.rs",
+    "SessionRefreshRequest": "server/crates/memoswish-protocol/src/server.rs",
+    "SessionResponse": "server/crates/memoswish-protocol/src/server.rs",
+    "SpeechDiagnostic": "server/crates/memoswish-protocol/src/tts.rs",
+    "SpeechDiagnosticState": "server/crates/memoswish-protocol/src/tts.rs",
+    "StarterDeck": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "StarterInstall": "server/crates/memoswish-protocol/src/content_lifecycle.rs",
+    "SwipeDirection": "server/crates/memoswish-protocol/src/feedback.rs",
+    "TransferOwnershipRequest": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "TtsAttachmentReceipt": "server/crates/memoswish-protocol/src/tts.rs",
+    "TtsDisposition": "server/crates/memoswish-protocol/src/tts.rs",
+    "TtsSubmission": "server/crates/memoswish-protocol/src/tts.rs",
+    "TtsSubmissionItem": "server/crates/memoswish-protocol/src/tts.rs",
+    "TtsTrack": "server/crates/memoswish-protocol/src/card.rs",
+    "UserProfile": "server/crates/memoswish-protocol/src/server.rs",
+    "WordTimestamp": "server/crates/memoswish-protocol/src/card.rs",
+    "WorkspaceConfirmation": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "WorkspaceExport": "server/crates/memoswish-protocol/src/lifecycle.rs",
+    "WorkspaceSessionRequest": "server/crates/memoswish-protocol/src/server.rs"
+  },
+  "routes": [
+    [
+      "server/crates/memoswishd/src/access.rs",
+      "DELETE",
+      "/v1/account/access/{kind}/{id}",
+      "revoke"
+    ],
+    [
+      "server/crates/memoswishd/src/access.rs",
+      "GET",
+      "/v1/account/access/{kind}",
+      "list"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "DELETE",
+      "/v1/account",
+      "delete_account"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "DELETE",
+      "/v1/account/empty",
+      "account_close_empty"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "DELETE",
+      "/v1/cards/{card_id}",
+      "delete_card"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "DELETE",
+      "/v1/{*rest}",
+      "not_found"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/assets/{*key}",
+      "asset"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/account/empty/export",
+      "account_export_empty"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/account/export",
+      "export_account"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/account/export/full",
+      "export_personal_account"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/account/lifecycle-policy",
+      "lifecycle_policy"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/account/profile",
+      "account_profile"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/bgm",
+      "list_bgm"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/cards/{card_id}",
+      "get_card"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/decks",
+      "list_decks"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/decks/{deck_id}/cards",
+      "deck_cards"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/decks/{deck_id}/export",
+      "export_deck"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/decks/{deck_id}/export/portable",
+      "export_portable"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/explanations/{request_id}",
+      "explanation_operation"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/feed",
+      "feed"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/me",
+      "me"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/server-info",
+      "server_info"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/starred",
+      "starred"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/stats",
+      "stats"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/usage",
+      "usage"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/workspace/export",
+      "export_workspace"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "GET",
+      "/v1/{*rest}",
+      "not_found"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/account/close",
+      "close_account"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/account-sessions",
+      "account_login"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/account-sessions/refresh",
+      "account_refresh"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/account-sessions/workspace",
+      "account_workspace"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/login",
+      "login"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/refresh",
+      "refresh_token"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/auth/register",
+      "register"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/cards/{card_id}/explain",
+      "explain_card"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/decks",
+      "create_deck"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/decks/import",
+      "import_deck"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/decks/import/apkg",
+      "import_apkg"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/decks/import/portable",
+      "import_portable"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/explanations/{request_id}/reconcile",
+      "reconcile_explanation"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/feedback",
+      "feedback"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/workspace/delete",
+      "delete_workspace"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/workspace/leave",
+      "leave_workspace"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/workspace/transfer-ownership",
+      "transfer_ownership"
+    ],
+    [
+      "server/crates/memoswishd/src/api.rs",
+      "POST",
+      "/v1/{*rest}",
+      "not_found"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "GET",
+      "/v1/content/cards/{id}/reports",
+      "reports"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "GET",
+      "/v1/content/cards/{id}/revisions",
+      "revisions"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "GET",
+      "/v1/content/starters",
+      "starters"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/cards",
+      "save"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/cards/{id}/publication",
+      "publication"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/cards/{id}/reports",
+      "report"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/decks",
+      "create_deck"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/decks/{id}",
+      "edit_deck"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/import",
+      "import"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/import/apkg",
+      "import_apkg"
+    ],
+    [
+      "server/crates/memoswishd/src/content_lifecycle.rs",
+      "POST",
+      "/v1/content/starters/{id}/install",
+      "install"
+    ],
+    [
+      "server/crates/memoswishd/src/diagnostics.rs",
+      "POST",
+      "/v1/diagnostics/reports",
+      "receive"
+    ],
+    [
+      "server/crates/memoswishd/src/learning_controls.rs",
+      "GET",
+      "/v1/learning/cards/{id}/control",
+      "control"
+    ],
+    [
+      "server/crates/memoswishd/src/learning_controls.rs",
+      "GET",
+      "/v1/learning/hidden",
+      "hidden"
+    ],
+    [
+      "server/crates/memoswishd/src/learning_controls.rs",
+      "GET",
+      "/v1/learning/preferences",
+      "preferences"
+    ],
+    [
+      "server/crates/memoswishd/src/learning_controls.rs",
+      "POST",
+      "/v1/learning/cards/{id}/control",
+      "set_control"
+    ],
+    [
+      "server/crates/memoswishd/src/learning_controls.rs",
+      "POST",
+      "/v1/learning/preferences",
+      "retention"
+    ],
+    [
+      "server/crates/memoswishd/src/library.rs",
+      "GET",
+      "/v1/history",
+      "history"
+    ],
+    [
+      "server/crates/memoswishd/src/library.rs",
+      "GET",
+      "/v1/library",
+      "library"
+    ],
+    [
+      "server/crates/memoswishd/src/library.rs",
+      "POST",
+      "/v1/library/{card_id}/favorite",
+      "favorite"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "DELETE",
+      "/v1/account/identities/{provider}",
+      "unlink"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "GET",
+      "/v1/account/identities",
+      "identities"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "GET",
+      "/v1/auth/oidc/{provider}/callback",
+      "callback_get"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "GET",
+      "/v1/auth/oidc/{provider}/start",
+      "launch"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/account-sessions/oidc/{provider}/complete",
+      "complete_account"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/account-sessions/oidc/{provider}/exchange",
+      "exchange_account"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/callback",
+      "callback_post"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/complete",
+      "complete"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/events",
+      "events"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/exchange",
+      "exchange"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/link/start",
+      "link"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/oidc/{provider}/start",
+      "start"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/sessions/oidc/{provider}/complete",
+      "complete_session"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/sessions/oidc/{provider}/exchange",
+      "exchange_session"
+    ],
+    [
+      "server/crates/memoswishd/src/oidc.rs",
+      "POST",
+      "/v1/auth/sessions/oidc/{provider}/link/complete",
+      "complete_link_ack"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "GET",
+      "/v1/account/password",
+      "status"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/account/password",
+      "change"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/auth/password/reset",
+      "request_reset"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/auth/password/reset/confirm",
+      "reset"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/auth/password/verification",
+      "request_verification"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/auth/password/verification/confirm",
+      "verify"
+    ],
+    [
+      "server/crates/memoswishd/src/password_routes.rs",
+      "POST",
+      "/v1/auth/password/verification/resend",
+      "request_verification"
+    ],
+    [
+      "server/crates/memoswishd/src/privacy.rs",
+      "GET",
+      "/v1/privacy/policy",
+      "policy"
+    ],
+    [
+      "server/crates/memoswishd/src/privacy.rs",
+      "GET",
+      "/v1/privacy/state",
+      "state"
+    ],
+    [
+      "server/crates/memoswishd/src/privacy.rs",
+      "POST",
+      "/v1/privacy/state",
+      "update"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "DELETE",
+      "/v1/auth/sessions",
+      "logout_everywhere"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "DELETE",
+      "/v1/auth/sessions/current",
+      "logout"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "DELETE",
+      "/v1/auth/sessions/{session_id}",
+      "revoke"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "GET",
+      "/v1/account/memberships",
+      "memberships"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "GET",
+      "/v1/auth/sessions",
+      "list"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "POST",
+      "/v1/auth/sessions",
+      "login"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "POST",
+      "/v1/auth/sessions/refresh",
+      "refresh"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "POST",
+      "/v1/auth/sessions/register",
+      "register"
+    ],
+    [
+      "server/crates/memoswishd/src/sessions.rs",
+      "POST",
+      "/v1/auth/sessions/workspace",
+      "workspace"
+    ]
+  ]
+}

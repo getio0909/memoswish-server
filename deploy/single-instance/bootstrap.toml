@@ -1,0 +1,24 @@
+# 仅在可信本机回环创建首个账户，完成登录后停机切换 public.toml。
+profile = "embedded"
+role = "all_in_one"
+mode = "multi_tenant"
+bind = "127.0.0.1:8787"
+health_bind = "127.0.0.1:8788"
+data_dir = "data"
+seed_demo = false
+registration_open = true
+password_profile = "legacy"
+
+[proxy_trust]
+# 直连按 socket 对端计来源，不要求或信任客户端转发头。
+trusted_peers = []
+# normalized_header 保持未设置，与空 trusted_peers 配套。
+
+[oauth]
+enabled = false
+
+[tts]
+auto_detect_espeak = false
+
+[object_store]
+put_shutdown_timeout_secs = 65

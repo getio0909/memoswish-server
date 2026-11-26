@@ -1,0 +1,11 @@
+{
+  "card_id": "card-example",
+  "corrected_revision": 4,
+  "created_at": "2026-09-21T14:13:20Z",
+  "evidence_available": true,
+  "id": "report-example",
+  "observed_revision": 3,
+  "sources": [],
+  "text": "Check this answer",
+  "user_id": "user-example"
+}

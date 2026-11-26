@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SessionInfo",
+  "description": "可列举的安全会话摘要，不包含凭据或摘要索引。",
+  "type": "object",
+  "properties": {
+    "auth_time": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "current": {
+      "type": "boolean"
+    },
+    "expires_at": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "provenance": {
+      "type": "string"
+    },
+    "revoked": {
+      "type": "boolean"
+    },
+    "session_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_id",
+    "provenance",
+    "auth_time",
+    "expires_at",
+    "revoked",
+    "current"
+  ]
+}

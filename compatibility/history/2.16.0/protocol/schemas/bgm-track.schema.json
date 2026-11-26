@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgmTrack",
+  "description": "背景音乐曲目。",
+  "type": "object",
+  "properties": {
+    "artist": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "asset": {
+      "$ref": "#/$defs/AssetRef"
+    },
+    "bpm": {
+      "description": "每分钟节拍数。",
+      "type": "integer",
+      "format": "uint16",
+      "maximum": 65535,
+      "minimum": 0
+    },
+    "duration_ms": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "energy": {
+      "description": "能量值 0.0 ~ 1.0。",
+      "type": "number",
+      "format": "float"
+    },
+    "id": {
+      "type": "string"
+    },
+    "license": {
+      "description": "授权说明，例如 `CC0`、`generated`。",
+      "type": "string"
+    },
+    "loop_end_ms": {
+      "description": "无缝循环终点（毫秒，0 表示曲目结尾）。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 0,
+      "minimum": 0
+    },
+    "loop_start_ms": {
+      "description": "无缝循环起点（毫秒）。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 0,
+      "minimum": 0
+    },
+    "moods": {
+      "description": "情绪标签，例如 `calm`、`focus`、`upbeat`、`epic`。",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "revision": {
+      "description": "曲库版本；历史 JSON 缺省为 1，嵌入卡片的曲目保留其挂载时快照。",
+      "type": "integer",
+      "format": "uint32",
+      "default": 1,
+      "minimum": 0
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "asset",
+    "duration_ms",
+    "bpm",
+    "energy",
+    "license"
+  ],
+  "$defs": {
+    "AssetRef": {
+      "description": "二进制资产引用（音频、图片等）。`sha256` 同时作为客户端磁盘缓存键。",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "description": "字节数。",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "key": {
+          "description": "对象存储内部键，例如 `tenants/<tid>/tts/<sha>.wav`。",
+          "type": "string"
+        },
+        "mime": {
+          "description": "MIME 类型，例如 `audio/wav`。",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "内容 SHA-256（小写十六进制）。",
+          "type": "string"
+        },
+        "url": {
+          "description": "可直接下载的 URL；以 `/` 开头时表示相对于服务端 base URL。",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "url",
+        "mime",
+        "bytes",
+        "sha256"
+      ]
+    }
+  }
+}

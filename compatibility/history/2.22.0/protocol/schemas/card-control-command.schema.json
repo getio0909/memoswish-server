@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CardControlCommand",
+  "type": "object",
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/CardControlAction"
+    },
+    "expected_revision": {
+      "type": "integer",
+      "format": "int64"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "expected_revision",
+    "action"
+  ],
+  "$defs": {
+    "CardControlAction": {
+      "type": "string",
+      "enum": [
+        "suspend",
+        "bury",
+        "resume"
+      ]
+    }
+  }
+}

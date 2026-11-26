@@ -1,0 +1,283 @@
+{
+  "generated_at": "2026-09-21T16:13:20Z",
+  "items": [
+    {
+      "card": {
+        "back": {
+          "blocks": [
+            {
+              "text": "It was pure serendipity that we met.",
+              "type": "quote"
+            },
+            {
+              "text": "我们相遇纯属机缘巧合。",
+              "type": "text"
+            }
+          ],
+          "title": "意外发现美好事物的运气"
+        },
+        "bgm": {
+          "base_volume": 0.6000000238418579,
+          "policy": "continue",
+          "theme_key": "vocab-calm",
+          "track": {
+            "artist": "LearnTok Synth",
+            "asset": {
+              "bytes": 1323044,
+              "key": "shared/bgm/focus_pad.wav",
+              "mime": "audio/wav",
+              "sha256": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9",
+              "url": "/assets/shared/bgm/focus_pad.wav"
+            },
+            "bpm": 90,
+            "duration_ms": 30000,
+            "energy": 0.3499999940395355,
+            "id": "bgm_focus_pad",
+            "license": "generated",
+            "loop_end_ms": 30000,
+            "loop_start_ms": 0,
+            "moods": [
+              "focus",
+              "calm"
+            ],
+            "revision": 1,
+            "title": "Focus Pad"
+          }
+        },
+        "created_at": "2026-09-21T14:13:20Z",
+        "deck_id": "0192f3a0-0000-7000-8000-0000000000d1",
+        "ducking": {
+          "attack_ms": 150,
+          "curve": "ease_out",
+          "duck_ratio": 0.25,
+          "hold_ms": 120,
+          "release_ms": 400
+        },
+        "front": {
+          "blocks": [
+            {
+              "text": "Finding something good without looking for it.",
+              "type": "text"
+            }
+          ],
+          "subtitle": "/ˌserənˈdɪpəti/",
+          "title": "serendipity"
+        },
+        "id": "0192f3a0-0000-7000-8000-000000000001",
+        "language": "en-US",
+        "revision": 3,
+        "tags": [
+          "english",
+          "b2"
+        ],
+        "template": "term",
+        "tts": {
+          "audio": {
+            "bytes": 52964,
+            "key": "tenants/local/tts/9f2c1e.wav",
+            "mime": "audio/wav",
+            "sha256": "9f2c1e8a4b7d6f00112233445566778899aabbccddeeff00112233445566778",
+            "url": "/assets/tenants/local/tts/9f2c1e.wav"
+          },
+          "duration_ms": 2400,
+          "engine": "placeholder",
+          "language": "en-US",
+          "text": "serendipity, finding something good",
+          "voice": "default",
+          "words": [
+            {
+              "char_end": 12,
+              "char_start": 0,
+              "end_ms": 900,
+              "start_ms": 0,
+              "text": "serendipity,"
+            },
+            {
+              "char_end": 20,
+              "char_start": 13,
+              "end_ms": 1450,
+              "start_ms": 1000,
+              "text": "finding"
+            },
+            {
+              "char_end": 30,
+              "char_start": 21,
+              "end_ms": 1950,
+              "start_ms": 1500,
+              "text": "something"
+            },
+            {
+              "char_end": 35,
+              "char_start": 31,
+              "end_ms": 2400,
+              "start_ms": 2000,
+              "text": "good"
+            }
+          ]
+        },
+        "updated_at": "2026-09-21T15:13:20Z",
+        "visual": {
+          "accent": "#FE2C55",
+          "background": "#101018"
+        }
+      },
+      "reason": "new",
+      "slot": 0
+    },
+    {
+      "card": {
+        "attributes": {
+          "difficulty": 2,
+          "field": "physics",
+          "year": 1905
+        },
+        "back": {
+          "blocks": [
+            {
+              "text": "**E** 是能量，**m** 是质量，**c** 是光速。",
+              "type": "text"
+            },
+            {
+              "items": [
+                "核裂变",
+                "核聚变",
+                "正负电子湮灭"
+              ],
+              "ordered": false,
+              "type": "list"
+            },
+            {
+              "header": [
+                "符号",
+                "单位"
+              ],
+              "rows": [
+                [
+                  "E",
+                  "J"
+                ],
+                [
+                  "m",
+                  "kg"
+                ],
+                [
+                  "c",
+                  "m/s"
+                ]
+              ],
+              "type": "table"
+            },
+            {
+              "highlight_lines": [
+                2
+              ],
+              "language": "python",
+              "source": "c = 299_792_458\nE = 0.001 * c ** 2  # 1 克质量\nprint(f\"{E:.3e} J\")",
+              "type": "code"
+            },
+            {
+              "alt": "Einstein at the blackboard",
+              "asset": {
+                "bytes": 20480,
+                "key": "tenants/local/images/5e1a.png",
+                "mime": "image/png",
+                "sha256": "5e1a7c0d2b3f4e5a69788796a5b4c3d2e1f00112233445566778899aabbccdd",
+                "url": "/assets/tenants/local/images/5e1a.png"
+              },
+              "type": "image"
+            },
+            {
+              "source": "Albert Einstein",
+              "text": "Imagination is more important than knowledge.",
+              "type": "quote"
+            },
+            {
+              "title": "Wikipedia",
+              "type": "link",
+              "url": "https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence"
+            }
+          ],
+          "title": "质量与能量可以相互转化"
+        },
+        "created_at": "2026-09-21T14:13:30Z",
+        "deck_id": "0192f3a0-0000-7000-8000-0000000000d2",
+        "ducking": {
+          "attack_ms": 150,
+          "curve": "ease_out",
+          "duck_ratio": 0.25,
+          "hold_ms": 120,
+          "release_ms": 400
+        },
+        "front": {
+          "blocks": [
+            {
+              "display": true,
+              "latex": "E = mc^2",
+              "type": "math"
+            }
+          ],
+          "subtitle": "Albert Einstein · 1905",
+          "title": "质能方程说了什么？"
+        },
+        "id": "0192f3a0-0000-7000-8000-000000000002",
+        "language": "zh-CN",
+        "revision": 1,
+        "tags": [
+          "physics"
+        ],
+        "template": "formula",
+        "updated_at": "2026-09-21T14:13:30Z",
+        "visual": {
+          "accent": "#25F4EE",
+          "background": "#0B1021"
+        }
+      },
+      "reason": "due",
+      "retrievability": 0.8199999928474426,
+      "slot": 1
+    }
+  ],
+  "next_cursor": "s:2",
+  "prefetch": {
+    "entries": [
+      {
+        "assets": [
+          {
+            "bytes": 52964,
+            "key": "tenants/local/tts/9f2c1e.wav",
+            "mime": "audio/wav",
+            "sha256": "9f2c1e8a4b7d6f00112233445566778899aabbccddeeff00112233445566778",
+            "url": "/assets/tenants/local/tts/9f2c1e.wav"
+          },
+          {
+            "bytes": 1323044,
+            "key": "shared/bgm/focus_pad.wav",
+            "mime": "audio/wav",
+            "sha256": "0a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f9",
+            "url": "/assets/shared/bgm/focus_pad.wav"
+          }
+        ],
+        "card_id": "0192f3a0-0000-7000-8000-000000000001",
+        "priority": 0,
+        "slot": 0
+      },
+      {
+        "assets": [
+          {
+            "bytes": 20480,
+            "key": "tenants/local/images/5e1a.png",
+            "mime": "image/png",
+            "sha256": "5e1a7c0d2b3f4e5a69788796a5b4c3d2e1f00112233445566778899aabbccdd",
+            "url": "/assets/tenants/local/images/5e1a.png"
+          }
+        ],
+        "card_id": "0192f3a0-0000-7000-8000-000000000002",
+        "priority": 1,
+        "slot": 1
+      }
+    ],
+    "window_after": 5,
+    "window_before": 3
+  },
+  "session_id": "sess_0192f3a0"
+}

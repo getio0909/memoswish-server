@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{product_en}} {{product_zh}} · Web Admin &amp; Inspector</title>
+  <link rel="stylesheet" href="/admin/style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-badge">{{product_en}}</span>
+      <span>{{product_zh}} · Web Admin &amp; Inspector</span>
+      <span id="server-badge" class="pill">connecting...</span>
+    </div>
+    <div class="toolbar">
+      <input id="token-input" type="password" placeholder="Bearer Token（多租户必填，单用户可选）" autocomplete="off" name="bearer" />
+      <button class="secondary" id="refresh-button">刷新数据</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="stat-label">总卡片数 (Total)</div><div class="stat-value" id="st-total">-</div></div>
+      <div class="stat-card"><div class="stat-label">已学卡片 (Seen)</div><div class="stat-value" id="st-seen">-</div></div>
+      <div class="stat-card"><div class="stat-label">待复习 (Due)</div><div class="stat-value" id="st-due">-</div></div>
+      <div class="stat-card"><div class="stat-label">重点收藏 (Starred)</div><div class="stat-value" id="st-starred">-</div></div>
+      <div class="stat-card"><div class="stat-label">平均记忆提取率</div><div class="stat-value" id="st-ret">-</div></div>
+      <div class="stat-card"><div class="stat-label">累计曝光次数</div><div class="stat-value" id="st-exp">-</div></div>
+    </section>
+
+    <div class="grid-2">
+      <section class="panel">
+        <h2>
+          <span>卡组列表 (Decks)</span>
+          <button class="secondary" id="starred-button">查看双击收藏卡</button>
+        </h2>
+        <div class="list" id="decks-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>
+          <span id="cards-heading">卡片浏览 (Cards)</span>
+        </h2>
+        <div class="list" id="cards-list"></div>
+      </section>
+    </div>
+
+    <div class="grid-2">
+      <section class="panel">
+        <h2>AI 卡片深度解析实验台 (Card Explain)</h2>
+        <div class="input-row">
+          <input id="explain-card-id" placeholder="输入或从上方点击选择 Card ID" class="grow" />
+          <input id="explain-question" placeholder="可选追问（如：为什么？怎么造句？）" class="grow" />
+          <button id="explain-button">生成解析</button>
+        </div>
+        <pre id="explain-output">点击任意卡片的「AI 解析」按钮可立即预览长按抽屉的解析结果。</pre>
+      </section>
+
+      <section class="panel">
+        <h2>卡组内容包导入 / 导出 (DeckPack JSON)</h2>
+        <textarea id="pack-json" placeholder="在此粘贴 DeckPack JSON 以导入新卡组，或点击左侧卡组的「导出」按钮获取 JSON..."></textarea>
+        <div class="input-row end">
+          <button id="import-button">导入 DeckPack</button>
+        </div>
+        <pre id="pack-status">就绪。</pre>
+        <h2>Anki 旧版内容包导入</h2>
+        <input id="apkg-file" type="file" accept=".apkg" aria-label="选择 Anki 内容包" />
+        <input id="apkg-title" placeholder="新卡组标题（可选）" maxlength="200" />
+        <input id="apkg-language" placeholder="语言标签（默认 und）" maxlength="64" />
+        <button id="apkg-upload">上传并导入 Anki（最多 10 MiB）</button>
+        <pre id="apkg-status" role="status">支持旧版导出，音频会省略。新版包请勾选 Anki 的“支持旧版 Anki”后重新导出。</pre>
+      </section>
+    </div>
+  </main>
+
+  <script src="/admin/script.js" defer></script>
+</body>
+</html>

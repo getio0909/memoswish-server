@@ -1,0 +1,14 @@
+{
+  "features": [
+    "self-hosted"
+  ],
+  "mode": "single_user",
+  "name": "learntokd",
+  "oidc_providers": [],
+  "protocol_version": "2.6.0",
+  "registration_open": false,
+  "tts_engines": [
+    "placeholder"
+  ],
+  "version": "0.1.0"
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ContentReport",
+  "type": "object",
+  "properties": {
+    "card_id": {
+      "type": "string"
+    },
+    "corrected_revision": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint32",
+      "minimum": 0
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_available": {
+      "type": "boolean"
+    },
+    "id": {
+      "type": "string"
+    },
+    "observed_revision": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "text": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "card_id",
+    "user_id",
+    "observed_revision",
+    "evidence_available",
+    "text",
+    "sources",
+    "created_at"
+  ]
+}

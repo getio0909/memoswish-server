@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BgmClip",
+  "description": "完整物化源帧范围，不支持独立 intro/outro 或子循环。",
+  "type": "object",
+  "properties": {
+    "end_frame": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "start_frame": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "track_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "track_id",
+    "start_frame",
+    "end_frame"
+  ]
+}

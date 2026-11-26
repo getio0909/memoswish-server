@@ -1,0 +1,7 @@
+# 领域墙钟和单调计时均须可注入，便于确定性测试与回放。
+disallowed-methods = [
+    { path = "std::time::SystemTime::now", reason = "Inject a wall clock into domain and engine code" },
+    { path = "chrono::Utc::now", reason = "Inject a UTC clock into domain and engine code" },
+    { path = "chrono::Local::now", reason = "Inject a clock instead of reading host-local time" },
+    { path = "std::time::Instant::now", reason = "Inject monotonic time for deterministic engine timing and replay" },
+]

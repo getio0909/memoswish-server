@@ -1,0 +1,27 @@
+{
+  "data": {
+    "feed_deliveries": [
+      {
+        "body": {
+          "attribution": {
+            "delivery_id": "delivery",
+            "issued_at": "2026-11-07T00:00:00Z",
+            "policy_version": "policy-v1",
+            "revision_at_issuance": 1
+          },
+          "card_id": "card",
+          "policy": {
+            "configuration": "{}",
+            "version": "policy-v1"
+          }
+        },
+        "delivery_id": "delivery",
+        "session_id": "session",
+        "slot": 0
+      }
+    ]
+  },
+  "exclusive": true,
+  "role": "owner",
+  "tenant_id": "workspace"
+}

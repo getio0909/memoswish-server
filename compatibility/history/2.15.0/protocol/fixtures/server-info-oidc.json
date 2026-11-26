@@ -1,0 +1,26 @@
+{
+  "features": [
+    "commercial-saas"
+  ],
+  "mode": "multi_tenant",
+  "name": "learntokd",
+  "oidc_providers": [
+    {
+      "id": "google",
+      "name": "Google",
+      "native": true
+    },
+    {
+      "id": "apple",
+      "name": "Apple",
+      "native": true
+    }
+  ],
+  "opaque_sessions": true,
+  "protocol_version": "2.15.0",
+  "registration_open": true,
+  "tts_engines": [
+    "placeholder"
+  ],
+  "version": "0.1.0"
+}

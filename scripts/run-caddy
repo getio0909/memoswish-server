@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/legacy-environment.sh"
+
+# 检查先于 Caddy 的参数解析、环境替换和任何启动副作用。
+exec "$@"

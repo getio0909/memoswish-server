@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PersonalAccountExport",
+  "description": "全局个人导出不包含工作区共享内容、他人记录或 feed 页回执。",
+  "type": "object",
+  "properties": {
+    "account": {
+      "$ref": "#/$defs/AccountProfile"
+    },
+    "exported_at": {
+      "type": "string"
+    },
+    "identities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LinkedIdentity"
+      }
+    },
+    "privacy_records": {
+      "type": "array",
+      "items": true
+    },
+    "session_metadata": {
+      "type": "array",
+      "items": true
+    },
+    "workspaces": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PersonalWorkspaceExport"
+      }
+    }
+  },
+  "required": [
+    "account",
+    "identities",
+    "workspaces",
+    "session_metadata",
+    "exported_at"
+  ],
+  "$defs": {
+    "AccountProfile": {
+      "description": "全局账户概要，不含工作区授权。",
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
+        "email",
+        "display_name"
+      ]
+    },
+    "LinkedIdentity": {
+      "description": "已关联身份的公开摘要，不包含上游凭据或内部认证状态。",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "issuer",
+        "subject"
+      ]
+    },
+    "PersonalWorkspaceExport": {
+      "description": "每个工作区只包含调用者个人学习历史及授权元数据。",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": true
+          }
+        },
+        "exclusive": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "string"
+        },
+        "tenant_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenant_id",
+        "role",
+        "exclusive",
+        "data"
+      ]
+    }
+  }
+}

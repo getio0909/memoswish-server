@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DiagnosticReceipt",
+  "type": "object",
+  "properties": {
+    "duplicate": {
+      "type": "boolean"
+    },
+    "report_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "report_id",
+    "duplicate"
+  ]
+}
