@@ -271,7 +271,7 @@ async fn provider_failure_timeout_invalid_response_cancellation_and_command_are_
     // 独立 future 的作用域结束后才观察取消。
     let command = CommandTts::new(CommandTtsConfig {
         id: "COMMAND_SECRET_SENTINEL".into(),
-        program: "/bin/false".into(),
+        program: "false".into(),
         args: vec![],
         default_voice: "default".into(),
         timeout_secs: 1,
@@ -279,7 +279,8 @@ async fn provider_failure_timeout_invalid_response_cancellation_and_command_are_
         external_transfer: false,
     })
     .with_observer(metrics.clone());
-    assert!(command.synthesize(&request).await.is_err());
+    let error = command.synthesize(&request).await.expect_err("The false fixture must fail");
+    assert!(error.to_string().contains("speech command failed"), "Test requires false on PATH: {error}");
     let text = dump(&metrics);
     assert!(
         text.contains("memoswish_operation_duration_seconds_count{operation=\"tts_http\",outcome=\"cancelled\"} 1")
@@ -424,7 +425,7 @@ async fn durable_tts_cache_does_not_count_another_provider_attempt() {
     let engine = CommandTts::new(CommandTtsConfig {
         external_transfer: false,
         id: "cache-engine".into(),
-        program: "/bin/cat".into(),
+        program: "cat".into(),
         args: vec![wav.to_str().unwrap().into()],
         default_voice: "default".into(),
         text_via_stdin: false,
@@ -440,7 +441,10 @@ async fn durable_tts_cache_does_not_count_another_provider_attempt() {
     )
     .unwrap();
     let p = memoswish_core::Principal::local_owner("single_user");
-    let one = media.synthesize(&p, "CACHE_CONTENT_SENTINEL", "en", &SynthesizeOptions::default()).await.unwrap();
+    let one = media
+        .synthesize(&p, "CACHE_CONTENT_SENTINEL", "en", &SynthesizeOptions::default())
+        .await
+        .expect("The cat fixture on PATH must return the WAV");
     let two = media.synthesize(&p, "CACHE_CONTENT_SENTINEL", "en", &SynthesizeOptions::default()).await.unwrap();
     assert_eq!(one.audio.key, two.audio.key);
     assert_eq!(

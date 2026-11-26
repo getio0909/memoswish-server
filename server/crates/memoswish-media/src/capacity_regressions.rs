@@ -37,6 +37,9 @@ async fn saturated_recovery<F: Future<Output = ()>>(repo: Arc<dyn Repository>, e
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     listener.set_nonblocking(true).unwrap();
     let marker = dir.join("provider-called");
+    let program = "touch";
+    assert!(std::process::Command::new(program).arg(&marker).status().expect("Test requires touch on PATH").success());
+    std::fs::remove_file(&marker).expect("The touch fixture must create the marker");
     let engines: Vec<Arc<dyn TtsEngine>> = vec![
         Arc::new(HttpTts::new(HttpTtsConfig {
             endpoint: format!("http://{}/speech", listener.local_addr().unwrap()),
@@ -44,7 +47,7 @@ async fn saturated_recovery<F: Future<Output = ()>>(repo: Arc<dyn Repository>, e
         })),
         Arc::new(CommandTts::new(CommandTtsConfig {
             id: "command".into(),
-            program: "/usr/bin/touch".into(),
+            program: program.into(),
             args: vec![marker.to_string_lossy().into_owned()],
             text_via_stdin: false,
             default_voice: "default".into(),

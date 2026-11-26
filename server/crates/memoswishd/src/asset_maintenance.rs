@@ -87,7 +87,7 @@ mod tests {
         cfg.tts.commands.push(memoswish_media::tts::command::CommandTtsConfig {
             external_transfer: false,
             id: "sentinel".into(),
-            program: "/usr/bin/touch".into(),
+            program: "touch".into(),
             args: vec![root.join("provider-called").to_string_lossy().into_owned()],
             text_via_stdin: false,
             default_voice: "default".into(),
@@ -104,6 +104,11 @@ mod tests {
         let cfg = config(root);
         // 不运行 initialize；构造上一进程遗留的真实 pending speech/import/explanation。
         let state = crate::app::AppState::assemble(cfg).await.unwrap();
+        let command = &state.config.tts.commands[0];
+        assert!(
+            Command::new(&command.program).args(&command.args).status().expect("Test requires touch on PATH").success()
+        );
+        std::fs::remove_file(root.join("provider-called")).expect("The touch fixture must create the marker");
         let p = Principal::local_owner("single_user");
         for (kind, version, value) in [
             ("notice", "notice-v1", ""),
@@ -137,7 +142,7 @@ mod tests {
         card.bgm = None;
         card.visual.image = Some(asset);
         state.repo.insert_card(&p.tenant_id, &card).await.unwrap();
-        let engine = memoswish_media::tts::command::CommandTts::new(state.config.tts.commands[0].clone());
+        let engine = memoswish_media::tts::command::CommandTts::new(command.clone());
         use memoswish_core::tts::TtsEngine;
         state
             .repo
