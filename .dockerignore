@@ -9,3 +9,17 @@ server/data
 **/*.db-*
 **/.env
 **/.env.*
+**/memoswishd.toml
+**/memoswishd.*.toml
+server/config/**/*.toml
+!server/config/memoswishd.example.toml
+!server/config/memoswishd.*.example.toml
+**/learntokd.toml
+**/deployment.toml
+**/jwt_secret
+**/.learntok-key-*
+**/*.toml.bak
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
