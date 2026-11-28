@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+layout=${1:?Pass the destination OCI layout}
+archives=${2:?Pass the directory containing amd64.tar and arm64.tar}
+for arch in amd64 arm64; do
+  skopeo copy --all --preserve-digests "oci-archive:$archives/$arch.tar" "oci:$layout:$arch" >&2
+  skopeo inspect --raw "oci:$layout:$arch" > "$layout/$arch.json"
+done
+media_type=application/vnd.oci.image.index.v1+json
+jq -ces --arg media "$media_type" '
+  {schemaVersion: 2, mediaType: $media, manifests: map(.manifests[])}
+' "$layout/amd64.json" "$layout/arm64.json" > "$layout/combined.json"
+hash=$(sha256sum "$layout/combined.json" | cut -d' ' -f1)
+digest="sha256:$hash"
+mv "$layout/combined.json" "$layout/blobs/sha256/$hash"
+size=$(stat -c %s "$layout/blobs/sha256/$hash")
+jq -ce --arg media "$media_type" --arg digest "$digest" --argjson size "$size" '
+  .manifests += [{mediaType: $media, digest: $digest, size: $size,
+                 annotations: {"org.opencontainers.image.ref.name": "release"}}]
+' "$layout/index.json" > "$layout/layout-index.json"
+mv "$layout/layout-index.json" "$layout/index.json"
+rm -- "$layout/amd64.json" "$layout/arm64.json"
+printf '%s\n' "$digest"

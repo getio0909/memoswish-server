@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+destination=${1:?Pass the output JSON path}
+scratch=$(mktemp -d)
+trap 'rm -rf -- "$scratch"' EXIT
+archive=cargo-cyclonedx-x86_64-unknown-linux-musl
+url=https://github.com/CycloneDX/cyclonedx-rust-cargo/releases/download/cargo-cyclonedx-0.5.10
+curl --fail --silent --show-error --location --retry 3 "$url/$archive.tar.xz" -o "$scratch/tool.tar.xz"
+(
+  cd "$scratch"
+  echo '528be9dd99ae522c3ee14fb881fd0cbf51767e8f12b74248f437e6a66b1a3c1b  tool.tar.xz' | sha256sum -c -
+  tar -xf tool.tar.xz "$archive/cargo-cyclonedx"
+)
+(
+  cd server
+  cargo fetch --locked
+  CARGO_NET_OFFLINE=true "$scratch/$archive/cargo-cyclonedx" cyclonedx --format json --spec-version 1.5 --target all --all
+)
+cp server/crates/memoswishd/memoswishd.cdx.json "$destination"

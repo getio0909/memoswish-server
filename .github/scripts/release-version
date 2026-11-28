@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export LC_ALL=C
+base=${1:?Pass the package version}
+tag=${GITHUB_REF_NAME:?}
+if [[ $GITHUB_EVENT_NAME == workflow_dispatch && $GITHUB_REF_TYPE != tag ]]; then tag="v$base"; fi
+number='(0|[1-9][0-9]*)'
+identifier="($number|[0-9]*[A-Za-z-][0-9A-Za-z-]*)"
+pattern="^v$number\\.$number\\.$number(-$identifier(\\.$identifier)*)?$"
+if [[ ! $tag =~ $pattern || ${#tag} -gt 129 || ${tag%%-*} != "v$base" ]]; then
+  echo 'Expected a vMAJOR.MINOR.PATCH tag matching the package version, optionally followed by a SemVer pre-release suffix.' >&2
+  exit 1
+fi
+prerelease=false
+if [[ $tag == *-* ]]; then prerelease=true; fi
+printf 'version=%s\nprerelease=%s\n' "${tag#v}" "$prerelease" >> "${GITHUB_OUTPUT:?}"

@@ -1,0 +1,21 @@
+FROM docker.io/library/debian:bookworm-slim@sha256:e67eeead736ff7bbe258ef088bff683635c561b1fcfefad0806c1df4ab49ce0e
+ARG VERSION
+LABEL org.opencontainers.image.source="https://github.com/getio0909/memoswish-server" \
+      org.opencontainers.image.version="$VERSION" \
+      org.opencontainers.image.licenses="Apache-2.0"
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends ca-certificates curl espeak-ng \
+ && rm -rf /var/lib/apt/lists/* \
+ && useradd --system --uid 10001 --home /var/lib/memoswish memoswish \
+ && install -d -o memoswish -g memoswish /var/lib/memoswish
+COPY memoswishd /usr/local/bin/memoswishd
+ENV MEMOSWISH_BIND=0.0.0.0:8787 \
+    MEMOSWISH_DATA_DIR=/var/lib/memoswish \
+    RUST_LOG=info
+USER memoswish
+VOLUME ["/var/lib/memoswish"]
+EXPOSE 8787
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+  CMD curl -fsS http://127.0.0.1:8787/readyz || exit 1
+ENTRYPOINT ["memoswishd"]
+CMD ["serve"]

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+blobs=${1:?Pass the OCI layout}/blobs/sha256
+index=${2:?Pass the OCI index digest}
+blob() {
+  [[ $1 =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Invalid OCI digest: $1" >&2; exit 1; }
+  printf '%s/%s\n' "$blobs" "${1#sha256:}"
+}
+
+index_file=$(blob "$index")
+[[ $(sha256sum "$index_file" | cut -d' ' -f1) == "${index#sha256:}" ]]
+images=$(jq -ce '
+  [.manifests[] | select(.annotations["vnd.docker.reference.type"] != "attestation-manifest")] |
+  if all(.[]; .platform.os == "linux") and (map(.platform.architecture) | sort) == ["amd64","arm64"]
+  then .[] else error("Expected exactly Linux amd64 and arm64") end
+' "$index_file")
+while IFS= read -r image; do
+  arch=$(jq -er '.platform.architecture' <<< "$image")
+  target=$(jq -er '.digest' <<< "$image")
+  [[ $target =~ ^sha256:[0-9a-f]{64}$ ]]
+  attachments=$(jq -r --arg target "$target" '
+    .manifests[] |
+    select(.annotations["vnd.docker.reference.type"] == "attestation-manifest" and
+           .annotations["vnd.docker.reference.digest"] == $target) |
+    .digest
+  ' "$index_file")
+  statements=()
+  while IFS= read -r attachment; do
+    [[ -n $attachment ]] || continue
+    manifest=$(blob "$attachment")
+    layers=$(jq -r '.layers[] | select(.mediaType == "application/vnd.in-toto+json") | .digest' "$manifest")
+    while IFS= read -r layer; do
+      [[ -n $layer ]] || continue
+      statement=$(blob "$layer")
+      statements+=("$statement")
+    done <<< "$layers"
+  done <<< "$attachments"
+  if (( ${#statements[@]} == 0 )) || ! jq -es --arg digest "${target#sha256:}" '
+    [ .[] | select(
+        (._type == "https://in-toto.io/Statement/v0.1" or ._type == "https://in-toto.io/Statement/v1") and
+        (.predicate | type == "object") and
+        any(.subject[]?; .digest.sha256 == $digest)
+      ) | .predicateType ] |
+    index("https://spdx.dev/Document") != null and
+    (index("https://slsa.dev/provenance/v1") != null or index("https://slsa.dev/provenance/v0.2") != null)
+  ' "${statements[@]}" >/dev/null; then
+    echo "Missing SPDX SBOM or SLSA provenance for linux/$arch ($target)." >&2
+    exit 1
+  fi
+done <<< "$images"

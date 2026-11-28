@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+binary=$(realpath -- "${1:?Pass the memoswishd binary}")
+"$binary" --version
+scratch=$(mktemp -d)
+pid=
+# shellcheck disable=SC2329
+cleanup() {
+  if [[ -n $pid ]]; then kill "$pid" 2>/dev/null || true; wait "$pid" || true; fi
+  rm -rf -- "$scratch"
+}
+trap cleanup EXIT
+NO_COLOR=1 RUST_LOG=info "$binary" --data-dir "$scratch/data" --bind 127.0.0.1:0 serve >"$scratch/server.log" 2>&1 &
+pid=$!
+for _ in {1..60}; do
+  kill -0 "$pid" 2>/dev/null || break
+  address=$(sed -nE 's/.*listening.*addr=(127\.0\.0\.1:[0-9]+).*/\1/p' "$scratch/server.log" | head -1)
+  if [[ -n $address ]] && curl -fsS --max-time 2 "http://$address/readyz"; then exit 0; fi
+  sleep 0.5
+done
+cat "$scratch/server.log" >&2
+exit 1

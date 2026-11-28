@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 查询包含草稿的列表，API 错误不能当作发布不存在。
+gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" |
+  jq -cs --arg tag "v${1:?Pass the release version}" '
+    [.[][] | select(.tag_name == $tag)] |
+    if length <= 1 then .[0] else error("Multiple releases for " + $tag) end
+  '

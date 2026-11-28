@@ -1,0 +1,308 @@
+name: Server release
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+
+permissions: {}
+concurrency:
+  group: server-release-${{ github.ref }}
+  cancel-in-progress: false
+  queue: max
+defaults:
+  run:
+    shell: bash
+
+env:
+  IMAGE: ghcr.io/getio0909/memoswish-server
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.tag.outputs.version }}
+      prerelease: ${{ steps.tag.outputs.prerelease }}
+      existing: ${{ steps.release.outputs.existing }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: tag
+        run: .github/scripts/release-version "$(yq -er -p toml '.workspace.package.version' server/Cargo.toml)"
+      - name: Check for a release or draft for this tag
+        id: release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          record=$(.github/scripts/release-record "$VERSION")
+          echo "existing=$(jq -r '. != null' <<< "$record")" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: version
+    if: needs.version.outputs.existing != 'true'
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            arch: arm64
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+      TARGET: ${{ matrix.target }}
+      ARCH: ${{ matrix.arch }}
+      RUST_IMAGE: docker.io/library/rust:1.100.0-bookworm@sha256:75d26c23c24cc6ea1cdabf0714a6bff8fd7bf3248716043fd7ae86dac7f41b94
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and smoke-test on Bookworm
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src/server -e TARGET -e CARGO_BUILD_JOBS=16 \
+            -e RUSTUP_TOOLCHAIN=1.100.0 "$RUST_IMAGE" bash -euc '
+              test "$(rustc -vV | sed -n "s/^host: //p")" = "$TARGET"
+              cargo build --release --locked -p memoswishd
+              ../.github/scripts/release-smoke target/release/memoswishd
+            '
+      - name: Check the binary loads on Ubuntu 22.04
+        run: |
+          docker run --rm -v "$PWD/server/target/release/memoswishd:/memoswishd:ro" \
+            docker.io/library/ubuntu:22.04@sha256:b000e69a50ff940390233025e7a337fb8469b509e2334fa4d018ac30f3e18cdb /memoswishd --version
+      - name: Package the binary and notices
+        run: |
+          mkdir -p dist runtime
+          install -m 755 server/target/release/memoswishd runtime/memoswishd
+          tar -czf "dist/memoswishd-$VERSION-$TARGET.tar.gz" LICENSE THIRD_PARTY_NOTICES.txt README.md -C runtime memoswishd
+      - name: Build native OCI image with SBOM and provenance
+        run: |
+          docker buildx create --driver docker-container --use
+          docker buildx build --platform "linux/$ARCH" --build-arg "VERSION=$VERSION" \
+            --tag "$IMAGE:$VERSION" \
+            --provenance=mode=max --sbom=true --output "type=oci,dest=$RUNNER_TEMP/$ARCH.tar" \
+            -f server/deploy/Dockerfile.release runtime
+      - name: Generate the daemon SBOM for all targets
+        if: matrix.arch == 'amd64'
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src -e RUSTUP_TOOLCHAIN=1.100.0 "$RUST_IMAGE" \
+            .github/scripts/release-sbom "dist/memoswishd-$VERSION.cdx.json"
+          jq -e '.bomFormat == "CycloneDX" and .metadata.component.name == "memoswishd" and (.components | length > 0)' dist/*.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: github.event_name == 'push'
+        with:
+          name: release-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
+          overwrite: true
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: image-${{ matrix.arch }}
+          path: ${{ runner.temp }}/${{ matrix.arch }}.tar
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 3
+          overwrite: true
+
+  image:
+    needs: [version, build]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    outputs:
+      digest: ${{ steps.push.outputs.digest }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: image-*
+          merge-multiple: true
+          path: images
+      - name: Assemble and verify the OCI index
+        id: assemble
+        run: |
+          layout="$RUNNER_TEMP/oci"
+          digest=$(.github/scripts/assemble-image-index "$layout" images)
+          .github/scripts/verify-image-attestations "$layout" "$digest"
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+      - name: Authenticate to GHCR
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Upload the verified OCI index by digest
+        id: push
+        if: github.event_name == 'push'
+        env:
+          DIGEST: ${{ steps.assemble.outputs.digest }}
+        run: |
+          skopeo copy --authfile "$HOME/.docker/config.json" --all --preserve-digests \
+            "oci:$RUNNER_TEMP/oci:release" "docker://$IMAGE@$DIGEST"
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        if: github.event_name == 'push'
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+          create-storage-record: false
+
+  release:
+    if: >-
+      ${{ !cancelled() && github.event_name == 'push' && needs.version.result == 'success' &&
+          (needs.version.outputs.existing == 'true' || needs.image.result == 'success') }}
+    needs: [version, image]
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: server-release-publication
+      cancel-in-progress: false
+      queue: max
+    permissions:
+      contents: write
+      packages: write
+      attestations: write
+      id-token: write
+    env:
+      VERSION: ${{ needs.version.outputs.version }}
+      PRERELEASE: ${{ needs.version.outputs.prerelease }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Resolve the original release digest
+        id: record
+        env:
+          CANDIDATE: ${{ needs.image.outputs.digest }}
+        run: |
+          .github/scripts/release-record "$VERSION" > "$RUNNER_TEMP/release.json"
+          state=$(jq -r 'if . == null then "new" elif .draft then "draft" else "published" end' "$RUNNER_TEMP/release.json")
+          if [[ $state == new ]]; then
+            digest=$CANDIDATE
+          else
+            jq -e --argjson prerelease "$PRERELEASE" '.prerelease == $prerelease' "$RUNNER_TEMP/release.json"
+            digest=$(jq -er --arg prefix "docker pull $IMAGE@" '
+              [.body | split("\n")[] | select(startswith($prefix)) | ltrimstr($prefix)] |
+              if length == 1 then .[0] else error("Expected exactly one release image digest") end
+            ' "$RUNNER_TEMP/release.json")
+          fi
+          [[ $digest =~ ^sha256:[0-9a-f]{64}$ ]]
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          echo "DIGEST=$digest" >> "$GITHUB_ENV"
+      - name: Verify the index and both native image attestations
+        run: |
+          printf '%s' "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          skopeo copy --authfile "$HOME/.docker/config.json" --all --preserve-digests \
+            "docker://$IMAGE@$DIGEST" "oci:$RUNNER_TEMP/verified:release"
+          .github/scripts/verify-image-attestations "$RUNNER_TEMP/verified" "$DIGEST"
+          gh attestation verify "oci://$IMAGE@$DIGEST" --repo "$GITHUB_REPOSITORY" --bundle-from-oci \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yml" --source-ref "$GITHUB_REF" \
+            --source-digest "$(git rev-parse HEAD)"
+      - name: Check the existing version tag
+        id: version-tag
+        run: |
+          if skopeo inspect --authfile "$HOME/.docker/config.json" --raw "docker://$IMAGE:$VERSION" \
+            > "$RUNNER_TEMP/version.json" 2> "$RUNNER_TEMP/tag-error"; then
+            actual="sha256:$(sha256sum "$RUNNER_TEMP/version.json" | cut -d' ' -f1)"
+            if [[ $actual != "$DIGEST" ]]; then
+              echo "::error::Version tag already points to $actual; expected $DIGEST."
+              exit 1
+            fi
+            echo 'exists=true' >> "$GITHUB_OUTPUT"
+          elif ! grep -qi 'manifest unknown' "$RUNNER_TEMP/tag-error"; then
+            cat "$RUNNER_TEMP/tag-error" >&2
+            exit 1
+          fi
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: steps.record.outputs.state == 'new'
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: dist
+      - name: Checksum the release files
+        if: steps.record.outputs.state == 'new'
+        working-directory: dist
+        run: sha256sum -- "memoswishd-$VERSION-x86_64-unknown-linux-gnu.tar.gz" "memoswishd-$VERSION-aarch64-unknown-linux-gnu.tar.gz" "memoswishd-$VERSION.cdx.json" > SHA256SUMS
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        id: provenance
+        if: steps.record.outputs.state == 'new'
+        with:
+          subject-path: dist/*
+      - name: Create GitHub Release
+        if: steps.record.outputs.state == 'new'
+        env:
+          BUNDLE: ${{ steps.provenance.outputs.bundle-path }}
+        run: |
+          cp -- "$BUNDLE" "dist/memoswishd-$VERSION.sigstore.json"
+          flags=()
+          if [[ $PRERELEASE == true ]]; then flags+=(--prerelease --latest=false); fi
+          {
+            echo 'See the [website changelog](https://getio0909.github.io/memoswish-website/changelog/).'
+            echo
+            echo 'Download both tarballs, the CycloneDX SBOM and SHA256SUMS to the same directory. Verify them before extracting the binary.'
+            echo '~~~sh'
+            printf 'gh attestation verify SHA256SUMS --repo %s\n' "$GITHUB_REPOSITORY"
+            echo 'sha256sum -c SHA256SUMS'
+            printf 'gh attestation verify memoswishd-%s-x86_64-unknown-linux-gnu.tar.gz --repo %s\n' "$VERSION" "$GITHUB_REPOSITORY"
+            printf 'gh attestation verify oci://%s@%s --repo %s --bundle-from-oci\n' "$IMAGE" "$DIGEST" "$GITHUB_REPOSITORY"
+            printf 'docker pull %s@%s\n' "$IMAGE" "$DIGEST"
+            echo '~~~'
+          } > "$RUNNER_TEMP/notes.md"
+          gh release create "v$VERSION" dist/* --repo "$GITHUB_REPOSITORY" --verify-tag \
+            --title "Memoswish Server $VERSION" --notes-file "$RUNNER_TEMP/notes.md" "${flags[@]}"
+      - name: Publish a completed draft from an interrupted run
+        if: steps.record.outputs.state == 'draft'
+        run: |
+          jq -e --arg v "$VERSION" '
+            ([.assets[] | select(.state == "uploaded") | .name] | sort) ==
+            (["SHA256SUMS", "memoswishd-\($v).cdx.json", "memoswishd-\($v).sigstore.json",
+              "memoswishd-\($v)-aarch64-unknown-linux-gnu.tar.gz",
+              "memoswishd-\($v)-x86_64-unknown-linux-gnu.tar.gz"] | sort)
+          ' "$RUNNER_TEMP/release.json" >/dev/null || {
+            echo '::error::Draft release has incomplete assets. Restore its original assets before retrying.'
+            exit 1
+          }
+          gh release download "v$VERSION" --repo "$GITHUB_REPOSITORY" --pattern '*' --dir "$RUNNER_TEMP/draft"
+          (
+            cd "$RUNNER_TEMP/draft"
+            gh attestation verify SHA256SUMS --bundle "memoswishd-$VERSION.sigstore.json" \
+              --repo "$GITHUB_REPOSITORY" --source-ref "$GITHUB_REF" --source-digest "$(git -C "$GITHUB_WORKSPACE" rev-parse HEAD)"
+            sha256sum --check --strict SHA256SUMS
+          )
+          flags=()
+          if [[ $PRERELEASE == true ]]; then flags+=(--latest=false); fi
+          gh release edit "v$VERSION" --repo "$GITHUB_REPOSITORY" --draft=false "${flags[@]}"
+      - name: Promote the verified version tag
+        if: steps.version-tag.outputs.exists != 'true'
+        run: docker buildx imagetools create -t "$IMAGE:$VERSION" "$IMAGE@$DIGEST"
+      - name: Promote latest for the current final GitHub Release
+        if: needs.version.outputs.prerelease == 'false'
+        run: |
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')
+          if [[ $latest == "v$VERSION" ]]; then
+            docker buildx imagetools create -t "$IMAGE:latest" "$IMAGE@$DIGEST"
+          fi
+      - name: Report anonymous pull status
+        run: |
+          if skopeo copy --src-no-creds --all --preserve-digests \
+              "docker://$IMAGE@$DIGEST" "oci:$RUNNER_TEMP/anonymous:release"; then
+            printf 'Anonymous digest pull passed for %s@%s.\n' "$IMAGE" "$DIGEST" >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf 'Anonymous digest pull failed for %s@%s. New personal-account GHCR packages start private. Make the package public in Package settings → Danger Zone → Change visibility, then retry the anonymous pull before announcing the release.\n' \
+              "$IMAGE" "$DIGEST" >> "$GITHUB_STEP_SUMMARY"
+          fi
