@@ -6,7 +6,8 @@ use memoswish_protocol::{DeckPack, PortableDeckPack};
 fn legacy_shapes_match_frozen_213_serialization_and_fingerprints() {
     let reference: serde_json::Value =
         serde_json::from_str(include_str!("fixtures/legacy-identities-213.json")).unwrap();
-    assert_eq!(reference["baseline"], "bae52d24295975cee128bef91ab80a33efdef9ce");
+    assert_eq!(reference["protocol"], "2.13.0");
+    assert_eq!(reference["fixture_inputs_sha256"], "dc9780b65babdd2e5c5a33d9205f43caec1ec674e16f42e2cc17becef9c63380");
     assert_eq!(reference["cases"].as_array().unwrap().len(), 8);
     for case in reference["cases"].as_array().unwrap() {
         let format = case["format"].as_str().unwrap();

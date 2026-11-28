@@ -25,7 +25,9 @@ RUN apt-get update \
  && mkdir -p /var/lib/memoswish && chown memoswish /var/lib/memoswish
 COPY --from=build /src/server/target/release/memoswishd /usr/local/bin/memoswishd
 USER memoswish
-# 容器内监听网桥，由 Compose 将宿主端口限制到回环。
+# daemon 监听所有容器接口，Compose 的宿主回环映射只限制经宿主端口的访问。
+# single_user 会授予容器网络上所有可连接的未认证客户端所有者权限。
+# 仅接入可信容器网络，或改用启用认证的 multi_tenant 模式。
 ENV MEMOSWISH_BIND=0.0.0.0:8787 \
     MEMOSWISH_DATA_DIR=/var/lib/memoswish \
     RUST_LOG=info

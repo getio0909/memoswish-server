@@ -14,6 +14,13 @@ fn main() {
         )
         .unwrap()
     };
+    let mut manifest = String::new();
+    for name in ["deck-pack", "portable-deck-pack"] {
+        let path = format!("compatibility/history/2.13.0/protocol/fixtures/{name}.json");
+        let bytes = std::fs::read(format!("{root}/{path}")).unwrap();
+        manifest.push_str(&format!("{:x}  {path}\n", Sha256::digest(bytes)));
+    }
+    let inputs_sha256 = format!("{:x}", Sha256::digest(manifest.as_bytes()));
     let mut out = vec![];
     for (format, fixture) in [("deckpack", "deck-pack"), ("portable-deckpack", "portable-deck-pack")] {
         for shape in ["fixture", "text", "empty", "defaults"] {
@@ -51,7 +58,7 @@ fn main() {
     println!(
         "{}",
         serde_json::to_string_pretty(
-            &json!({"baseline":"bae52d24295975cee128bef91ab80a33efdef9ce","protocol":"2.13.0","cases":out})
+            &json!({"fixture_inputs_sha256":inputs_sha256,"protocol":"2.13.0","cases":out})
         )
         .unwrap()
     );

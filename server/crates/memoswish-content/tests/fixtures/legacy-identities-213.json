@@ -1,5 +1,4 @@
 {
-  "baseline": "bae52d24295975cee128bef91ab80a33efdef9ce",
   "cases": [
     {
       "fingerprint": "3f994d65ba71041067be7a36b53ffe9029224cf6edca5b7cdea70a8a6e06792d",
@@ -687,5 +686,6 @@
       "serialized": "{\"version\":\"2.0\",\"content\":{\"version\":\"1.0\",\"deck\":{\"id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"title\":\"English Vocabulary Starter\",\"description\":\"\",\"language\":\"en-US\",\"tags\":[],\"card_count\":1,\"created_at\":\"2026-09-21T14:13:20Z\"},\"cards\":[{\"id\":\"0192f3a0-0000-7000-8000-000000000002\",\"deck_id\":\"0192f3a0-0000-7000-8000-0000000000d1\",\"template\":\"formula\",\"language\":\"zh-CN\",\"front\":{\"title\":\"Legacy question\",\"blocks\":[{\"type\":\"text\",\"text\":\"Legacy body\"}]},\"back\":{\"title\":\"Legacy answer\",\"blocks\":[]},\"tags\":[\"physics\"],\"attributes\":{\"difficulty\":2,\"field\":\"physics\",\"year\":1905},\"ducking\":{\"duck_ratio\":0.25,\"attack_ms\":150,\"hold_ms\":120,\"release_ms\":400,\"curve\":\"ease_out\"},\"visual\":{\"background\":\"#0B1021\",\"accent\":\"#25F4EE\"},\"revision\":1,\"created_at\":\"2026-09-21T14:13:30Z\",\"updated_at\":\"2026-09-21T14:13:30Z\"}],\"exported_at\":\"2026-09-21T16:18:20Z\"},\"media\":[]}"
     }
   ],
+  "fixture_inputs_sha256": "dc9780b65babdd2e5c5a33d9205f43caec1ec674e16f42e2cc17becef9c63380",
   "protocol": "2.13.0"
 }

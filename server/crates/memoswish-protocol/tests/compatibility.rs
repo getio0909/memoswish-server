@@ -275,7 +275,8 @@ fn compatibility_frozen_schemas_validate_historical_inputs_and_current_defaults_
 fn compatibility_every_frozen_fixture_preserves_canonical_bytes() {
     let baseline: Value =
         serde_json::from_str(include_str!("../../../../compatibility/roundtrip-baseline-2.16.json")).unwrap();
-    assert_eq!(baseline["source_commit"], "30abf7f653afd713be4566f00263d8e921ee58fe");
+    assert_eq!(baseline["protocol"], "2.16.0");
+    assert_eq!(baseline["fixture_inputs_sha256"], "0624fbbd1494a3c3e14d4d17c16046ef174df7a48bf7c27281154a3c2af5ade6");
     let mut compared = BTreeSet::new();
     for minor in 1..=21 {
         let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))

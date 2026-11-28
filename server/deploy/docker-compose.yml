@@ -12,7 +12,8 @@
 #   docker compose -f server/deploy/docker-compose.yml exec postgres psql -U memoswish -d memoswish -c '\password memoswish'
 # 将 POSTGRES_PASSWORD 更新为新密码，沿用同一 -f 参数执行 up -d --build，再读取一条旧记录。
 # 本机地址为 http://127.0.0.1:8787。局域网或远程访问请使用 deploy/single-instance 的认证 HTTPS 部署。
-# 将 single_user 暴露到回环以外会让任何可达者获得所有者权限。
+# 宿主回环映射仅限制经宿主端口的访问。容器网络上的其他容器可直连 daemon。
+# single_user 会授予所有可连接的未认证客户端所有者权限。仅接入可信容器网络，或改用启用认证的 multi_tenant 模式。
 name: memoswish
 
 services:
